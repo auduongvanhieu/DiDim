@@ -11,6 +11,7 @@ import {
   watchServerCounting,
   watchAlarmItemList,
   watchFailureAlarmLog,
+  watchFailureAlarmLogDetail,
   watchAsRequestList,
 } from "./OthersSaga/othersSaga";
 
@@ -23,5 +24,6 @@ export default function* rootSaga() {
   yield fork(watchServerCounting),
   yield fork(watchAlarmItemList),
   yield fork(watchFailureAlarmLog),
+  yield fork(watchFailureAlarmLogDetail),
   yield fork(watchAsRequestList)
 }

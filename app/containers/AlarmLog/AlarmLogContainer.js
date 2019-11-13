@@ -2,7 +2,7 @@ import { connect } from 'react-redux'
 import AlarmLogComponent from '../../components/AlarmLog/AlarmLogComponent'
 import { navigateToAlarmLogDetailScreenAction } from '../../actions/NavigationActions/actionCreators';
 import { 
-    failureAlarmLogRequestAction
+    failureAlarmLogRequestAction, failureAlarmLogDetailRequestAction
 } from '../../actions/OthersActions/actionCreators';
 import { startLoadingAction } from '../../actions/AppActions/actionCreators';
 
@@ -13,6 +13,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
     navigateToAlarmLogDetailScreen: (params) => dispatch(navigateToAlarmLogDetailScreenAction(params)),
     failureAlarmLogRequest: (params) => dispatch(failureAlarmLogRequestAction(params)),
+    failureAlarmLogDetailRequest: (params) => dispatch(failureAlarmLogDetailRequestAction(params)),
     startLoading: () => dispatch(startLoadingAction()),
 })
 

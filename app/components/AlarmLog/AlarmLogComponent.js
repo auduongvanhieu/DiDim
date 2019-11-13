@@ -105,11 +105,16 @@ export default class AlarmLogComponent extends Component {
    * Render views
    */
   render() {
-    const {navigateToAlarmLogDetailScreen, failureAlarmLogData, failureAlarmLogRequest} = this.props;
+    const {
+      navigateToAlarmLogDetailScreen,
+      failureAlarmLogData,
+      failureAlarmLogRequest,
+      failureAlarmLogDetailRequest
+    } = this.props;
     const {timeZoneIndex, searchText} = this.state;
     return (
       <Container>
-        {/* {failureAlarmLogData && alert(JSON.stringify(failureAlarmLogData[0]))} */}
+      {/* {failureAlarmLogData && console.log("__haha__",JSON.stringify(failureAlarmLogData))} */}
         <StatusBar backgroundColor={AppColors.headerBg} />
         <HeaderMenuHome title={"Alarm Log"} />
         <View style={{ marginLeft: 5 }}>
@@ -151,6 +156,7 @@ export default class AlarmLogComponent extends Component {
             <TouchableOpacity
               onPress={() => {
                 navigateToAlarmLogDetailScreen();
+                failureAlarmLogDetailRequest({Par: `cmd=GET_INFO_ALARM_DOWN_LOG&log_uid=${item.log_uid}`})
               }}
               style={{ marginHorizontal: 20, paddingVertical: normalize(15) }}
             >
@@ -160,7 +166,7 @@ export default class AlarmLogComponent extends Component {
                     style={{ marginHorizontal: 5 }}
                     bgColor={item.color}
                     widthSize={normalize(10)}
-                    title={item.alarmType}
+                    title={item.alarm_type}
                   />
                 </View>
                 <Text

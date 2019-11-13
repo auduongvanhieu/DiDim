@@ -19,7 +19,10 @@ import {
     FAILURE_ALARM_LOG_SUCCEEDED,
     FAILURE_ALARM_LOG_FAILED,
 
-    
+    FAILURE_ALARM_LOG_DETAIL_REQUEST,
+    FAILURE_ALARM_LOG_DETAIL_SUCCEEDED,
+    FAILURE_ALARM_LOG_DETAIL_FAILED,
+
     AS_REQUEST_LIST_REQUEST,
     AS_REQUEST_LIST_SUCCEEDED,
     AS_REQUEST_LIST_FAILED,
@@ -166,6 +169,32 @@ function* failureAlarmLog(action) {
 
 export function* watchFailureAlarmLog() {
     yield takeLatest(FAILURE_ALARM_LOG_REQUEST, failureAlarmLog)
+}
+
+
+function* failureAlarmLogDetail(action) {
+    try {
+        yield put({ type: START_LOADING })
+        const receivedDataTemp = yield Api.mainApi(action.payload)
+        receivedData = JSON.parse(receivedDataTemp)
+        if (receivedData && receivedData.ReturnValue && receivedData.Items.length>0) {
+            yield put({ type: FAILURE_ALARM_LOG_DETAIL_SUCCEEDED, payload: receivedData.Items[0] })
+            yield put({ type: STOP_LOADING })
+        } else {
+            yield put(showErrorAlertAction({ title: I18n.t('failure'), description: receivedData.ReturnMsg }))
+            yield put({ type: FAILURE_ALARM_LOG_DETAIL_FAILED, payload: {}})
+            yield put({ type: STOP_LOADING })
+        }
+    } catch (error) {
+        console.log(error);
+        yield put(showErrorAlertAction({ title: I18n.t('failure'), description: I18n.t('connectionErrors') }))
+        yield put({ type: FAILURE_ALARM_LOG_DETAIL_FAILED, payload: {} })
+        yield put({ type: STOP_LOADING })
+    }
+}
+
+export function* watchFailureAlarmLogDetail() {
+    yield takeLatest(FAILURE_ALARM_LOG_DETAIL_REQUEST, failureAlarmLogDetail)
 }
 
 

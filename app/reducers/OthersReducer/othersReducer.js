@@ -17,6 +17,9 @@ import {
     FAILURE_ALARM_LOG_SUCCEEDED,
     FAILURE_ALARM_LOG_FAILED,
 
+    FAILURE_ALARM_LOG_DETAIL_SUCCEEDED,
+    FAILURE_ALARM_LOG_DETAIL_FAILED,
+
     AS_REQUEST_LIST_SUCCEEDED,
     AS_REQUEST_LIST_FAILED,
 
@@ -51,6 +54,11 @@ const otherReducer = (state = {tabIndexServerDetail: 0}, actions) => {
             return { ...state, failureAlarmLogData: actions.payload };
         case FAILURE_ALARM_LOG_FAILED:
             return { ...state, failureAlarmLogData: actions.payload };
+
+        case FAILURE_ALARM_LOG_DETAIL_SUCCEEDED:
+            return { ...state, failureAlarmLogDetailData: actions.payload };
+        case FAILURE_ALARM_LOG_DETAIL_FAILED:
+            return { ...state, failureAlarmLogDetailData: actions.payload };
 
         case AS_REQUEST_LIST_SUCCEEDED:
             return { ...state, asRequestListData: actions.payload };

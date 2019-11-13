@@ -61,19 +61,20 @@ export default class AlarmLogDetailComponent extends Component {
    * Render views
    */
   render() {
-    const {navigateToAlarmLogScreen} = this.props;
+    const {navigateToAlarmLogScreen, failureAlarmLogDetailData} = this.props;
     return (
       <Container>
+      {/* {failureAlarmLogDetailData && console.log("__haha__",JSON.stringify(failureAlarmLogDetailData))} */}
         <StatusBar backgroundColor={AppColors.headerBg2}/>
         <HeaderMenu backAction={()=>navigateToAlarmLogScreen()} title={"Alarm Log"} />
         <View style={{paddingVertical: '4%', paddingHorizontal: '7%'}}>
-          <Text style={{fontSize: normalize(18), color: '#140f26'}}>HTTP Concurrent Users 이상 성능</Text>
+          <Text style={{fontSize: normalize(18), color: '#140f26'}}>{failureAlarmLogDetailData && failureAlarmLogDetailData.target_name}</Text>
           <View style={{flexDirection: 'row'}}>
             <View style={{width: normalize(50), flexDirection: 'row'}}>
-              <StatusButton title={"UP"} bgColor="#fe3a3a"/>
+              <StatusButton title={failureAlarmLogDetailData && failureAlarmLogDetailData.alarm_type} bgColor="blue"/>
             </View>
             <Image source={Images.ico_clock_b} style={{height: normalize(15), width: normalize(15),  marginLeft: 10}} />
-            <Text style={{fontSize: normalize(12), alignSelf: 'center'}}> 2018-08-04 10:10:00</Text>
+            <Text style={{fontSize: normalize(12), alignSelf: 'center'}}> {failureAlarmLogDetailData && failureAlarmLogDetailData.end_time}</Text>
           </View>
         </View>
         <View style={{backgroundColor: '#f4f6f9', height: '2.5%', width: '100%'}} />
@@ -85,27 +86,27 @@ export default class AlarmLogDetailComponent extends Component {
         <View style={styles.containerTab}>
           <View style={styles.itemContainer}>
             <Text style={styles.textLeft}>Server name</Text>
-            <Text style={styles.textRight}>web1 server</Text>
+            <Text style={styles.textRight}>{failureAlarmLogDetailData && failureAlarmLogDetailData.target_name}</Text>
           </View>
           <View style={styles.horizontalBar} />
           <View style={styles.itemContainer}>
             <Text style={styles.textLeft}>Server IP</Text>
-            <Text style={styles.textRight}>111.123.111.123</Text>
+            <Text style={styles.textRight}>{failureAlarmLogDetailData && failureAlarmLogDetailData.target_ip}</Text>
           </View>
           <View style={styles.horizontalBar} />
           <View style={styles.itemContainer}>
             <Text style={styles.textLeft}>Monitoring Type</Text>
-            <Text style={styles.textRight}>비정상패턴 - SQL Page writes/s</Text>
+            <Text style={styles.textRight}>{failureAlarmLogDetailData && failureAlarmLogDetailData.alarm_cat}</Text>
           </View>
           <View style={styles.horizontalBar} />
           <View style={styles.itemContainer}>
             <Text style={styles.textLeft}>Send Time</Text>
-            <Text style={styles.textRight}>2019-07-03 22:33:41</Text>
+            <Text style={styles.textRight}>{failureAlarmLogDetailData && failureAlarmLogDetailData.start_time}</Text>
           </View>
           <View style={styles.horizontalBar} />
           <View style={styles.itemContainer}>
             <Text style={styles.textLeft}>Details</Text>
-            <Text style={styles.textRight}>{"SQL Page writes/s 값이 최근 60분 평균(18.15)보다 5.00배 이상 높게 발생하였습니다.\n"}</Text>
+            <Text style={styles.textRight}>{failureAlarmLogDetailData && failureAlarmLogDetailData.message + "\n"}</Text>
           </View>
           <View style={styles.horizontalBar} />
         </View>     

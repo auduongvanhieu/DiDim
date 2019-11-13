@@ -20,6 +20,10 @@ import {
     FAILURE_ALARM_LOG_REQUEST,
     FAILURE_ALARM_LOG_SUCCEEDED,
     FAILURE_ALARM_LOG_FAILED,
+    
+    FAILURE_ALARM_LOG_DETAIL_REQUEST,
+    FAILURE_ALARM_LOG_DETAIL_SUCCEEDED,
+    FAILURE_ALARM_LOG_DETAIL_FAILED,
 
     AS_REQUEST_LIST_REQUEST,
     AS_REQUEST_LIST_SUCCEEDED,
@@ -113,6 +117,22 @@ const failureAlarmLogFailedAction = error => ({
   });
 
 
+const failureAlarmLogDetailRequestAction = params => ({
+    type: FAILURE_ALARM_LOG_DETAIL_REQUEST,
+    payload: params
+  });
+  
+const failureAlarmLogDetailSucceededAction = receivedData => ({
+    type: FAILURE_ALARM_LOG_DETAIL_SUCCEEDED,
+    payload: receivedData
+  });
+  
+const failureAlarmLogDetailFailedAction = error => ({
+    type: FAILURE_ALARM_LOG_DETAIL_FAILED,
+    payload: error
+  });
+
+
 const asRequestListRequestAction = params => ({
     type: AS_REQUEST_LIST_REQUEST,
     payload: params
@@ -150,6 +170,10 @@ export {
     failureAlarmLogRequestAction,
     failureAlarmLogSucceededAction,
     failureAlarmLogFailedAction,
+
+    failureAlarmLogDetailRequestAction,
+    failureAlarmLogDetailSucceededAction,
+    failureAlarmLogDetailFailedAction,
 
     asRequestListRequestAction,
     asRequestListSucceededAction,

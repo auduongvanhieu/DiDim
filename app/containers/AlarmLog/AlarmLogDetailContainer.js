@@ -3,7 +3,7 @@ import AlarmLogDetailComponent from '../../components/AlarmLog/AlarmLogDetailCom
 import { navigateToAlarmLogScreenAction } from '../../actions/NavigationActions/actionCreators';
 
 const mapStateToProps = state => ({
-    isLoading: state.app.isLoading,
+    failureAlarmLogDetailData: state.otherReducer.failureAlarmLogDetailData,
 })
 
 const mapDispatchToProps = dispatch => ({
