@@ -1,0 +1,10 @@
+{
+    "appName": "DidimCenter",
+    "login": "Login",
+    "infraMenu": "Infra (인프라내역)",
+    "alarmLogMenu": "Alarm Log (모니터링 알람 로그)",
+    "supportCenterMenu": "Support Center (AS 요청)",
+    "pushAlarm": "Push alarm",
+    "failure": "Failure",
+    "connectionErrors": "An error occurred, please check the connection again."
+}
