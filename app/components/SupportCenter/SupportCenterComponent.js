@@ -65,7 +65,12 @@ export default class SupportCenterComponent extends Component {
    * Render views
    */
   render() {
-    const {navigateToSupportViewScreen, navigateToSupportWriteScreen, asRequestListData} = this.props;
+    const {
+      navigateToSupportViewScreen,
+      navigateToSupportWriteScreen,
+      asRequestListData,
+      asRequestDetailRequest
+    } = this.props;
     return (
       <Container>
         <StatusBar backgroundColor={AppColors.headerBg} />
@@ -96,6 +101,7 @@ export default class SupportCenterComponent extends Component {
             <TouchableOpacity
               onPress={() => {
                 navigateToSupportViewScreen();
+                asRequestDetailRequest({Par: `cmd=GET_INFO_AS_REQUEST&board_idx=${item.board_idx}`})
               }}
               style={{ marginHorizontal: 20, paddingVertical: normalize(15) }}
             >

@@ -4,7 +4,7 @@ import { navigateToAlarmLogDetailScreenAction, navigateToSupportCenterScreenActi
 import { asRequestListRequestAction } from '../../actions/OthersActions/actionCreators';
 
 const mapStateToProps = state => ({
-    asRequestListData: state.otherReducer.asRequestListData,
+    asRequestDetailData: state.otherReducer.asRequestDetailData,
 })
 
 const mapDispatchToProps = dispatch => ({

@@ -23,6 +23,9 @@ import {
     AS_REQUEST_LIST_SUCCEEDED,
     AS_REQUEST_LIST_FAILED,
 
+    AS_REQUEST_DETAIL_SUCCEEDED,
+    AS_REQUEST_DETAIL_FAILED,
+
 } from '../../actions/OthersActions/actionTypes';
 
 const otherReducer = (state = {tabIndexServerDetail: 0}, actions) => {
@@ -64,6 +67,11 @@ const otherReducer = (state = {tabIndexServerDetail: 0}, actions) => {
             return { ...state, asRequestListData: actions.payload };
         case AS_REQUEST_LIST_FAILED:
             return { ...state, asRequestListData: actions.payload };
+
+        case AS_REQUEST_DETAIL_SUCCEEDED:
+            return { ...state, asRequestDetailData: actions.payload };
+        case AS_REQUEST_DETAIL_FAILED:
+            return { ...state, asRequestDetailData: actions.payload };
             
         default:
             return state;

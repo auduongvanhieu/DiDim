@@ -58,14 +58,15 @@ export default class SupportViewComponent extends Component {
    * Render views
    */
   render() {
-    const {navigateToSupportCenterScreen} = this.props;
+    const {navigateToSupportCenterScreen, asRequestDetailData} = this.props;
     return (
       <Container>
+      {/* {asRequestDetailData && console.log("__haha__",JSON.stringify(asRequestDetailData))} */}
         <StatusBar backgroundColor={AppColors.headerBg2} />
         <HeaderMenu backAction={()=>navigateToSupportCenterScreen()} title={"Support Center"} />
         <View style={{ paddingVertical: "4%", paddingHorizontal: "7%" }}>
           <Text style={{ fontSize: normalize(18), color: "#140f26" }}>
-            WAS accesslog 저장 불가 현상
+            {asRequestDetailData && asRequestDetailData.content.title}
           </Text>
           <View style={{ flexDirection: "row" }}>
             <View style={{ width: normalize(50), flexDirection: "row" }}>
@@ -82,7 +83,7 @@ export default class SupportViewComponent extends Component {
             />
             <Text style={{ fontSize: normalize(12), alignSelf: "center" }}>
               {" "}
-              2018-08-04 10:10:00
+              {asRequestDetailData && asRequestDetailData.content.writeday}
             </Text>
             <Image
               source={Images.ico_tag}
@@ -171,7 +172,7 @@ export default class SupportViewComponent extends Component {
             </Text>
             <View style={{ flex: 1 }} />
             <Text style={{ fontSize: normalize(10), alignSelf: "center" }}>
-              2019-07-04 13:10
+              {asRequestDetailData && asRequestDetailData.content.writeday}
             </Text>
             <Image
               source={Images.ico_clock_b}

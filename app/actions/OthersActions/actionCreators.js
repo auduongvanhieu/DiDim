@@ -29,6 +29,10 @@ import {
     AS_REQUEST_LIST_SUCCEEDED,
     AS_REQUEST_LIST_FAILED,
 
+    AS_REQUEST_DETAIL_REQUEST,
+    AS_REQUEST_DETAIL_SUCCEEDED,
+    AS_REQUEST_DETAIL_FAILED,
+
 } from "./actionTypes";
 
 const changeTabIndexServerDetailAction = (index) => ({
@@ -148,6 +152,22 @@ const asRequestListFailedAction = error => ({
     payload: error
   });
 
+
+const asRequestDetailRequestAction = params => ({
+    type: AS_REQUEST_DETAIL_REQUEST,
+    payload: params
+  });
+  
+const asRequestDetailSucceededAction = receivedData => ({
+    type: AS_REQUEST_DETAIL_SUCCEEDED,
+    payload: receivedData
+  });
+  
+const asRequestDetailFailedAction = error => ({
+    type: AS_REQUEST_DETAIL_FAILED,
+    payload: error
+  });
+
 export {
     changeTabIndexServerDetailAction,
 
@@ -178,4 +198,8 @@ export {
     asRequestListRequestAction,
     asRequestListSucceededAction,
     asRequestListFailedAction,
+
+    asRequestDetailRequestAction,
+    asRequestDetailSucceededAction,
+    asRequestDetailFailedAction,
 };
