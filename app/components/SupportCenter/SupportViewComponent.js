@@ -54,14 +54,28 @@ export default class SupportViewComponent extends Component {
     this._navListener.remove();
   }
 
+  onPressReply = () => {
+    const {
+      commentRegistrationRequest,
+    } = this.props;
+
+    commentRegistrationRequest({Par: 'cmd=UPDATE_AS_REQUEST_REPLY&board_idx=50&qna_kind=AddComment&write_content=This is message test'})
+  }
+
   /**
    * Render views
    */
   render() {
-    const {navigateToSupportCenterScreen, asRequestDetailData} = this.props;
+    const {
+      navigateToSupportCenterScreen,
+      asRequestDetailData,
+      commentRegistrationRequest,
+      commentRegistrationData,
+    } = this.props;
     return (
       <Container>
       {/* {asRequestDetailData && console.log("__haha__",JSON.stringify(asRequestDetailData))} */}
+      {commentRegistrationData && console.log("__haha__",JSON.stringify(commentRegistrationData))}
         <StatusBar backgroundColor={AppColors.headerBg2} />
         <HeaderMenu backAction={()=>navigateToSupportCenterScreen()} title={"Support Center"} />
         <View style={{ paddingVertical: "4%", paddingHorizontal: "7%" }}>
@@ -140,6 +154,7 @@ export default class SupportViewComponent extends Component {
             />
             <Button
               title="Reply"
+              onPress={this.onPressReply}
               buttonStyle={{
                 backgroundColor: "#ff3b3b",
                 height: normalize(30),

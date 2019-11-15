@@ -33,6 +33,10 @@ import {
     AS_REQUEST_DETAIL_SUCCEEDED,
     AS_REQUEST_DETAIL_FAILED,
 
+    COMMENT_REGISTRATION_REQUEST,
+    COMMENT_REGISTRATION_SUCCEEDED,
+    COMMENT_REGISTRATION_FAILED,
+
 } from "./actionTypes";
 
 const changeTabIndexServerDetailAction = (index) => ({
@@ -168,6 +172,22 @@ const asRequestDetailFailedAction = error => ({
     payload: error
   });
 
+
+const commentRegistrationRequestAction = params => ({
+    type: COMMENT_REGISTRATION_REQUEST,
+    payload: params
+  });
+  
+const commentRegistrationSucceededAction = receivedData => ({
+    type: COMMENT_REGISTRATION_SUCCEEDED,
+    payload: receivedData
+  });
+  
+const commentRegistrationFailedAction = error => ({
+    type: COMMENT_REGISTRATION_FAILED,
+    payload: error
+  });
+
 export {
     changeTabIndexServerDetailAction,
 
@@ -202,4 +222,8 @@ export {
     asRequestDetailRequestAction,
     asRequestDetailSucceededAction,
     asRequestDetailFailedAction,
+
+    commentRegistrationRequestAction,
+    commentRegistrationSucceededAction,
+    commentRegistrationFailedAction,
 };

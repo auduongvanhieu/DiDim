@@ -31,6 +31,10 @@ import {
     AS_REQUEST_DETAIL_SUCCEEDED,
     AS_REQUEST_DETAIL_FAILED,
 
+    COMMENT_REGISTRATION_REQUEST,
+    COMMENT_REGISTRATION_SUCCEEDED,
+    COMMENT_REGISTRATION_FAILED,
+
 } from '../../actions/OthersActions/actionTypes'
 import { put, takeLatest } from 'redux-saga/effects'
 import { Api } from '../Api'
@@ -82,13 +86,13 @@ function* serverDetail(action) {
             yield put({ type: STOP_LOADING })
         } else {
             yield put(showErrorAlertAction({ title: I18n.t('failure'), description: receivedData.ReturnMsg }))
-            yield put({ type: SERVER_DETAIL_FAILED, payload: {}})
+            yield put({ type: SERVER_DETAIL_FAILED, payload: undefined})
             yield put({ type: STOP_LOADING })
         }
     } catch (error) {
         console.log(error);
         yield put(showErrorAlertAction({ title: I18n.t('failure'), description: I18n.t('connectionErrors') }))
-        yield put({ type: SERVER_DETAIL_FAILED, payload: {} })
+        yield put({ type: SERVER_DETAIL_FAILED, payload: undefined })
         yield put({ type: STOP_LOADING })
     }
 }
@@ -186,13 +190,13 @@ function* failureAlarmLogDetail(action) {
             yield put({ type: STOP_LOADING })
         } else {
             yield put(showErrorAlertAction({ title: I18n.t('failure'), description: receivedData.ReturnMsg }))
-            yield put({ type: FAILURE_ALARM_LOG_DETAIL_FAILED, payload: {}})
+            yield put({ type: FAILURE_ALARM_LOG_DETAIL_FAILED, payload: undefined})
             yield put({ type: STOP_LOADING })
         }
     } catch (error) {
         console.log(error);
         yield put(showErrorAlertAction({ title: I18n.t('failure'), description: I18n.t('connectionErrors') }))
-        yield put({ type: FAILURE_ALARM_LOG_DETAIL_FAILED, payload: {} })
+        yield put({ type: FAILURE_ALARM_LOG_DETAIL_FAILED, payload: undefined })
         yield put({ type: STOP_LOADING })
     }
 }
@@ -238,17 +242,43 @@ function* asRequestDetail(action) {
             yield put({ type: STOP_LOADING })
         } else {
             yield put(showErrorAlertAction({ title: I18n.t('failure'), description: receivedData.ReturnMsg }))
-            yield put({ type: AS_REQUEST_DETAIL_FAILED, payload: {}})
+            yield put({ type: AS_REQUEST_DETAIL_FAILED, payload: undefined})
             yield put({ type: STOP_LOADING })
         }
     } catch (error) {
         console.log(error);
         yield put(showErrorAlertAction({ title: I18n.t('failure'), description: I18n.t('connectionErrors') }))
-        yield put({ type: AS_REQUEST_DETAIL_FAILED, payload: {} })
+        yield put({ type: AS_REQUEST_DETAIL_FAILED, payload: undefined })
         yield put({ type: STOP_LOADING })
     }
 }
 
 export function* watchAsRequestDetail() {
     yield takeLatest(AS_REQUEST_DETAIL_REQUEST, asRequestDetail)
+}
+
+
+function* commentRegistration(action) {
+    try {
+        yield put({ type: START_LOADING })
+        const receivedDataTemp = yield Api.mainApi(action.payload)
+        receivedData = JSON.parse(receivedDataTemp)
+        if (receivedData && receivedData.ReturnValue) {
+            yield put({ type: COMMENT_REGISTRATION_SUCCEEDED, payload: receivedData })
+            yield put({ type: STOP_LOADING })
+        } else {
+            yield put(showErrorAlertAction({ title: I18n.t('failure'), description: receivedData.ReturnMsg }))
+            yield put({ type: COMMENT_REGISTRATION_FAILED, payload: undefined})
+            yield put({ type: STOP_LOADING })
+        }
+    } catch (error) {
+        console.log(error);
+        yield put(showErrorAlertAction({ title: I18n.t('failure'), description: I18n.t('connectionErrors') }))
+        yield put({ type: COMMENT_REGISTRATION_FAILED, payload: undefined })
+        yield put({ type: STOP_LOADING })
+    }
+}
+
+export function* watchCommentRegistration() {
+    yield takeLatest(COMMENT_REGISTRATION_REQUEST, commentRegistration)
 }
