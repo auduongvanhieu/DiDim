@@ -178,6 +178,7 @@ export default class SupportWriteComponent extends Component {
             onChangeText={email => this.setState({ email })}
             value={this.state.email}
             style={styles.textRight}
+            multiline={true}
           />
         </View>
         <View style={styles.horizontalBar} />

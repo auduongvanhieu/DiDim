@@ -30,6 +30,25 @@ const screenWidth = Dimensions.get("window").width;
 const screenHeight = Dimensions.get("window").height;
 const aspecRatio = screenHeight / screenWidth;
 
+const commentData = [
+  {comment: `안녕하세요!
+시스템통합운영센터 서비스데스크입니다.
+
+당일 18시에 아파치 설정 변경 후 재안내 드리겠으며,
+작업 시작 전/후로 고객님 번호로 연락드리도록 하겠습니다.
+
+감사합니다.
+  `},
+  {comment: `안녕하세요!
+파슨텍 서버 담당자 OOO 입니다.
+
+WAS accesslog 접속 및 저장이 안되고 있습니다.
+해당 증상 확인 부탁드립니다.
+  `},
+  {comment: `this is test 1`},
+  {comment: `this is test 2`},
+  {comment: `this is test 3`},
+]
 
 export default class SupportViewComponent extends Component {
   /**
@@ -39,7 +58,8 @@ export default class SupportViewComponent extends Component {
   constructor(props) {
     super(props);
     this.state={
-      hour: ""
+      hour: "",
+      comment: ""
     }
   }
 
@@ -57,9 +77,21 @@ export default class SupportViewComponent extends Component {
   onPressReply = () => {
     const {
       commentRegistrationRequest,
+      navData,
     } = this.props;
+    const { comment } = this.props;
+    commentRegistrationRequest({Par: `cmd=UPDATE_AS_REQUEST_REPLY&board_idx=${navData.board_idx}&qna_kind=AddComment&write_content=${comment}`});
+    this.setState({comment: ""})
+  }
 
-    commentRegistrationRequest({Par: 'cmd=UPDATE_AS_REQUEST_REPLY&board_idx=50&qna_kind=AddComment&write_content=This is message test'})
+  onPressEndTask = () => {
+    const {
+      commentRegistrationRequest,
+      navData,
+    } = this.props;
+    const { comment } = this.props;
+    commentRegistrationRequest({Par: `cmd=UPDATE_AS_REQUEST_REPLY&board_idx=${navData.board_idx}&qna_kind=Close&write_content=${comment}`});
+    this.setState({comment: ""})
   }
 
   /**
@@ -74,10 +106,13 @@ export default class SupportViewComponent extends Component {
     } = this.props;
     return (
       <Container>
-      {/* {asRequestDetailData && console.log("__haha__",JSON.stringify(asRequestDetailData))} */}
-      {commentRegistrationData && console.log("__haha__",JSON.stringify(commentRegistrationData))}
+        {/* {asRequestDetailData && console.log("__haha__",JSON.stringify(asRequestDetailData))} */}
+        {/* {commentRegistrationData && console.log("__haha__",JSON.stringify(commentRegistrationData))} */}
         <StatusBar backgroundColor={AppColors.headerBg2} />
-        <HeaderMenu backAction={()=>navigateToSupportCenterScreen()} title={"Support Center"} />
+        <HeaderMenu
+          backAction={() => navigateToSupportCenterScreen()}
+          title={"Support Center"}
+        />
         <View style={{ paddingVertical: "4%", paddingHorizontal: "7%" }}>
           <Text style={{ fontSize: normalize(18), color: "#140f26" }}>
             {asRequestDetailData && asRequestDetailData.content.title}
@@ -88,12 +123,7 @@ export default class SupportViewComponent extends Component {
             </View>
             <Image
               source={Images.ico_clock_b}
-              style={{
-                height: normalize(13),
-                width: normalize(13),
-                marginLeft: 10,
-                alignSelf: 'center'
-              }}
+              style={{ height: normalize(13), width: normalize(13), marginLeft: 10, alignSelf: "center" }}
             />
             <Text style={{ fontSize: normalize(12), alignSelf: "center" }}>
               {" "}
@@ -101,12 +131,7 @@ export default class SupportViewComponent extends Component {
             </Text>
             <Image
               source={Images.ico_tag}
-              style={{
-                height: normalize(13),
-                width: normalize(13),
-                marginLeft: 10,
-                alignSelf: 'center'
-              }}
+              style={{ height: normalize(13), width: normalize(13), marginLeft: 10, alignSelf: "center" }}
             />
             <Text style={{ fontSize: normalize(12), alignSelf: "center" }}>
               {" "}
@@ -120,153 +145,68 @@ export default class SupportViewComponent extends Component {
         <View style={{ height: screenHeight / 4.5, backgroundColor: "white" }}>
           <TextInput
             placeholder="문의사항 또는 댓글을 입력해 주세요."
-            style={{ fontSize: normalize(13), paddingHorizontal: "7%" }}
+            style={{ fontSize: normalize(13), paddingHorizontal: "7%"}}
+            value={this.state.comment}
+            onChangeText={comment => this.setState({ comment })}
+            multiline={true}
           />
-          <Image
-            source={Images.bg_ico_msg}
-            style={{
-              height: normalize(70),
-              width: normalize(70),
-              position: "absolute",
-              left: "7%",
-              bottom: 15
-            }}
-          />
-          <View
-            style={{
-              height: normalize(60),
-              width: normalize(60),
-              position: "absolute",
-              right: "7%",
-              bottom: -20,
-              flexDirection: "row",
-              width: "100%",
-              justifyContent: "flex-end"
-            }}
-          >
-            <Button
-              title="작업종료"
-              buttonStyle={{
-                backgroundColor: "#1c162e",
-                height: normalize(30),
-                width: normalize(70)
-              }}
-            />
+          <Image source={Images.bg_ico_msg} style={styles.imgBgMsg} />
+          <View style={styles.containerBtn}>
+            <Button 
+              title="작업종료" 
+              onPress={this.onPressEndTask}
+              buttonStyle={styles.btnEndTask} />
             <Button
               title="Reply"
               onPress={this.onPressReply}
-              buttonStyle={{
-                backgroundColor: "#ff3b3b",
-                height: normalize(30),
-                width: normalize(70),
-                marginLeft: 10
-              }}
+              buttonStyle={styles.btnReply}
             />
           </View>
         </View>
         <View style={{ backgroundColor: "#f4f6f9", flex: 1 }}>
-          <Text
-            style={{
-              fontSize: normalize(13),
-              marginLeft: "7%",
-              fontWeight: "bold",
-              marginTop: 5
-            }}
-          >
-            Reply
-          </Text>
-          <View style={{ flexDirection: "row", marginTop: 20}}>
-            <Text
-              style={{
-                fontSize: normalize(12),
-                marginLeft: "10%",
-                alignSelf: 'center'
-              }}
-            >
-              고객지원
-            </Text>
-            <View style={{ flex: 1 }} />
-            <Text style={{ fontSize: normalize(10), alignSelf: "center" }}>
-              {asRequestDetailData && asRequestDetailData.content.writeday}
-            </Text>
-            <Image
-              source={Images.ico_clock_b}
-              style={{
-                height: normalize(12),
-                width: normalize(12),
-                marginLeft: 5,
-                alignSelf: "center",
-                marginRight: '7%'
-              }}
-            />
-          </View>
-
-          <View
-            style={{
-              backgroundColor: "#243b4a74",
-              marginLeft: "7%",
-              padding: "3%",
-              borderTopLeftRadius: 10,
-              borderBottomLeftRadius: 10,
-              marginTop: 5
-            }}
-          >
-            <Text style={{color: 'white'}}>
-              {`안녕하세요!
-시스템통합운영센터 서비스데스크입니다.
-
-당일 18시에 아파치 설정 변경 후 재안내 드리겠으며,
-작업 시작 전/후로 고객님 번호로 연락드리도록 하겠습니다.
-
-감사합니다.
-`}
-            </Text>
-          </View>
-          <View style={{ flexDirection: "row", marginTop: 20,}}>
-            <Text
-              style={{
-                fontSize: normalize(12),
-                marginLeft: "7%",
-                alignSelf: 'center'
-              }}
-            >
-              (주)파슨텍(창조경제혁신센터)
-            </Text>
-            <View style={{ flex: 1 }} />
-            <Text style={{ fontSize: normalize(10), alignSelf: "center" }}>
-              2019-07-04 13:10
-            </Text>
-            <Image
-              source={Images.ico_clock_b}
-              style={{
-                height: normalize(12),
-                width: normalize(12),
-                marginLeft: 5,
-                alignSelf: "center",
-                marginRight: '10%'
-              }}
-            />
-          </View>
-
-          <View
-            style={{
-              backgroundColor: "white",
-              marginRight: "7%",
-              padding: "3%",
-              borderTopRightRadius: 10,
-              borderBottomRightRadius: 10,
-              marginTop: 5
-            }}
-          >
-            <Text style={{marginLeft: '7%', color: '#1c162e'}}>
-              {`안녕하세요!
-파슨텍 서버 담당자 OOO 입니다.
-
-WAS accesslog 접속 및 저장이 안되고 있습니다.
-해당 증상 확인 부탁드립니다.
-`}
-            </Text>
-          </View>
+          <Text style={styles.textReply}>Reply</Text>
+          <FlatList
+            data={commentData}
+            renderItem={({ item, index }) =>
+              index % 2 == 0 ? (
+                <View>
+                  <View style={{ flexDirection: "row", marginTop: 20 }}>
+                    <Text style={styles.titleComment1}>고객지원</Text>
+                    <View style={{ flex: 1 }} />
+                    <Text
+                      style={{ fontSize: normalize(10), alignSelf: "center" }}
+                    >
+                      2019-07-04 13:10
+                    </Text>
+                    <Image source={Images.ico_clock_b} style={styles.clock1} />
+                  </View>
+                  <View style={styles.bgComment1}>
+                    <Text style={{ color: "white" }}>{item.comment}</Text>
+                  </View>
+                </View>
+              ) : (
+                <View>
+                  <View style={{ flexDirection: "row", marginTop: 20 }}>
+                    <Text style={styles.titleComment2}>
+                      (주)파슨텍(창조경제혁신센터)
+                    </Text>
+                    <View style={{ flex: 1 }} />
+                    <Text
+                      style={{ fontSize: normalize(10), alignSelf: "center" }}
+                    >
+                      2019-07-04 13:10
+                    </Text>
+                    <Image source={Images.ico_clock_b} style={styles.clock2} />
+                  </View>
+                  <View style={styles.bgComment2}>
+                    <Text style={{ marginLeft: "7%", color: "#1c162e" }}>
+                      {item.comment}
+                    </Text>
+                  </View>
+                </View>
+              )
+            }
+          />
         </View>
       </Container>
     );
@@ -300,4 +240,78 @@ const styles = StyleSheet.create({
     width: "100%",
     backgroundColor: "#6c7b8a"
   },
+  clock1: {
+    height: normalize(12),
+    width: normalize(12),
+    marginLeft: 5,
+    alignSelf: "center",
+    marginRight: "7%"
+  },
+  clock2: {
+    height: normalize(12),
+    width: normalize(12),
+    marginLeft: 5,
+    alignSelf: "center",
+    marginRight: "10%"
+  },
+  titleComment1: {
+    fontSize: normalize(12),
+    marginLeft: "10%",
+    alignSelf: "center"
+  },
+  titleComment2: {
+    fontSize: normalize(12),
+    marginLeft: "7%",
+    alignSelf: "center"
+  }, 
+  bgComment1: {
+    backgroundColor: "#243b4a74",
+    marginLeft: "7%",
+    padding: "3%",
+    borderTopLeftRadius: 10,
+    borderBottomLeftRadius: 10,
+    marginTop: 5
+  },
+  bgComment2: {
+    backgroundColor: "white",
+    marginRight: "7%",
+    padding: "3%",
+    borderTopRightRadius: 10,
+    borderBottomRightRadius: 10,
+    marginTop: 5
+  },
+  textReply: {
+    fontSize: normalize(13),
+    marginLeft: "7%",
+    fontWeight: "bold",
+    marginTop: 5
+  }, 
+  btnReply: {
+    backgroundColor: "#ff3b3b",
+    height: normalize(30),
+    width: normalize(70),
+    marginLeft: 10
+  }, 
+  btnEndTask: {
+    backgroundColor: "#1c162e",
+    height: normalize(30),
+    width: normalize(70)
+  }, 
+  containerBtn: {
+    height: normalize(60),
+    width: normalize(60),
+    position: "absolute",
+    right: "7%",
+    bottom: -20,
+    flexDirection: "row",
+    width: "100%",
+    justifyContent: "flex-end"
+  }, 
+  imgBgMsg: {
+    height: normalize(70),
+    width: normalize(70),
+    position: "absolute",
+    left: "7%",
+    bottom: 15
+  }
 });

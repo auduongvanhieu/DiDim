@@ -87,9 +87,9 @@ export default class SupportCenterComponent extends Component {
             </TouchableOpacity>
           }
         />
-        <View style={{marginLeft: 5}}>
+        {/* <View style={{marginLeft: 5}}>
           <SearchBox title="Server Name / IP" />
-        </View>
+        </View> */}
         <View style={styles.horizontalBar2} />
         <FlatList
           data={asRequestListData}
@@ -100,7 +100,7 @@ export default class SupportCenterComponent extends Component {
           renderItem={({ item }) => (
             <TouchableOpacity
               onPress={() => {
-                navigateToSupportViewScreen();
+                navigateToSupportViewScreen({board_idx: item.board_idx});
                 asRequestDetailRequest({Par: `cmd=GET_INFO_AS_REQUEST&board_idx=${item.board_idx}`})
               }}
               style={{ marginHorizontal: 20, paddingVertical: normalize(15) }}

@@ -43,6 +43,7 @@ import { showErrorAlertAction } from '../../actions/AppActions/actionCreators';
 import I18n from '../../I18n';
 import { navigateToStatusInfoScreenAction } from '../../actions/NavigationActions/actionCreators';
 import { Images } from '../../assets';
+import { asRequestListRequestAction } from '../../actions/OthersActions/actionCreators';
 
 function* serverList(action) {
     try {
@@ -266,6 +267,7 @@ function* commentRegistration(action) {
         if (receivedData && receivedData.ReturnValue) {
             yield put({ type: COMMENT_REGISTRATION_SUCCEEDED, payload: receivedData })
             yield put({ type: STOP_LOADING })
+            yield put(asRequestListRequestAction({Par: 'cmd=GET_LIST_AS_REQUEST'}));
         } else {
             yield put(showErrorAlertAction({ title: I18n.t('failure'), description: receivedData.ReturnMsg }))
             yield put({ type: COMMENT_REGISTRATION_FAILED, payload: undefined})

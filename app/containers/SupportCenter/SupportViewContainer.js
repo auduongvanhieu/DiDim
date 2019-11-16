@@ -4,6 +4,7 @@ import { navigateToAlarmLogDetailScreenAction, navigateToSupportCenterScreenActi
 import { asRequestListRequestAction, commentRegistrationRequestAction } from '../../actions/OthersActions/actionCreators';
 
 const mapStateToProps = state => ({
+    navData: state.navigationReducer.data,
     asRequestDetailData: state.otherReducer.asRequestDetailData,
     commentRegistrationData: state.otherReducer.commentRegistrationData,
 })
