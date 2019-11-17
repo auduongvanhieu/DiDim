@@ -37,6 +37,9 @@ import {
     COMMENT_REGISTRATION_SUCCEEDED,
     COMMENT_REGISTRATION_FAILED,
 
+    AS_REQUEST_TYPE_LIST_REQUEST,
+    AS_REQUEST_TYPE_LIST_SUCCEEDED,
+    AS_REQUEST_TYPE_LIST_FAILED,
 } from "./actionTypes";
 
 const changeTabIndexServerDetailAction = (index) => ({
@@ -188,6 +191,22 @@ const commentRegistrationFailedAction = error => ({
     payload: error
   });
 
+
+const asRequestTypeListRequestAction = params => ({
+    type: AS_REQUEST_TYPE_LIST_REQUEST,
+    payload: params
+  });
+  
+const asRequestTypeListSucceededAction = receivedData => ({
+    type: AS_REQUEST_TYPE_LIST_SUCCEEDED,
+    payload: receivedData
+  });
+  
+const asRequestTypeListFailedAction = error => ({
+    type: AS_REQUEST_TYPE_LIST_FAILED,
+    payload: error
+  });
+
 export {
     changeTabIndexServerDetailAction,
 
@@ -226,4 +245,8 @@ export {
     commentRegistrationRequestAction,
     commentRegistrationSucceededAction,
     commentRegistrationFailedAction,
+
+    asRequestTypeListRequestAction,
+    asRequestTypeListSucceededAction,
+    asRequestTypeListFailedAction,
 };

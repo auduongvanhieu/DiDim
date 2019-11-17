@@ -28,6 +28,9 @@ import { Images } from "../../assets";
 import Ionicons from 'react-native-vector-icons/Ionicons'
 import Modal from "react-native-modal";
 import SearchBox from "../CustomView/SearchBox";
+import FontAwesome from 'react-native-vector-icons/FontAwesome'
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
+import ModalDropdown from 'react-native-modal-dropdown';
 
 const screenWidth = Dimensions.get("window").width;
 const screenHeight = Dimensions.get("window").height;
@@ -64,6 +67,7 @@ export default class SupportWriteComponent extends Component {
       textModelSearch: "",
       listAccountNumberHorizontal: [],
       listAccountNumberModal: [],
+      requestTypeIndex: 0
     };
   }
 
@@ -79,6 +83,8 @@ export default class SupportWriteComponent extends Component {
       StatusBar.setBarStyle('light-content');
       StatusBar.setBackgroundColor(AppColors.headerBg2);
     });
+    const {asRequestTypeListRequest} = this.props
+    asRequestTypeListRequest({Par: "cmd=GET_LIST_AS_REQUEST_TYPE"})
   }
 
   componentWillUnmount() {
@@ -89,48 +95,70 @@ export default class SupportWriteComponent extends Component {
     this.setState({ isModalVisible: !this.state.isModalVisible });
   };
 
+  _dropdown_renderRow = (option,index,isSelected) => {
+    return (
+      <View
+        style={{
+          width: normalize(120),
+          padding: 10,
+          flexDirection: "row",
+          justifyContent: "flex-start"
+        }}
+      >
+        <FontAwesome
+          size={20}
+          color={isSelected ? "#ff3b3b" : "#dae1e9"}
+          name={isSelected ? "circle-o" : "circle-thin"}
+          style={{ alignSelf: "center" }}
+        />
+        <Text
+          style={{
+            marginLeft: 10,
+            color: isSelected ? "#1c162e" : "#6c7b8a",
+            fontSize: normalize(14),
+            fontWeight: "bold",
+            alignSelf: 'center'
+          }}
+        >
+          {option.name}
+        </Text>
+      </View>
+    );
+  }
+
   /**
    * Render views
    */
   render() {
-    const {navigateToSupportCenterScreen} = this.props;
+    const {navigateToSupportCenterScreen, asRequestTypeListData} = this.props;
+    const {requestTypeIndex} = this.state;
     return (
       <Container>
+      {/* {asRequestTypeListData && console.log("__haha__", JSON.stringify(asRequestTypeListData))} */}
         <StatusBar backgroundColor={AppColors.headerBg2} />
         <HeaderMenu backAction={()=>navigateToSupportCenterScreen()} title={"Support Center"} />
-        <View style={styles.containerHorizontal}>
+        <View style={styles.containerHorizontal} >
           <View style={styles.containerLeft}>
             <Text style={styles.textLeft}>Type of Inquiry</Text>
           </View>
-          <View style={styles.containerPicker}>
-            <Picker
-              mode="dropdown"
-              selectedValue={this.state.typeOfInquiry}
-              style={{ height: "100%", width: "100%" }}
-              onValueChange={(itemValue, itemIndex) =>
-                this.setState({ typeOfInquiry: itemValue })
-              }
-            >
-              <Picker.Item label="기술지원" value="기술지원" />
-              <Picker.Item label="기술지원2" value="기술지원2" />
-              <Picker.Item label="기술지원3" value="기술지원3" />
-            </Picker>
+          <View style={styles.containerPicker} >
+            { asRequestTypeListData &&
+            <ModalDropdown 
+              options={asRequestTypeListData}
+              style={styles.dropdown}
+              dropdownStyle={{height: normalize(170), marginTop: 10}}
+              defaultValue={asRequestTypeListData[requestTypeIndex].name}
+              defaultIndex={requestTypeIndex}
+              onSelect={(index)=> this.setState({ requestTypeIndex: index })}
+              textStyle={{fontSize: normalize(13), color: '#3b3b4d', fontWeight: 'bold'}}
+              renderRow={this._dropdown_renderRow}
+              showsVerticalScrollIndicator={false}
+              renderButtonText={rowData => <Text>{rowData.name}</Text>}
+            />
+            }
+            <View style={{flex: 1}} />
+            <MaterialIcons size={20} name='unfold-more' />
           </View>
-          <CheckBox
-            center
-            title="긴급"
-            checkedColor="red"
-            checkedIcon="check-circle"
-            uncheckedIcon="circle-o"
-            checked={this.state.checked}
-            onPress={() => this.setState({ checked: !this.state.checked })}
-            containerStyle={{
-              borderWidth: 0,
-              backgroundColor: "transparent",
-              marginLeft: 10,
-              padding: 0
-            }}
-          />
         </View>
         <View style={styles.horizontalBar} />
         <View style={styles.containerHorizontal}>
@@ -178,7 +206,6 @@ export default class SupportWriteComponent extends Component {
             onChangeText={email => this.setState({ email })}
             value={this.state.email}
             style={styles.textRight}
-            multiline={true}
           />
         </View>
         <View style={styles.horizontalBar} />
@@ -215,6 +242,7 @@ export default class SupportWriteComponent extends Component {
               styles.textRight,
               { marginLeft: "6.7%", textAlign: "left" }
             ]}
+            multiline={true}
           />
         </View>
         <View style={styles.horizontalBar} />
@@ -374,9 +402,13 @@ const styles = StyleSheet.create({
   },
   containerPicker: {
     height: normalize(30),
-    width: normalize(120),
+    width: normalize(100),
     backgroundColor: "#f2f2f4",
-    borderRadius: 10
+    borderRadius: 10,
+    justifyContent: "center",
+    paddingHorizontal: 10,
+    flexDirection: "row",
+    alignItems: "center"
   },
   containerAccountNumber: {
     backgroundColor: "#5c5968",
@@ -415,5 +447,13 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     borderTopLeftRadius: 10,
     borderTopRightRadius: 10
+  },
+  dropdown: {
+    justifyContent: "center",
+    left: 10,
+    width: normalize(100),
+    height: "100%",
+    position: "absolute",
+    backgroundColor: "transparent"
   }
 });

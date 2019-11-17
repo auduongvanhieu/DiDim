@@ -28,6 +28,9 @@ import {
 
     COMMENT_REGISTRATION_SUCCEEDED,
     COMMENT_REGISTRATION_FAILED,
+
+    AS_REQUEST_TYPE_LIST_SUCCEEDED,
+    AS_REQUEST_TYPE_LIST_FAILED,
 } from '../../actions/OthersActions/actionTypes';
 
 const otherReducer = (state = {tabIndexServerDetail: 0}, actions) => {
@@ -79,6 +82,11 @@ const otherReducer = (state = {tabIndexServerDetail: 0}, actions) => {
             return { ...state, commentRegistrationData: actions.payload };
         case COMMENT_REGISTRATION_FAILED:
             return { ...state, commentRegistrationData: actions.payload };
+
+        case AS_REQUEST_TYPE_LIST_SUCCEEDED:
+            return { ...state, asRequestTypeListData: actions.payload };
+        case AS_REQUEST_TYPE_LIST_FAILED:
+            return { ...state, asRequestTypeListData: actions.payload };
             
         default:
             return state;

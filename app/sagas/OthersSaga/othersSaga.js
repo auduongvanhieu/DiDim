@@ -35,6 +35,10 @@ import {
     COMMENT_REGISTRATION_SUCCEEDED,
     COMMENT_REGISTRATION_FAILED,
 
+    AS_REQUEST_TYPE_LIST_REQUEST,
+    AS_REQUEST_TYPE_LIST_SUCCEEDED,
+    AS_REQUEST_TYPE_LIST_FAILED,
+
 } from '../../actions/OthersActions/actionTypes'
 import { put, takeLatest } from 'redux-saga/effects'
 import { Api } from '../Api'
@@ -283,4 +287,30 @@ function* commentRegistration(action) {
 
 export function* watchCommentRegistration() {
     yield takeLatest(COMMENT_REGISTRATION_REQUEST, commentRegistration)
+}
+
+
+function* asRequestTypeList(action) {
+    try {
+        // yield put({ type: START_LOADING })
+        const receivedDataTemp = yield Api.mainApi(action.payload)
+        receivedData = JSON.parse(receivedDataTemp)
+        if (receivedData && receivedData.ReturnValue) {
+            yield put({ type: AS_REQUEST_TYPE_LIST_SUCCEEDED, payload: receivedData.Items })
+            yield put({ type: STOP_LOADING })
+        } else {
+            yield put(showErrorAlertAction({ title: I18n.t('failure'), description: receivedData.ReturnMsg }))
+            yield put({ type: AS_REQUEST_TYPE_LIST_FAILED, payload: []})
+            yield put({ type: STOP_LOADING })
+        }
+    } catch (error) {
+        console.log(error);
+        yield put(showErrorAlertAction({ title: I18n.t('failure'), description: I18n.t('connectionErrors') }))
+        yield put({ type: AS_REQUEST_TYPE_LIST_FAILED, payload: [] })
+        yield put({ type: STOP_LOADING })
+    }
+}
+
+export function* watchAsRequestTypeList() {
+    yield takeLatest(AS_REQUEST_TYPE_LIST_REQUEST, asRequestTypeList)
 }
