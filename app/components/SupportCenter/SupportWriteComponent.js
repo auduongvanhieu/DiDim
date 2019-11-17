@@ -83,8 +83,9 @@ export default class SupportWriteComponent extends Component {
       StatusBar.setBarStyle('light-content');
       StatusBar.setBackgroundColor(AppColors.headerBg2);
     });
-    const {asRequestTypeListRequest} = this.props
-    asRequestTypeListRequest({Par: "cmd=GET_LIST_AS_REQUEST_TYPE"})
+    const {asRequestTypeListRequest, guestNoListRequest} = this.props;
+    asRequestTypeListRequest({Par: "cmd=GET_LIST_AS_REQUEST_TYPE"});
+    guestNoListRequest({Par: "cmd=GET_LIST_GUEST_NO"});
   }
 
   componentWillUnmount() {
@@ -130,11 +131,16 @@ export default class SupportWriteComponent extends Component {
    * Render views
    */
   render() {
-    const {navigateToSupportCenterScreen, asRequestTypeListData} = this.props;
+    const {
+      navigateToSupportCenterScreen,
+      asRequestTypeListData,
+      guestNoListData
+    } = this.props;
     const {requestTypeIndex} = this.state;
     return (
       <Container>
       {/* {asRequestTypeListData && console.log("__haha__", JSON.stringify(asRequestTypeListData))} */}
+      {/* {guestNoListData && console.log("__haha__", JSON.stringify(guestNoListData))} */}
         <StatusBar backgroundColor={AppColors.headerBg2} />
         <HeaderMenu backAction={()=>navigateToSupportCenterScreen()} title={"Support Center"} />
         <View style={styles.containerHorizontal} >

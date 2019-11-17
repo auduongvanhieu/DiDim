@@ -128,7 +128,7 @@ export default class ServerDetailComponent extends Component {
     const {hourIndex} = this.state;
     return (
       <Container>
-        {/* {serverDetailData && alert(JSON.stringify(serverDetailData))} */}
+        {/* {serverDetailData && console.log("__haha__",JSON.stringify(serverDetailData))} */}
         <StatusBar backgroundColor={AppColors.headerBg2} />
         <HeaderMenu title={"Infra"} />
         <View style={{ paddingVertical: "4%", paddingHorizontal: "7%" }}>
@@ -208,7 +208,7 @@ export default class ServerDetailComponent extends Component {
           </TouchableOpacity>
         </View>
         {tab == 0 && serverDetailData && (
-          <View style={styles.containerTab}>
+          <ScrollView style={styles.containerTab}>
             <View style={styles.itemContainer}>
               <Text style={styles.textLeft}>Server name</Text>
               <Text style={styles.textRight}>{serverDetailData.guest_name}</Text>
@@ -239,7 +239,7 @@ export default class ServerDetailComponent extends Component {
               <Text style={styles.textRight}>Managed - Standard</Text>
             </View>
             <View style={styles.horizontalBar} />
-          </View>
+          </ScrollView>
         )}
         {tab == 1 && (
           <View style={styles.containerTab}>
@@ -276,50 +276,52 @@ export default class ServerDetailComponent extends Component {
                 <FontAwesome size={20} name="angle-down" />
               </View>
             </View>
-            <View style={styles.containerHeaderTab2}>
-              <Text style={styles.textTitleHeaderTab2}>Load</Text>
-            </View>
-            <View
-              style={{ height: screenHeight / 4, backgroundColor: "white" }}
-            >
-              <View style={styles.containerChart}>
-              { navData && 
-                <WebView
-                  source={{ uri: `${Config.graphURL}?access_token=${Config.sAccessToken}&gno=${navData.gno}&device=loadavg&period=${hours[hourIndex].value}` }}
-                  style={{width: '185%', height: '150%'}}
-                  onLoad={() => this.hideLoadingLoad()}
-                />
-              }
-              {this.state.visibleLoadingLoad && (
-                <ActivityIndicator
-                  style={{ position: 'absolute', top: '40%', left: '45%' }}
-                  size="large"
-                />
-              )}
+            <ScrollView>
+              <View style={styles.containerHeaderTab2}>
+                <Text style={styles.textTitleHeaderTab2}>Load</Text>
               </View>
-            </View>
-            <View style={styles.containerHeaderTab2}>
-              <Text style={styles.textTitleHeaderTab2}>CPU</Text>
-            </View>
-            <View
-              style={{ height: screenHeight / 4 + normalize(10), backgroundColor: "white" }}
-            >
-              <View style={styles.containerChart}>
-              { navData && 
-                <WebView
-                  source={{ uri: `${Config.graphURL}?access_token=${Config.sAccessToken}&gno=${navData.gno}&device=cpu&period=${hours[hourIndex].value}` }}
-                  style={{width: '185%', height: '150%'}}
-                  onLoad={() => this.hideLoadingCPU()}
-                />
-              }
-              {this.state.visibleLoadingCPU && (
-                <ActivityIndicator
-                  style={{ position: 'absolute', top: '40%', left: '45%' }}
-                  size="large"
-                />
-              )}
+              <View
+                style={{ height: screenHeight / 4, backgroundColor: "white" }}
+              >
+                <View style={styles.containerChart}>
+                { navData && 
+                  <WebView
+                    source={{ uri: `${Config.graphURL}?access_token=${Config.sAccessToken}&gno=${navData.gno}&device=loadavg&period=${hours[hourIndex].value}` }}
+                    style={{width: '185%', height: '150%'}}
+                    onLoad={() => this.hideLoadingLoad()}
+                  />
+                }
+                {this.state.visibleLoadingLoad && (
+                  <ActivityIndicator
+                    style={{ position: 'absolute', top: '40%', left: '45%' }}
+                    size="large"
+                  />
+                )}
+                </View>
               </View>
-            </View>
+              <View style={styles.containerHeaderTab2}>
+                <Text style={styles.textTitleHeaderTab2}>CPU</Text>
+              </View>
+              <View
+                style={{ height: screenHeight / 4 + normalize(10), backgroundColor: "white" }}
+              >
+                <View style={styles.containerChart}>
+                { navData && 
+                  <WebView
+                    source={{ uri: `${Config.graphURL}?access_token=${Config.sAccessToken}&gno=${navData.gno}&device=cpu&period=${hours[hourIndex].value}` }}
+                    style={{width: '185%', height: '150%'}}
+                    onLoad={() => this.hideLoadingCPU()}
+                  />
+                }
+                {this.state.visibleLoadingCPU && (
+                  <ActivityIndicator
+                    style={{ position: 'absolute', top: '40%', left: '45%' }}
+                    size="large"
+                  />
+                )}
+                </View>
+              </View>
+            </ScrollView>
           </View>
         )}
         {tab == 2 && (

@@ -16,6 +16,7 @@ import {
   watchAsRequestDetail,
   watchCommentRegistration,
   watchAsRequestTypeList,
+  watchGuestNoList,
 } from "./OthersSaga/othersSaga";
 
 export default function* rootSaga() {
@@ -31,5 +32,6 @@ export default function* rootSaga() {
   yield fork(watchAsRequestList),
   yield fork(watchAsRequestDetail),
   yield fork(watchCommentRegistration),
-  yield fork(watchAsRequestTypeList)
+  yield fork(watchAsRequestTypeList),
+  yield fork(watchGuestNoList)
 }

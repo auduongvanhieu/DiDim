@@ -39,6 +39,9 @@ import {
     AS_REQUEST_TYPE_LIST_SUCCEEDED,
     AS_REQUEST_TYPE_LIST_FAILED,
 
+    GUEST_NO_LIST_REQUEST,
+    GUEST_NO_LIST_SUCCEEDED,
+    GUEST_NO_LIST_FAILED,
 } from '../../actions/OthersActions/actionTypes'
 import { put, takeLatest } from 'redux-saga/effects'
 import { Api } from '../Api'
@@ -313,4 +316,31 @@ function* asRequestTypeList(action) {
 
 export function* watchAsRequestTypeList() {
     yield takeLatest(AS_REQUEST_TYPE_LIST_REQUEST, asRequestTypeList)
+}
+
+
+function* guestNoList(action) {
+    try {
+        // yield put({ type: START_LOADING })
+        const receivedDataTemp = yield Api.mainApi(action.payload)
+        receivedData = JSON.parse(receivedDataTemp)
+        // console.log("__haha__", JSON.stringify(receivedData))
+        if (receivedData && receivedData.ReturnValue) {
+            yield put({ type: GUEST_NO_LIST_SUCCEEDED, payload: receivedData.Items })
+            yield put({ type: STOP_LOADING })
+        } else {
+            yield put(showErrorAlertAction({ title: I18n.t('failure'), description: receivedData.ReturnMsg }))
+            yield put({ type: GUEST_NO_LIST_FAILED, payload: []})
+            yield put({ type: STOP_LOADING })
+        }
+    } catch (error) {
+        console.log(error);
+        yield put(showErrorAlertAction({ title: I18n.t('failure'), description: I18n.t('connectionErrors') }))
+        yield put({ type: GUEST_NO_LIST_FAILED, payload: [] })
+        yield put({ type: STOP_LOADING })
+    }
+}
+
+export function* watchGuestNoList() {
+    yield takeLatest(GUEST_NO_LIST_REQUEST, guestNoList)
 }

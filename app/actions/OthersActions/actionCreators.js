@@ -40,6 +40,10 @@ import {
     AS_REQUEST_TYPE_LIST_REQUEST,
     AS_REQUEST_TYPE_LIST_SUCCEEDED,
     AS_REQUEST_TYPE_LIST_FAILED,
+    
+    GUEST_NO_LIST_REQUEST,
+    GUEST_NO_LIST_SUCCEEDED,
+    GUEST_NO_LIST_FAILED,
 } from "./actionTypes";
 
 const changeTabIndexServerDetailAction = (index) => ({
@@ -207,6 +211,22 @@ const asRequestTypeListFailedAction = error => ({
     payload: error
   });
 
+
+const guestNoListRequestAction = params => ({
+    type: GUEST_NO_LIST_REQUEST,
+    payload: params
+  });
+  
+const guestNoListSucceededAction = receivedData => ({
+    type: GUEST_NO_LIST_SUCCEEDED,
+    payload: receivedData
+  });
+  
+const guestNoListFailedAction = error => ({
+    type: GUEST_NO_LIST_FAILED,
+    payload: error
+  });
+
 export {
     changeTabIndexServerDetailAction,
 
@@ -249,4 +269,8 @@ export {
     asRequestTypeListRequestAction,
     asRequestTypeListSucceededAction,
     asRequestTypeListFailedAction,
+
+    guestNoListRequestAction,
+    guestNoListSucceededAction,
+    guestNoListFailedAction,
 };

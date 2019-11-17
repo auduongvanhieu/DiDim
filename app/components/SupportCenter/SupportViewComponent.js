@@ -115,7 +115,7 @@ export default class SupportViewComponent extends Component {
         />
         <View style={{ paddingVertical: "4%", paddingHorizontal: "7%" }}>
           <Text style={{ fontSize: normalize(18), color: "#140f26" }}>
-            {asRequestDetailData && asRequestDetailData.content.title}
+            {asRequestDetailData ? asRequestDetailData.content.title : "WAS accesslog 저장 불가 현상"} 
           </Text>
           <View style={{ flexDirection: "row" }}>
             <View style={{ width: normalize(50), flexDirection: "row" }}>
@@ -127,7 +127,7 @@ export default class SupportViewComponent extends Component {
             />
             <Text style={{ fontSize: normalize(12), alignSelf: "center" }}>
               {" "}
-              {asRequestDetailData && asRequestDetailData.content.writeday}
+              {asRequestDetailData ? asRequestDetailData.content.writeday : '2018-08-02 01:13:00'}
             </Text>
             <Image
               source={Images.ico_tag}

@@ -31,6 +31,9 @@ import {
 
     AS_REQUEST_TYPE_LIST_SUCCEEDED,
     AS_REQUEST_TYPE_LIST_FAILED,
+
+    GUEST_NO_LIST_SUCCEEDED,
+    GUEST_NO_LIST_FAILED,
 } from '../../actions/OthersActions/actionTypes';
 
 const otherReducer = (state = {tabIndexServerDetail: 0}, actions) => {
@@ -87,6 +90,11 @@ const otherReducer = (state = {tabIndexServerDetail: 0}, actions) => {
             return { ...state, asRequestTypeListData: actions.payload };
         case AS_REQUEST_TYPE_LIST_FAILED:
             return { ...state, asRequestTypeListData: actions.payload };
+
+        case GUEST_NO_LIST_SUCCEEDED:
+            return { ...state, guestNoListData: actions.payload };
+        case GUEST_NO_LIST_FAILED:
+            return { ...state, guestNoListData: actions.payload };
             
         default:
             return state;

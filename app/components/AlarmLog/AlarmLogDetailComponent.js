@@ -83,7 +83,7 @@ export default class AlarmLogDetailComponent extends Component {
             <Text style={{color: '#140f26', fontSize: normalize(16), fontWeight: 'bold'}}>INFO</Text>
           </View>
         </View>
-        <View style={styles.containerTab}>
+        <ScrollView style={styles.containerTab}>
           <View style={styles.itemContainer}>
             <Text style={styles.textLeft}>Server name</Text>
             <Text style={styles.textRight}>{failureAlarmLogDetailData && failureAlarmLogDetailData.target_name}</Text>
@@ -109,7 +109,7 @@ export default class AlarmLogDetailComponent extends Component {
             <Text style={styles.textRight}>{failureAlarmLogDetailData && failureAlarmLogDetailData.message + "\n"}</Text>
           </View>
           <View style={styles.horizontalBar} />
-        </View>     
+        </ScrollView>     
       </Container>
     );
   }
