@@ -76,6 +76,7 @@ export default class LoginComponent extends Component {
       this.setState({isRemember: isAutoLogin});
       if(isAutoLogin){
         const authCache = await getAuthCache();
+        Config.userName = authCache.user;
         if(authCache) {
           verifyRequest({
             Par: qs.stringify(authCache)
