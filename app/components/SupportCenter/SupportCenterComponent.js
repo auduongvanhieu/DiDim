@@ -69,11 +69,13 @@ export default class SupportCenterComponent extends Component {
       navigateToSupportViewScreen,
       navigateToSupportWriteScreen,
       asRequestListData,
-      asRequestDetailRequest
+      asRequestDetailRequest,
+      startLoading
     } = this.props;
     return (
       <Container>
         <StatusBar backgroundColor={AppColors.headerBg} />
+        {/* {asRequestListData && console.log("__haha__",JSON.stringify(asRequestListData))} */}
         <HeaderMenuHome
           title={"Support Center"}
           iconRight={
@@ -100,6 +102,7 @@ export default class SupportCenterComponent extends Component {
           renderItem={({ item }) => (
             <TouchableOpacity
               onPress={() => {
+                startLoading()
                 navigateToSupportViewScreen({board_idx: item.board_idx});
                 asRequestDetailRequest({Par: `cmd=GET_INFO_AS_REQUEST&board_idx=${item.board_idx}`})
               }}
@@ -109,7 +112,7 @@ export default class SupportCenterComponent extends Component {
                 <View style={{ width: normalize(55), flexDirection: "row" }}>
                   <StatusButton
                     style={{ marginHorizontal: 5 }}
-                    bgColor={'blue'}
+                    bgColor={item.work_status_color}
                     widthSize={normalize(10)}
                     title={item.work_status_name}
                   />
@@ -118,7 +121,7 @@ export default class SupportCenterComponent extends Component {
                 <View style={{ width: normalize(40), flexDirection: "row" }}>
                   <StatusButton
                     style={{ marginHorizontal: 5 }}
-                    bgColor={'blue'}
+                    bgColor={item.work_status_color}
                     widthSize={normalize(10)}
                     title={"    "+item.cmt_cnt}
                   />

@@ -14,7 +14,8 @@ import {
   AsyncStorage,
   Text,
   StatusBar,
-  StyleSheet
+  StyleSheet,
+  Platform
 } from "react-native";
 import LoginForm from "../Forms/LoginForm/LoginForm";
 import {
@@ -114,7 +115,7 @@ export default class LoginComponent extends Component {
     Config.userName = form.user;
     this.cacheMyLogin(form);
     authorizeRequest({
-      Par: `managed_url=${form.managed_url}&user=${form.user}&password=${form.password}`
+      Par: `managed_url=${form.managed_url}&user=${form.user}&password=${form.password}&fcm_token=${123456789}&os_type=${Platform.OS}`
     })
   };
 

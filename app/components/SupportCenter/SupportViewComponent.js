@@ -25,30 +25,11 @@ import { AppColors, AppConstant } from "../../utilities/Constants";
 import StatusButton from "../CustomView/StatusButton";
 import HeaderMenu from "../CustomView/HeaderMenu";
 import { Images } from "../../assets";
+import NoDataView from "../CustomView/NoDataView";
+import { Config } from "../../utilities/Config";
 
 const screenWidth = Dimensions.get("window").width;
 const screenHeight = Dimensions.get("window").height;
-const aspecRatio = screenHeight / screenWidth;
-
-const commentData = [
-  {comment: `안녕하세요!
-시스템통합운영센터 서비스데스크입니다.
-
-당일 18시에 아파치 설정 변경 후 재안내 드리겠으며,
-작업 시작 전/후로 고객님 번호로 연락드리도록 하겠습니다.
-
-감사합니다.
-  `},
-  {comment: `안녕하세요!
-파슨텍 서버 담당자 OOO 입니다.
-
-WAS accesslog 접속 및 저장이 안되고 있습니다.
-해당 증상 확인 부탁드립니다.
-  `},
-  {comment: `this is test 1`},
-  {comment: `this is test 2`},
-  {comment: `this is test 3`},
-]
 
 export default class SupportViewComponent extends Component {
   /**
@@ -59,7 +40,8 @@ export default class SupportViewComponent extends Component {
     super(props);
     this.state={
       hour: "",
-      comment: ""
+      comment: "",
+      listReply: []
     }
   }
 
@@ -79,8 +61,9 @@ export default class SupportViewComponent extends Component {
       commentRegistrationRequest,
       navData,
     } = this.props;
-    const { comment } = this.props;
-    commentRegistrationRequest({Par: `cmd=UPDATE_AS_REQUEST_REPLY&board_idx=${navData.board_idx}&qna_kind=AddComment&write_content=${comment}`});
+    const { comment } = this.state;
+    if(comment)
+      commentRegistrationRequest({Par: `cmd=UPDATE_AS_REQUEST_REPLY&board_idx=${navData.board_idx}&qna_kind=AddComment&write_content=${comment}`});
     this.setState({comment: ""})
   }
 
@@ -88,10 +71,42 @@ export default class SupportViewComponent extends Component {
     const {
       commentRegistrationRequest,
       navData,
+      navigateToSupportCenterScreen
     } = this.props;
-    const { comment } = this.props;
-    commentRegistrationRequest({Par: `cmd=UPDATE_AS_REQUEST_REPLY&board_idx=${navData.board_idx}&qna_kind=Close&write_content=${comment}`});
+    const { comment } = this.state;
+    if(comment)
+      commentRegistrationRequest({Par: `cmd=UPDATE_AS_REQUEST_REPLY&board_idx=${navData.board_idx}&qna_kind=Close&write_content=${comment}`});
     this.setState({comment: ""})
+    // navigateToSupportCenterScreen()
+  }
+
+  componentWillReceiveProps(nextProps){
+    if(nextProps.asRequestDetailData && nextProps.asRequestDetailData!=this.props.asRequestDetailData){
+      var values = Object.values(nextProps.asRequestDetailData);
+      listReply = [];
+      for(i=0; i<values.length; i++){
+        if(values[i].cmt_idx){
+          var value = values[i];
+          var content = value.content;
+          content = content.replace(/<p>/g, '');
+          content = content.replace(/<\/p>/g, '\n');
+          content = content.replace(/<br>/g, '');
+
+          value.content = content;
+          listReply.push(value)
+        }
+      }
+      this.setState({listReply: listReply})
+    }
+
+    if(nextProps.commentRegistrationData && nextProps.commentRegistrationData!=this.props.commentRegistrationData){
+      const {
+        asRequestDetailRequest,
+        navData,
+      } = this.props;
+      if(navData && navData.board_idx)
+        asRequestDetailRequest({Par: `cmd=GET_INFO_AS_REQUEST&board_idx=${navData.board_idx}`})
+    }
   }
 
   /**
@@ -101,9 +116,8 @@ export default class SupportViewComponent extends Component {
     const {
       navigateToSupportCenterScreen,
       asRequestDetailData,
-      commentRegistrationRequest,
-      commentRegistrationData,
     } = this.props;
+    const {listReply} = this.state;
     return (
       <Container>
         {/* {asRequestDetailData && console.log("__haha__",JSON.stringify(asRequestDetailData))} */}
@@ -115,11 +129,11 @@ export default class SupportViewComponent extends Component {
         />
         <View style={{ paddingVertical: "4%", paddingHorizontal: "7%" }}>
           <Text style={{ fontSize: normalize(18), color: "#140f26" }}>
-            {asRequestDetailData ? asRequestDetailData.content.title : "WAS accesslog 저장 불가 현상"} 
+            {asRequestDetailData && asRequestDetailData.content.title} 
           </Text>
           <View style={{ flexDirection: "row" }}>
             <View style={{ width: normalize(50), flexDirection: "row" }}>
-              <StatusButton title={"접 수"} bgColor="blue" />
+              <StatusButton title={"접 수"} bgColor={asRequestDetailData && asRequestDetailData.content.work_status_color} />
             </View>
             <Image
               source={Images.ico_clock_b}
@@ -127,7 +141,7 @@ export default class SupportViewComponent extends Component {
             />
             <Text style={{ fontSize: normalize(12), alignSelf: "center" }}>
               {" "}
-              {asRequestDetailData ? asRequestDetailData.content.writeday : '2018-08-02 01:13:00'}
+              {asRequestDetailData && asRequestDetailData.content.writeday}
             </Text>
             <Image
               source={Images.ico_tag}
@@ -166,41 +180,40 @@ export default class SupportViewComponent extends Component {
         <View style={{ backgroundColor: "#f4f6f9", flex: 1 }}>
           <Text style={styles.textReply}>Reply</Text>
           <FlatList
-            data={commentData}
+            data={listReply}
+            ListEmptyComponent={<NoDataView/>}
             renderItem={({ item, index }) =>
-              index % 2 == 0 ? (
+              item.write_name == Config.userName ? (
                 <View>
                   <View style={{ flexDirection: "row", marginTop: 20 }}>
-                    <Text style={styles.titleComment1}>고객지원</Text>
+                    <Text style={styles.titleComment1}>{item.write_name}</Text>
                     <View style={{ flex: 1 }} />
                     <Text
                       style={{ fontSize: normalize(10), alignSelf: "center" }}
                     >
-                      2019-07-04 13:10
+                      {item.writeday}
                     </Text>
                     <Image source={Images.ico_clock_b} style={styles.clock1} />
                   </View>
                   <View style={styles.bgComment1}>
-                    <Text style={{ color: "white" }}>{item.comment}</Text>
+                    <Text style={{ color: "white" }}>{item.content}</Text>
                   </View>
                 </View>
               ) : (
                 <View>
                   <View style={{ flexDirection: "row", marginTop: 20 }}>
-                    <Text style={styles.titleComment2}>
-                      (주)파슨텍(창조경제혁신센터)
-                    </Text>
+                    <Text style={styles.titleComment2}>{item.write_name}</Text>
                     <View style={{ flex: 1 }} />
                     <Text
                       style={{ fontSize: normalize(10), alignSelf: "center" }}
                     >
-                      2019-07-04 13:10
+                      {item.writeday}
                     </Text>
                     <Image source={Images.ico_clock_b} style={styles.clock2} />
                   </View>
                   <View style={styles.bgComment2}>
                     <Text style={{ marginLeft: "7%", color: "#1c162e" }}>
-                      {item.comment}
+                      {item.content}
                     </Text>
                   </View>
                 </View>

@@ -242,7 +242,7 @@ export function* watchAsRequestList() {
 
 function* asRequestDetail(action) {
     try {
-        yield put({ type: START_LOADING })
+        // yield put({ type: START_LOADING })
         const receivedDataTemp = yield Api.mainApi(action.payload)
         receivedData = JSON.parse(receivedDataTemp)
         if (receivedData && receivedData.ReturnValue && receivedData.Items.length>0) {
@@ -268,7 +268,7 @@ export function* watchAsRequestDetail() {
 
 function* commentRegistration(action) {
     try {
-        yield put({ type: START_LOADING })
+        // yield put({ type: START_LOADING })
         const receivedDataTemp = yield Api.mainApi(action.payload)
         receivedData = JSON.parse(receivedDataTemp)
         if (receivedData && receivedData.ReturnValue) {
