@@ -34,6 +34,9 @@ import {
 
     GUEST_NO_LIST_SUCCEEDED,
     GUEST_NO_LIST_FAILED,
+
+    AS_REQUEST_REGISTRATION_SUCCEEDED,
+    AS_REQUEST_REGISTRATION_FAILED,
 } from '../../actions/OthersActions/actionTypes';
 
 const otherReducer = (state = {tabIndexServerDetail: 0}, actions) => {
@@ -95,6 +98,11 @@ const otherReducer = (state = {tabIndexServerDetail: 0}, actions) => {
             return { ...state, guestNoListData: actions.payload };
         case GUEST_NO_LIST_FAILED:
             return { ...state, guestNoListData: actions.payload };
+
+        case AS_REQUEST_REGISTRATION_SUCCEEDED:
+            return { ...state, asRequestRegistrationData: actions.payload };
+        case AS_REQUEST_REGISTRATION_FAILED:
+            return { ...state, asRequestRegistrationData: actions.payload };
             
         default:
             return state;

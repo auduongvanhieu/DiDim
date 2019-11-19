@@ -44,6 +44,10 @@ import {
     GUEST_NO_LIST_REQUEST,
     GUEST_NO_LIST_SUCCEEDED,
     GUEST_NO_LIST_FAILED,
+
+    AS_REQUEST_REGISTRATION_REQUEST,
+    AS_REQUEST_REGISTRATION_SUCCEEDED,
+    AS_REQUEST_REGISTRATION_FAILED,
 } from "./actionTypes";
 
 const changeTabIndexServerDetailAction = (index) => ({
@@ -227,6 +231,23 @@ const guestNoListFailedAction = error => ({
     payload: error
   });
 
+  
+
+const asRequestRegistrationRequestAction = params => ({
+  type: AS_REQUEST_REGISTRATION_REQUEST,
+  payload: params
+});
+
+const asRequestRegistrationSucceededAction = receivedData => ({
+  type: AS_REQUEST_REGISTRATION_SUCCEEDED,
+  payload: receivedData
+});
+
+const asRequestRegistrationFailedAction = error => ({
+  type: AS_REQUEST_REGISTRATION_FAILED,
+  payload: error
+});
+
 export {
     changeTabIndexServerDetailAction,
 
@@ -273,4 +294,8 @@ export {
     guestNoListRequestAction,
     guestNoListSucceededAction,
     guestNoListFailedAction,
+
+    asRequestRegistrationRequestAction,
+    asRequestRegistrationSucceededAction,
+    asRequestRegistrationFailedAction,
 };

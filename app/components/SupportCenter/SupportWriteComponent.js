@@ -36,19 +36,7 @@ const screenWidth = Dimensions.get("window").width;
 const screenHeight = Dimensions.get("window").height;
 const aspecRatio = screenHeight / screenWidth;
 
-const listAccountNumber = [
-  { id: 0, accountNumber: "000000", accountName: "관리자", added: true },
-  { id: 1, accountNumber: "000001", accountName: "서비스 관리", added: true  },
-  { id: 2, accountNumber: "000002", accountName: "닷넷피아", added: false  },
-  { id: 3, accountNumber: "000003", accountName: "홍길동", added: false  },
-  { id: 4, accountNumber: "000004", accountName: "영업부", added: false  },
-  { id: 5, accountNumber: "000005", accountName: "운영센터", added: false  },
-  { id: 6, accountNumber: "000006", accountName: "운영센터2", added: false  },
-  { id: 7, accountNumber: "000007", accountName: "운영센터3", added: false  },
-  { id: 8, accountNumber: "000008", accountName: "운영센터4", added: false  },
-  { id: 9, accountNumber: "000009", accountName: "운영센터5", added: false  },
-]
-
+const listAccountNumber = []
 export default class SupportWriteComponent extends Component {
   /**
    * Constructor
@@ -72,13 +60,6 @@ export default class SupportWriteComponent extends Component {
   }
 
   componentDidMount(){
-    for (let index = 0 ; index < listAccountNumber.length; index++) {
-      this.state.listAccountNumberHorizontal.push(listAccountNumber[index]);
-    }
-    for (let index = 0 ; index < listAccountNumber.length; index++) {
-      this.state.listAccountNumberModal.push(listAccountNumber[index]);
-    }
-    this.setState({})
     this._navListener = this.props.navigation.addListener('didFocus', () => {
       StatusBar.setBarStyle('light-content');
       StatusBar.setBackgroundColor(AppColors.headerBg2);
@@ -88,6 +69,20 @@ export default class SupportWriteComponent extends Component {
     guestNoListRequest({Par: "cmd=GET_LIST_GUEST_NO"});
   }
 
+  componentWillReceiveProps(nextProps){
+    if(nextProps.guestNoListData && nextProps.guestNoListDa!=this.props.guestNoListData){
+      var listAccountNumberTemp = nextProps.guestNoListData;
+      for (let index = 0 ; index < listAccountNumberTemp.length; index++) {
+        listAccountNumberTemp[index].id = index;
+        listAccountNumberTemp[index].added = false;
+
+        listAccountNumber.push(listAccountNumberTemp[index]);
+        this.state.listAccountNumberHorizontal.push(listAccountNumberTemp[index]);
+        this.state.listAccountNumberModal.push(listAccountNumberTemp[index]);
+      }
+    }
+  }
+
   componentWillUnmount() {
     this._navListener.remove();
   }
@@ -95,6 +90,14 @@ export default class SupportWriteComponent extends Component {
   toggleModal = () => {
     this.setState({ isModalVisible: !this.state.isModalVisible });
   };
+
+  onPressRegistration = () =>{
+    const {asRequestRegistrationRequest, asRequestTypeListData} = this.props;
+    const { email, mobile, title, contact, requestTypeIndex } = this.state;
+
+    asRequestRegistrationRequest({Par: `cmd=ADD_AS_REQUEST&cate_idx=${asRequestTypeListData[requestTypeIndex].idx}&title=${title}&content=${contact}&email=${email}&write_htel=${mobile}`})
+    // alert(`cmd=ADD_AS_REQUEST&cate_idx=${asRequestTypeListData[requestTypeIndex]}&title=${title}&content=${contact}&email=${email}&write_htel=${mobile}`)
+  }
 
   _dropdown_renderRow = (option,index,isSelected) => {
     return (
@@ -182,7 +185,7 @@ export default class SupportWriteComponent extends Component {
                       marginRight: 5
                     }}
                   >
-                    {item.accountNumber}
+                    {item.geust_no}
                   </Text>
                   <Ionicons size={15} name="md-close" color="white" />
                 </View>
@@ -266,6 +269,7 @@ export default class SupportWriteComponent extends Component {
           <Button
             title="등 록"
             buttonStyle={[styles.buttonBottom, { backgroundColor: "#ff3b3b" }]}
+            onPress={this.onPressRegistration}
           />
         </View>
         <Modal
@@ -312,8 +316,8 @@ export default class SupportWriteComponent extends Component {
                   onChangeText={(textModelSearch) => {
                     this.setState({textModelSearch},()=>{
                       this.state.listAccountNumberModal = listAccountNumber.filter(
-                        item => item.accountNumber.includes(this.state.textModelSearch) ||
-                        item.accountName.includes(this.state.textModelSearch)
+                        item => item.geust_no.includes(this.state.textModelSearch) ||
+                        item.name.includes(this.state.textModelSearch)
                       )
                       this.setState({
                         refreshModal: !this.state.refreshModal
@@ -344,7 +348,7 @@ export default class SupportWriteComponent extends Component {
                       <CheckBox
                         center
                         title={
-                          "    " + `[${item.accountNumber}] ` + item.accountName
+                          "    " + `[${item.geust_no}] ` + item.name
                         }
                         checkedColor="red"
                         checkedIcon="check-circle"
