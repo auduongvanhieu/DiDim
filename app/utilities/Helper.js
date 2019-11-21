@@ -16,12 +16,21 @@ async function clearAuthCache(auth) {
 }
 
 async function setAutoLogin(isAutoLogin) {
-    AsyncStorage.setItem('@MySuperStore:AutoLogin', `${Boolean(isAutoLogin)}`);
+    AsyncStorage.setItem('@MySuperStore:AutoLogin', `${isAutoLogin}`);
 }
 
 async function getAutoLogin() {
     const value = await AsyncStorage.getItem('@MySuperStore:AutoLogin');
-    return Boolean(value);
+    return value;
+}
+
+async function setReceiveNotify(isReceiveNotify) {
+    AsyncStorage.setItem('@MySuperStore:ReceiveNotify', `${isReceiveNotify}`);
+}
+
+async function getReceiveNotify() {
+    const value = await AsyncStorage.getItem('@MySuperStore:ReceiveNotify');
+    return value;
 }
 
 async function setObjectToken(data) {
@@ -70,6 +79,8 @@ export {
     clearAuthCache,
     setAutoLogin,
     getAutoLogin,
+    setReceiveNotify,
+    getReceiveNotify,
     setObjectToken,
     getObjectToken,
     generateStatusText,

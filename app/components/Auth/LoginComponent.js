@@ -73,9 +73,8 @@ export default class LoginComponent extends Component {
     if(!objectToken)
       getTokenRequest();
     else{
-      const isAutoLogin = await getAutoLogin();
-      this.setState({isRemember: isAutoLogin});
-      if(isAutoLogin){
+      const isAutoLogin = await getAutoLogin();       
+      if(isAutoLogin == 'true'){
         const authCache = await getAuthCache();
         Config.userName = authCache.user;
         if(authCache) {
@@ -83,6 +82,8 @@ export default class LoginComponent extends Component {
             Par: qs.stringify(authCache)
           })
         }
+      } else {
+        this.setState({isRemember: false});
       }
     }
   };

@@ -20,7 +20,7 @@ import I18n  from '../../I18n'
 import { AppColors, AppConstant } from "../../utilities/Constants";
 import { normalize } from "../../utilities/ThemeUtils";
 import LabeledSwitch from "../CustomView/LabeledSwitch";
-import { clearAuthCache } from "../../utilities/Helper";
+import { clearAuthCache, getReceiveNotify, setReceiveNotify } from "../../utilities/Helper";
 import { Config } from "../../utilities/Config";
 
 class SidebarComponent extends Component {
@@ -30,11 +30,19 @@ class SidebarComponent extends Component {
     this.state = {
       userInfo: {},
       expanded: false,
-      switchValue: false
+      switchValue: true
     };
   }
 
+  async componentDidMount() {
+    const isReceiveNotify = await getReceiveNotify();
+    if( isReceiveNotify == 'false'){
+      this.setState({switchValue: false});
+    }
+  }
+
   toggleSwitch = value => {
+    setReceiveNotify(value);
     this.setState({ switchValue: value });
   };
 
