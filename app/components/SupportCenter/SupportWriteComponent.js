@@ -17,6 +17,8 @@ import {
   Picker,
   Image,
   TextInput,
+  KeyboardAvoidingView,
+  Alert,
 } from "react-native";
 import { CheckBox, Button } from 'react-native-elements';
 
@@ -81,6 +83,29 @@ export default class SupportWriteComponent extends Component {
         this.state.listAccountNumberModal.push(listAccountNumberTemp[index]);
       }
     }
+    if(nextProps.asRequestRegistrationData && nextProps.asRequestRegistrationData!=this.props.asRequestRegistrationData){
+      const {asRequestListRequest} = this.props;
+      Alert.alert(
+        "Notification",
+        "Request is performed",
+        [
+          {
+            text: "Confirm",
+            style: "destructive",
+            onPress: () => {
+              this.setState({
+                email: "",
+                mobile: "",
+                title: "",
+                contact: "",
+              });
+              asRequestListRequest({Par: 'cmd=GET_LIST_AS_REQUEST'})
+            }
+          }
+        ],
+        { cancelable: false }
+      );
+    }
   }
 
   componentWillUnmount() {
@@ -94,9 +119,25 @@ export default class SupportWriteComponent extends Component {
   onPressRegistration = () =>{
     const {asRequestRegistrationRequest, asRequestTypeListData} = this.props;
     const { email, mobile, title, contact, requestTypeIndex } = this.state;
+    var refGuestNo = "";
+    this.state.listAccountNumberHorizontal.forEach(element => {
+      if(element.added && element.geust_no){
+        if(refGuestNo == "")
+          refGuestNo = refGuestNo + element.geust_no
+        else
+          refGuestNo = refGuestNo +","+ element.geust_no
+      }
+    });
+    asRequestRegistrationRequest({Par: `cmd=ADD_AS_REQUEST&cate_idx=${asRequestTypeListData[requestTypeIndex].idx}&title=${title}&content=${contact}&email=${email}&write_htel=${mobile}&refGuestNo=${refGuestNo}`})
+  }
 
-    asRequestRegistrationRequest({Par: `cmd=ADD_AS_REQUEST&cate_idx=${asRequestTypeListData[requestTypeIndex].idx}&title=${title}&content=${contact}&email=${email}&write_htel=${mobile}`})
-    // alert(`cmd=ADD_AS_REQUEST&cate_idx=${asRequestTypeListData[requestTypeIndex]}&title=${title}&content=${contact}&email=${email}&write_htel=${mobile}`)
+  onPressCancel = () =>{
+    this.setState({
+      email: "",
+      mobile: "",
+      title: "",
+      contact: "",
+    });
   }
 
   _dropdown_renderRow = (option,index,isSelected) => {
@@ -141,11 +182,12 @@ export default class SupportWriteComponent extends Component {
     } = this.props;
     const {requestTypeIndex} = this.state;
     return (
-      <Container>
+      <KeyboardAvoidingView>
       {/* {asRequestTypeListData && console.log("__haha__", JSON.stringify(asRequestTypeListData))} */}
       {/* {guestNoListData && console.log("__haha__", JSON.stringify(guestNoListData))} */}
         <StatusBar backgroundColor={AppColors.headerBg2} />
         <HeaderMenu backAction={()=>navigateToSupportCenterScreen()} title={"Support Center"} />
+        <ScrollView>
         <View style={styles.containerHorizontal} >
           <View style={styles.containerLeft}>
             <Text style={styles.textLeft}>Type of Inquiry</Text>
@@ -211,10 +253,13 @@ export default class SupportWriteComponent extends Component {
             <Text style={styles.textLeft}>e-Mail</Text>
           </View>
           <TextInput
+            ref={(input) => { this.firstTextInput = input; }}
             placeholder="Input Mail"
             onChangeText={email => this.setState({ email })}
             value={this.state.email}
             style={styles.textRight}
+            returnKeyType={"next"}
+            onSubmitEditing={() => { this.secondTextInput.focus(); }}
           />
         </View>
         <View style={styles.horizontalBar} />
@@ -223,10 +268,14 @@ export default class SupportWriteComponent extends Component {
             <Text style={styles.textLeft}>Mobile</Text>
           </View>
           <TextInput
+            ref={(input) => { this.secondTextInput = input; }}
             placeholder="Input Mobile Number"
             onChangeText={mobile => this.setState({ mobile })}
             value={this.state.mobile}
             style={styles.textRight}
+            returnKeyType={"next"}
+            keyboardType={"numeric"}
+            onSubmitEditing={() => { this.thirdTextInput.focus(); }}
           />
         </View>
         <View style={styles.horizontalBar} />
@@ -235,15 +284,19 @@ export default class SupportWriteComponent extends Component {
             <Text style={styles.textLeft}>Title</Text>
           </View>
           <TextInput
+            ref={(input) => { this.thirdTextInput = input; }}
             placeholder="제목을 입력해 주세요."
             onChangeText={title => this.setState({ title })}
             value={this.state.title}
             style={styles.textRight}
+            returnKeyType={"next"}
+            onSubmitEditing={() => { this.fourTextInput.focus(); }}
           />
         </View>
         <View style={styles.horizontalBar} />
         <View style={{ height: normalize(150) }}>
           <TextInput
+            ref={(input) => { this.fourTextInput = input; }}
             placeholder="문의 내용을 입력해 주세요."
             onChangeText={contact => this.setState({ contact })}
             value={this.state.contact}
@@ -252,6 +305,7 @@ export default class SupportWriteComponent extends Component {
               { marginLeft: "6.7%", textAlign: "left" }
             ]}
             multiline={true}
+            returnKeyType={"done"}
           />
         </View>
         <View style={styles.horizontalBar} />
@@ -265,6 +319,7 @@ export default class SupportWriteComponent extends Component {
           <Button
             title="취 소"
             buttonStyle={[styles.buttonBottom, { backgroundColor: "#666372" }]}
+            onPress={this.onPressCancel}
           />
           <Button
             title="등 록"
@@ -272,6 +327,7 @@ export default class SupportWriteComponent extends Component {
             onPress={this.onPressRegistration}
           />
         </View>
+        </ScrollView>
         <Modal
           style={{ margin: 0 }}
           animationIn="bounceInUp"
@@ -391,7 +447,7 @@ export default class SupportWriteComponent extends Component {
             </View>
           </View>
         </Modal>
-      </Container>
+      </KeyboardAvoidingView>
     );
   }
 }

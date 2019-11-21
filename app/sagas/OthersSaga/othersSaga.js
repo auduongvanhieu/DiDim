@@ -354,7 +354,6 @@ function* asRequestRegistration(action) {
         yield put({ type: START_LOADING })
         const receivedDataTemp = yield Api.mainApi(action.payload)
         receivedData = JSON.parse(receivedDataTemp)
-        console.log("__haha__", receivedDataTemp);
         if (receivedData && receivedData.ReturnValue) {
             yield put({ type: AS_REQUEST_REGISTRATION_SUCCEEDED, payload: receivedData.Items[0] })
             yield put({ type: STOP_LOADING })
