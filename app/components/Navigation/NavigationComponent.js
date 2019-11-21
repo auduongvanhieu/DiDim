@@ -85,7 +85,7 @@ export default class NavigationComponent extends Component {
         text,
         [
           {
-            text: "Đã rõ",
+            text: "Confirm",
             style: "destructive",
             onPress: () => {
             }
@@ -117,7 +117,7 @@ export default class NavigationComponent extends Component {
             text,
             [
               {
-                text: "Đã rõ",
+                text: "Confirm",
                 style: "destructive",
                 onPress: () => {
                 }
@@ -142,7 +142,7 @@ export default class NavigationComponent extends Component {
             text,
             [
               {
-                text: "Đã rõ",
+                text: "Confirm",
                 style: "destructive",
                 onPress: () => {
                 }

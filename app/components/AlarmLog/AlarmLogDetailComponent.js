@@ -64,7 +64,7 @@ export default class AlarmLogDetailComponent extends Component {
     const {navigateToAlarmLogScreen, failureAlarmLogDetailData} = this.props;
     return (
       <Container>
-      {/* {failureAlarmLogDetailData && console.log("__haha__",JSON.stringify(failureAlarmLogDetailData))} */}
+      {failureAlarmLogDetailData && console.log("__haha__",JSON.stringify(failureAlarmLogDetailData))}
         <StatusBar backgroundColor={AppColors.headerBg2}/>
         <HeaderMenu backAction={()=>navigateToAlarmLogScreen()} title={"Alarm Log"} />
         <View style={{paddingVertical: '4%', paddingHorizontal: '7%'}}>
