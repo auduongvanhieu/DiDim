@@ -115,7 +115,7 @@ export default class LoginComponent extends Component {
     Config.userName = form.user;
     this.cacheMyLogin(form);
     authorizeRequest({
-      Par: `managed_url=${form.managed_url}&user=${form.user}&password=${form.password}&fcm_token=${123456789}&os_type=${Platform.OS}`
+      Par: `managed_url=${form.managed_url}&user=${form.user}&password=${form.password}&fcm_token=${Config.fcmToken}&os_type=${Platform.OS}`
     })
   };
 

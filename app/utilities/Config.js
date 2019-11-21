@@ -4,6 +4,7 @@ const graphURL = "http://managed.dotnetpia.co.kr/monitor/graph.php";
 const sAccessToken = "";
 const userName = "";
 const tabServerDetail = 2;
+const fcmToken = "";
 
 const Config = {
   authURL,
@@ -11,7 +12,8 @@ const Config = {
   graphURL,
   sAccessToken,
   userName,
-  tabServerDetail
+  tabServerDetail,
+  fcmToken
 };
 
 const SuperObjects = {
