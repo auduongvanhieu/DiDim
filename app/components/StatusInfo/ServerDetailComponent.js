@@ -128,7 +128,7 @@ export default class ServerDetailComponent extends Component {
     const {hourIndex} = this.state;
     return (
       <Container>
-        {/* {serverDetailData && console.log("__haha__",JSON.stringify(serverDetailData))} */}
+        {serverDetailData && console.log("__haha__",JSON.stringify(serverDetailData))}
         <StatusBar backgroundColor={AppColors.headerBg2} />
         <HeaderMenu title={"Infra"} />
         <View style={{ paddingVertical: "4%", paddingHorizontal: "7%" }}>
@@ -136,7 +136,7 @@ export default class ServerDetailComponent extends Component {
             {serverDetailData && serverDetailData.guest_name}
           </Text>
           <View style={{ flexDirection: "row" }}>
-            <StatusButton title={serverDetailData && generateStatusText(serverDetailData.status)} bgColor={serverDetailData && generateStatusColor(serverDetailData.status)} />
+            <StatusButton title={navData && generateStatusText(navData.status)} bgColor={navData && generateStatusColor(navData.status)} />
             <Text style={{ width: "80%", marginLeft: 10 }}>
               {"IP " + (serverDetailData && serverDetailData.ip)}
             </Text>
@@ -221,22 +221,22 @@ export default class ServerDetailComponent extends Component {
             <View style={styles.horizontalBar} />
             <View style={styles.itemContainer}>
               <Text style={styles.textLeft}>OS</Text>
-              <Text style={styles.textRight}>CentOS 6.10 (Final) 64 bit</Text>
+              <Text style={styles.textRight}>{serverDetailData.os_type}</Text>
             </View>
             <View style={styles.horizontalBar} />
             <View style={styles.itemContainer}>
               <Text style={styles.textLeft}>Datacenter</Text>
-              <Text style={styles.textRight}>KT ucloudbiz-Seoul M2 Zone</Text>
+              <Text style={styles.textRight}>{serverDetailData.dc_name}</Text>
             </View>
             <View style={styles.horizontalBar} />
             <View style={styles.itemContainer}>
               <Text style={styles.textLeft}>Server Spec</Text>
-              <Text style={styles.textRight}>4 vCore x 8 GB</Text>
+              <Text style={styles.textRight}>{serverDetailData.hw_spec}</Text>
             </View>
             <View style={styles.horizontalBar} />
             <View style={styles.itemContainer}>
               <Text style={styles.textLeft}>Product types</Text>
-              <Text style={styles.textRight}>Managed - Standard</Text>
+              <Text style={styles.textRight}>{serverDetailData.prod_gubn}</Text>
             </View>
             <View style={styles.horizontalBar} />
           </ScrollView>

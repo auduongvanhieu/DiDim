@@ -190,9 +190,9 @@ export default class StatusInfoComponent extends Component {
             <TouchableOpacity 
               onPress={()=>{
                 SuperObjects.serverSelected = item;
-                navigateToServerDetailScreen({gno: item.svr_no})
+                navigateToServerDetailScreen({gno: item.svr_no, status: item.status})
                 changeTabIndexServerDetail(0)
-                serverDetailRequest({Par: `cmd=GET_LIST_SERVER&gno=${item.svr_no}`})
+                serverDetailRequest({Par: `cmd=GET_INFO_SERVER&gno=${item.svr_no}`})
                 alarmItemListRequest({Par: `cmd=GET_LIST_ALARM_ITEM&gno=${item.svr_no}`})
               }} 
               style={{flexDirection: 'row', marginVertical: 5, justifyContent: 'center', alignItems: 'center', marginHorizontal: '6%', paddingVertical: 5}}>
