@@ -42,6 +42,36 @@ async function getObjectToken() {
     return JSON.parse(value);
 }
 
+async function setNotification(data) {
+    var notifications = await getNotification();
+
+    data.forEach(item => {
+        if(notifications.filter(e => e.id == item.id).length == 0){
+            notifications.push(item);
+        }
+    });
+    AsyncStorage.setItem('@MySuperStore:Notification', JSON.stringify(notifications));
+}
+
+async function updateNotification(data) {
+    var notifications = await getNotification();
+
+    notifications.map((item, index)=>{
+        if(item.id == data.id){
+            notifications[index].seen = true;
+        }
+    })
+    AsyncStorage.setItem('@MySuperStore:Notification', JSON.stringify(notifications));
+}
+
+async function getNotification() {
+    const value = await AsyncStorage.getItem('@MySuperStore:Notification');
+    if(value){
+        return JSON.parse(value);
+    }
+    return [];
+}
+
 function generateStatusText(shortText){
     var text = ""
     switch(shortText){
@@ -83,6 +113,9 @@ export {
     getReceiveNotify,
     setObjectToken,
     getObjectToken,
+    setNotification,
+    updateNotification,
+    getNotification,
     generateStatusText,
     generateStatusColor,
     generateImageOS,

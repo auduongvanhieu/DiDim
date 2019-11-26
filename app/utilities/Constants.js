@@ -6,9 +6,9 @@ export const AppColors = {
     menuBg: '#3d3d4c',
     headerBg: '#1c162e',
     headerBg2: '#ff4d4d',
-    statusUp: '#14d2b8',
-    statusWarn: '#fece89',
-    statusDown: '#ff3b3b',
+    statusUp: '#13D1B8',
+    statusWarn: '#FDCD88',
+    statusDown: '#FE3A3A',
     statusDisk: '#5a7bef',
     textHolder: '#dddddd',
     textMain: '#3b3b4d'

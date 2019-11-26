@@ -128,7 +128,7 @@ export default class ServerDetailComponent extends Component {
     const {hourIndex} = this.state;
     return (
       <Container>
-        {serverDetailData && console.log("__haha__",JSON.stringify(serverDetailData))}
+        {/* {serverDetailData && console.log("__haha__",JSON.stringify(serverDetailData))} */}
         <StatusBar backgroundColor={AppColors.headerBg2} />
         <HeaderMenu title={"Infra"} />
         <View style={{ paddingVertical: "4%", paddingHorizontal: "7%" }}>

@@ -120,6 +120,7 @@ export default class StatusInfoComponent extends Component {
     const {sortIndex,searchText} = this.state;
     return (
       <Container>
+      {/* {serverListData && console.log("__haha__", serverListData)} */}
         <StatusBar backgroundColor={AppColors.headerBg} />
         <HeaderMenuHome title={"Infra"} />
         <View style={{marginLeft: 5}}>
