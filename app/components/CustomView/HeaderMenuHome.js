@@ -1,6 +1,6 @@
 import React, { Component, createRef  } from 'react';
 import {Header, Icon, Title} from 'native-base';
-import {View, Dimensions, TouchableOpacity, Image, StatusBar} from "react-native";
+import {View, Dimensions, TouchableOpacity, Image, StatusBar, Platform} from "react-native";
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux'
 import { AppColors } from '../../utilities/Constants';
@@ -177,7 +177,7 @@ class HeaderMenuHome extends Component {
         <StatusBar backgroundColor={AppColors.headerBg}/>
         <SimpleLineIcons onPress={()=>{openNavigationDrawerAction()}} name={'menu'/*'navicon'*/} size={normalize(20)} style={{color: '#ff3b3b', alignSelf: 'center', marginLeft: normalize(3)}}/>
         <Title style={{alignSelf: 'center', flex: 1, textAlign: 'center', color: 'white'}}>{this.props.title}</Title>
-        <View style={{position: 'absolute', right: 10, marginTop: 0, height: '100%', alignItems: 'center', flexDirection: 'row'}}>
+        <View style={{position: 'absolute', right: 10, marginTop: Platform.OS == 'ios' ? 18 : 0, height: '100%', alignItems: 'center', flexDirection: 'row'}}>
           <TouchableOpacity onPress={this.toggleModal}>
             <MaterialCommunityIcons name={'bell-outline'} size={30} style={{color: 'white'}}/>
             <View style={{position: 'absolute', top: -3, right: -3, backgroundColor: 'red', width: normalize(15), height: normalize(15), justifyContent: 'center', borderRadius: normalize(10)}}>
