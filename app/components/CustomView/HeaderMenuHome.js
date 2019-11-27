@@ -190,6 +190,8 @@ class HeaderMenuHome extends Component {
           style={{marginLeft: 0}}
           animationIn='bounceIn'
           animationOut='bounceOut'
+          onBackButtonPress={this.toggleModal}
+          onBackdropPress={this.toggleModal}
           isVisible={this.state.isModalVisible}>
           <View style={{}}>
               <Carousel
