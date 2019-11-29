@@ -6,12 +6,13 @@ export const AppColors = {
     menuBg: '#3d3d4c',
     headerBg: '#1c162e',
     headerBg2: '#ff4d4d',
-    statusUp: '#13D1B8',
-    statusWarn: '#FDCD88',
-    statusDown: '#FE3A3A',
-    statusDisk: '#5a7bef',
     textHolder: '#dddddd',
-    textMain: '#3b3b4d'
+    textMain: '#3b3b4d',
+
+    statusUp: '#13D1B8',
+    statusDown: '#FE3A3A',
+    statusWarn: '#FDCD88',
+    statusDisk: '#5a7bef',
 }
 
 export const AppConstant = {

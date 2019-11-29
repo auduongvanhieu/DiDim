@@ -27,6 +27,7 @@ import HeaderMenu from "../CustomView/HeaderMenu";
 import { Images } from "../../assets";
 import NoDataView from "../CustomView/NoDataView";
 import { Config } from "../../utilities/Config";
+import { generateNameColor } from "../../utilities/Helper";
 
 const screenWidth = Dimensions.get("window").width;
 const screenHeight = Dimensions.get("window").height;
@@ -120,7 +121,7 @@ export default class SupportViewComponent extends Component {
     const {listReply} = this.state;
     return (
       <Container>
-        {/* {asRequestDetailData && console.log("__haha__",JSON.stringify(asRequestDetailData))} */}
+        {asRequestDetailData && console.log("__haha__",JSON.stringify(asRequestDetailData))}
         {/* {commentRegistrationData && console.log("__haha__",JSON.stringify(commentRegistrationData))} */}
         <StatusBar backgroundColor={AppColors.headerBg2} />
         <HeaderMenu
@@ -133,7 +134,8 @@ export default class SupportViewComponent extends Component {
           </Text>
           <View style={{ flexDirection: "row" }}>
             <View style={{ width: normalize(50), flexDirection: "row" }}>
-              <StatusButton title={"접 수"} bgColor={asRequestDetailData && asRequestDetailData.content.work_status_color} />
+              <StatusButton title={asRequestDetailData && asRequestDetailData.content.work_status_name}
+                bgColor={asRequestDetailData && generateNameColor(asRequestDetailData.content.work_status_name)} />
             </View>
             <Image
               source={Images.ico_clock_b}

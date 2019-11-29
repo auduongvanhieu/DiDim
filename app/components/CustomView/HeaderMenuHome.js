@@ -7,7 +7,9 @@ import { AppColors } from '../../utilities/Constants';
 import {
   openNavigationDrawerAction,
   navigateToServerDetailScreenAction,
-  navigateToSupportViewScreenAction
+  navigateToSupportViewScreenAction,
+  navigateToSupportCenterScreenAction,
+  navigateToAlarmLogScreenAction
 } from "../../actions/NavigationActions/actionCreators";
 import {Images} from '../../assets';
 import { normalize } from "../../utilities/ThemeUtils";
@@ -22,13 +24,14 @@ import {
   changeTabIndexServerDetailAction,
   alarmItemListRequestAction,
   asRequestListRequestAction,
-  asRequestDetailRequestAction
+  asRequestDetailRequestAction,
+  serverCountingRequestAction,
+  serverListRequestAction
 } from "../../actions/OthersActions/actionCreators";
 import { setNotification, getNotification, updateNotification } from '../../utilities/Helper';
 
 const screenWidth = Dimensions.get("window").width;
 const screenHeight = Dimensions.get("window").height;
-
 class HeaderMenuHome extends Component {
   tooltipRef = createRef();
 
@@ -36,49 +39,39 @@ class HeaderMenuHome extends Component {
     super(props)
     this.state = {
       isModalVisible: false,
-      listAlert: [],
-      activeSlide: 0
+      listAlert: [
+        {
+          title : "확인이 필요한 장애 알람이 0건이 있습니다.",
+          image : Images.ico_alert_error,
+          type : "DownAlert"
+        },
+        {
+          title : "확인이 필요한 AS요청 답변이 0건이 있습니다.",
+          image : Images.ico_alert_as,
+          type : "AsRequest"
+        }
+      ],
+      activeSlide: 0,
+      numberNotify: 0
     };
   }
 
   componentDidMount(){
     this.props.asRequestListRequest({Par: 'cmd=GET_LIST_AS_REQUEST'});
+    this.props.serverCountingRequest({Par: "cmd=GET_COUNT_ALERT_AND_AS"});
+    this.props.serverListRequest({Par: `cmd=GET_LIST_SERVER`});
   }
 
   async componentWillReceiveProps(nextProps){
     if(nextProps.serverListData && nextProps.serverListData != this.props.serverListData){
-      const {serverListData} = nextProps;
-      var listAlertTemp = [];
-      serverListData.forEach(item => {
-        if(item.status == "D"){
-          item.title = "확인이 필요한 장애 알람이 3건이 있습니다.";
-          item.image = Images.ico_alert_error;
-          item.type = "DownAlert";
-          item.id = "svr_no_"+item.svr_no;
-          item.seen = false;
-          listAlertTemp.push(item);
-        }
-      });
-      await setNotification(listAlertTemp);
-      var listAlertStorage = await getNotification();
-      var listAlert = listAlertStorage.filter(e => e.seen == false);     
-      this.setState({listAlert: listAlert});
+      var serverListData = nextProps.serverListData.filter(item  => item.status == 'D')
+      this.state.listAlert[0].title = `확인이 필요한 장애 알람이 ${serverListData.length}건이 있습니다.`
     }
     if(nextProps.asRequestListData && nextProps.asRequestListData != this.props.asRequestListData){
-      const {asRequestListData} = nextProps;
-      var listAlertTemp = [];
-      asRequestListData.forEach(item => {
-        item.title = "확인이 필요한 AS요청 답변이 2건이 있습니다.";
-        item.image = Images.ico_alert_as;
-        item.type = "AsRequest";
-        item.id = "board_idx_"+item.board_idx;
-        item.seen = false;
-        listAlertTemp.push(item);
-      });
-      await setNotification(listAlertTemp);
-      var listAlertStorage = await getNotification();
-      var listAlertFilter = listAlertStorage.filter(e => e.seen == false)
-      this.setState({listAlert: listAlertFilter});
+      this.state.listAlert[1].title = `확인이 필요한 AS요청 답변이 ${nextProps.asRequestListData.length}건이 있습니다.`
+    }
+    if(nextProps.serverCountingData && nextProps.serverCountingData != this.props.serverCountingData){
+      this.setState({numberNotify: nextProps.serverCountingData.total})
     }
   }
 
@@ -89,12 +82,11 @@ class HeaderMenuHome extends Component {
   _renderItem = ({item, index}) => {
     const {
       navigateToServerDetailScreen,
-      navigateToSupportViewScreen,
+      navigateToSupportCenterScreen,
       changeTabIndexServerDetail,
       alarmItemListRequest,
-      asRequestDetailRequest
+      navigateToAlarmLogScreen
     } = this.props;
-    if(item.seen == false)
     return (
         <View style={{backgroundColor: 'white', height: screenWidth*4/5, borderRadius: 20}}>
           <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
@@ -107,19 +99,13 @@ class HeaderMenuHome extends Component {
             <TouchableOpacity onPress={async ()=>{
               this.toggleModal();
 
-              const { listAlert } = this.state;
-              await updateNotification(listAlert[index]);
-              var listAlertStorage = await getNotification();
-              var listAlertFilter = listAlertStorage.filter(e => e.seen == false)
-              this.setState({listAlert: listAlertFilter});
-
               if(item.type == "DownAlert"){
-                navigateToServerDetailScreen({tabIndex: 2});
-                changeTabIndexServerDetail(2);
-                alarmItemListRequest({Par: `cmd=GET_LIST_ALARM_ITEM&gno=${item.svr_no}`})
+                // navigateToServerDetailScreen({tabIndex: 2});
+                // changeTabIndexServerDetail(2);
+                // alarmItemListRequest({Par: `cmd=GET_LIST_ALARM_ITEM&gno=${item.svr_no}`})
+                navigateToAlarmLogScreen();
               } else {
-                  navigateToSupportViewScreen({board_idx: item.board_idx});
-                  asRequestDetailRequest({Par: `cmd=GET_INFO_AS_REQUEST&board_idx=${item.board_idx}`})
+                navigateToSupportCenterScreen();
               }
             }} 
             style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
@@ -128,14 +114,7 @@ class HeaderMenuHome extends Component {
           </View>
           <Ionicons 
             onPress={this.toggleModal} 
-            onPress={async () =>{
-              const { listAlert } = this.state;
-
-              await updateNotification(listAlert[index]);
-              var listAlertStorage = await getNotification();
-              var listAlertFilter = listAlertStorage.filter(e => e.seen == false)
-              this.setState({listAlert: listAlertFilter});
-            }} 
+            onPress={this.toggleModal} 
             color='black' size={40} name={'ios-close'} 
             style={{position: 'absolute', right: 10}}/>
         </View>
@@ -170,8 +149,8 @@ class HeaderMenuHome extends Component {
 }
   
   render() {
-    const { openNavigationDrawerAction, iconRight} = this.props;
-    const {listAlert} = this.state;
+    const { openNavigationDrawerAction, iconRight, serverCountingData} = this.props;
+    const {listAlert, numberNotify} = this.state;
     return (
       <Header style={{justifyContent: 'space-between', backgroundColor: AppColors.headerBg}}>
         <StatusBar backgroundColor={AppColors.headerBg}/>
@@ -180,9 +159,11 @@ class HeaderMenuHome extends Component {
         <View style={{position: 'absolute', right: 10, marginTop: Platform.OS == 'ios' ? 18 : 0, height: '100%', alignItems: 'center', flexDirection: 'row'}}>
           <TouchableOpacity onPress={this.toggleModal}>
             <MaterialCommunityIcons name={'bell-outline'} size={30} style={{color: 'white'}}/>
+            { serverCountingData &&
             <View style={{position: 'absolute', top: -3, right: -3, backgroundColor: 'red', width: normalize(15), height: normalize(15), justifyContent: 'center', borderRadius: normalize(10)}}>
-              <Text style={{color: 'white', fontSize: 10, alignSelf: 'center'}}>{listAlert.length}</Text>
+                <Text style={{color: 'white', fontSize: 10, alignSelf: 'center'}}>{numberNotify}</Text>              
             </View>
+            }
           </TouchableOpacity>
           { iconRight && iconRight}
         </View>
@@ -218,16 +199,20 @@ HeaderMenuHome.propTypes = {
 const mapStateToProps = state => ({
   serverListData: state.otherReducer.serverListData,
   asRequestListData: state.otherReducer.asRequestListData,
+  serverCountingData: state.otherReducer.serverCountingData,
 })
 
 const mapDispatchToProps = dispatch => ({
   openNavigationDrawerAction: () => dispatch(openNavigationDrawerAction()),
   navigateToServerDetailScreen: (params) => dispatch(navigateToServerDetailScreenAction(params)),
-  navigateToSupportViewScreen: (params) => dispatch(navigateToSupportViewScreenAction(params)),
+  navigateToSupportCenterScreen: (params) => dispatch(navigateToSupportCenterScreenAction(params)),
+  navigateToAlarmLogScreen: (params) => dispatch(navigateToAlarmLogScreenAction(params)),
   changeTabIndexServerDetail: (index) => dispatch(changeTabIndexServerDetailAction(index)),
   alarmItemListRequest: (params) => dispatch(alarmItemListRequestAction(params)),
   asRequestListRequest: (params) => dispatch(asRequestListRequestAction(params)),
   asRequestDetailRequest: (params) => dispatch(asRequestDetailRequestAction(params)),
+  serverCountingRequest: (params) => dispatch(serverCountingRequestAction(params)),
+  serverListRequest: (index) => dispatch(serverListRequestAction(index)),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(HeaderMenuHome)

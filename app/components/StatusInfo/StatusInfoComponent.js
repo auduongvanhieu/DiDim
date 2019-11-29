@@ -58,7 +58,6 @@ export default class StatusInfoComponent extends Component {
 
     const {serverListRequest, serverCountingRequest, startLoading} = this.props;
     // startLoading()
-    serverCountingRequest({Par: "cmd=GET_COUNT_ALERT_AND_AS"});
     serverListRequest({Par: `cmd=GET_LIST_SERVER&order=${sorts[this.state.sortIndex].value}&keyword=${this.state.searchText}`});
   }
 

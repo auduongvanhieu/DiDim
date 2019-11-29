@@ -92,8 +92,8 @@ export default class LoginComponent extends Component {
     this.setState({isRemember: !this.state.isRemember})
   }
 
-  onSubmitForm = form => {
-    const { authorizeRequest } = this.props;
+  onSubmitForm = async form => {
+    const { authorizeRequest, getTokenRequest } = this.props;
 
     // var text = aesEncrypt("cmd=GET_LIST_AS_REQUEST", "XCKD3C1C2Z6B8VCCUFBSW8UPA9AR8VL7")
     // console.log("__haha__", text)
@@ -115,7 +115,8 @@ export default class LoginComponent extends Component {
     }
     Config.userName = form.user;
     this.cacheMyLogin(form);
-    authorizeRequest({
+    await getTokenRequest();
+    await authorizeRequest({
       Par: `managed_url=${form.managed_url}&user=${form.user}&password=${form.password}&fcm_token=${Config.fcmToken}&os_type=${Platform.OS}`
     })
   };

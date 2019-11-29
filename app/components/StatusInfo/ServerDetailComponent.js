@@ -326,6 +326,7 @@ export default class ServerDetailComponent extends Component {
         )}
         {tab == 2 && (
           <View style={styles.containerTab}>
+            {/* {alarmItemListData && console.log("__haha__",JSON.stringify(alarmItemListData))} */}
             <FlatList
               data={alarmItemListData}
               ItemSeparatorComponent={() => ( <View style={styles.horizontalBar} /> )}
@@ -346,7 +347,7 @@ export default class ServerDetailComponent extends Component {
                         style={{ marginHorizontal: 5 }}
                         bgColor={generateStatusColor(item.status)}
                         widthSize={normalize(10)}
-                        title={generateStatusText(item.status)}
+                        title={item.status}
                       />
                     </View>
                     <Text
@@ -356,7 +357,7 @@ export default class ServerDetailComponent extends Component {
                         fontSize: normalize(9)
                       }}
                     >
-                      {item.down_time + " "}
+                      {item.occur_time + " "}
                     </Text>
                     <Image
                       source={Images.ico_clock}

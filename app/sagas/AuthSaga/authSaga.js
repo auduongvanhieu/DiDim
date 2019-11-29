@@ -30,6 +30,7 @@ function* authorize(action) {
         yield put({ type: START_LOADING })
         const receivedDataTemp = yield Api.authorize(action.payload)
         receivedData = JSON.parse(receivedDataTemp)
+        console.log("__haha__",receivedData);
         if (receivedData && receivedData.ReturnValue) {
             yield put({ type: AUTHORIZE_SUCCEEDED, payload: receivedData })
             yield put({ type: STOP_LOADING })
@@ -51,6 +52,7 @@ function* getToken(action) {
     try {
         yield put({ type: START_LOADING })
         const receivedData = yield Api.getToken(action.payload)
+        console.log("__haha__",receivedData);
         if (receivedData !== null) {
             yield setObjectToken(receivedData.Items[0])
             yield put({ type: GET_TOKEN_SUCCEEDED, payload: receivedData })

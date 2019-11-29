@@ -90,6 +90,29 @@ function generateStatusColor(shortText){
         case "D": color = AppColors.statusDown; break;
         case "W": color = AppColors.statusWarn; break;
         case "DK": color = AppColors.statusDisk; break;
+
+        case "Up": color = AppColors.statusUp; break;
+        case "Down": color = AppColors.statusDown; break;
+        case "Warn": color = AppColors.statusWarn; break;
+    }
+    return color;
+}
+
+function generateNameColor(shortText){
+    var color = "blue"
+    switch(shortText){
+        case "공지": color = '#666372'; break;
+        case "접수": color = '#5A7BEF'; break;
+        case "완료": color = '#14D2B8'; break;
+    }
+    return color;
+}
+
+function generateCommentColor(shortText){
+    var color = "blue"
+    switch(shortText){
+        case "접수": color = '#43C7F1'; break;
+        case "완료": color = '#C3CDD9'; break;
     }
     return color;
 }
@@ -118,5 +141,7 @@ export {
     getNotification,
     generateStatusText,
     generateStatusColor,
+    generateNameColor,
+    generateCommentColor,
     generateImageOS,
 }

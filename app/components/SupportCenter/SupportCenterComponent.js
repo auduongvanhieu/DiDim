@@ -22,6 +22,7 @@ import StatusButton from "../CustomView/StatusButton";
 import { Images } from "../../assets";
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 import NoDataView from "../CustomView/NoDataView";
+import { generateStatusColor, generateNameColor, generateCommentColor } from "../../utilities/Helper";
 
 const screenWidth = Dimensions.get("window").width;
 const screenHeight = Dimensions.get("window").height;
@@ -112,7 +113,7 @@ export default class SupportCenterComponent extends Component {
                 <View style={{ width: normalize(55), flexDirection: "row" }}>
                   <StatusButton
                     style={{ marginHorizontal: 5 }}
-                    bgColor={item.work_status_color}
+                    bgColor={generateNameColor(item.work_status_name)}
                     widthSize={normalize(10)}
                     title={item.work_status_name}
                   />
@@ -121,7 +122,7 @@ export default class SupportCenterComponent extends Component {
                 <View style={{ width: normalize(40), flexDirection: "row" }}>
                   <StatusButton
                     style={{ marginHorizontal: 5 }}
-                    bgColor={item.work_status_color}
+                    bgColor={generateCommentColor(item.work_status_name)}
                     widthSize={normalize(10)}
                     title={"    "+item.cmt_cnt}
                   />
