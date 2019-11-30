@@ -88,6 +88,8 @@ export default class NavigationComponent extends Component {
             text: "Confirm",
             style: "destructive",
             onPress: () => {
+              // const { cate, idx } = notification.data;
+              // alert(`cate: ${cate} - idx: ${idx}`)
             }
           }
         ],
@@ -120,6 +122,7 @@ export default class NavigationComponent extends Component {
                 text: "Confirm",
                 style: "destructive",
                 onPress: () => {
+                  
                 }
               }
             ],

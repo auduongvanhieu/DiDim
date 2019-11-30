@@ -4,6 +4,8 @@ import {
   Container, 
   Content, 
   Button ,
+  Text,
+
 } from "native-base";
 import {
   View,
@@ -12,7 +14,6 @@ import {
   Image,
   TouchableOpacity,
   AsyncStorage,
-  Text,
   StatusBar,
   StyleSheet,
   Platform
@@ -54,6 +55,13 @@ export default class LoginComponent extends Component {
     this.getCache();
   }
 
+  componentWillReceiveProps(nextProps){
+    if(nextProps.authorData && nextProps.authorData != this.props.authorData){
+      const {authorData} = nextProps;
+      this.setState({messageError: authorData.ReturnMsg});
+    }
+  }
+
   cacheMyLogin = async form => {
     const { isRemember } = this.state;
 
@@ -70,9 +78,7 @@ export default class LoginComponent extends Component {
 
     const objectToken = await getObjectToken();
     console.log("__token__", JSON.stringify(objectToken))
-    if(!objectToken)
-      getTokenRequest();
-    else{
+    if(objectToken) {
       const isAutoLogin = await getAutoLogin();       
       if(isAutoLogin == 'true'){
         const authCache = await getAuthCache();
@@ -92,7 +98,7 @@ export default class LoginComponent extends Component {
     this.setState({isRemember: !this.state.isRemember})
   }
 
-  onSubmitForm = async form => {
+  onSubmitForm = form => {
     const { authorizeRequest, getTokenRequest } = this.props;
 
     // var text = aesEncrypt("cmd=GET_LIST_AS_REQUEST", "XCKD3C1C2Z6B8VCCUFBSW8UPA9AR8VL7")
@@ -115,10 +121,7 @@ export default class LoginComponent extends Component {
     }
     Config.userName = form.user;
     this.cacheMyLogin(form);
-    await getTokenRequest();
-    await authorizeRequest({
-      Par: `managed_url=${form.managed_url}&user=${form.user}&password=${form.password}&fcm_token=${Config.fcmToken}&os_type=${Platform.OS}`
-    })
+    getTokenRequest(form);
   };
 
   /**
@@ -166,9 +169,9 @@ export default class LoginComponent extends Component {
               <Text style={{color: 'white', fontSize: 20}}>{I18n.t('login')}</Text>
             </Button>
             { this.state.messageError.length != "" &&
-            <View style={{backgroundColor: '#f2f2f4', width: '100%', height: normalize(35), marginTop: 10, borderRadius: 10, flexDirection: 'row', alignItems: 'center', paddingHorizontal: 10}}>
+            <View style={{backgroundColor: '#f2f2f4', width: '100%', paddingVertical: 10, marginTop: 10, borderRadius: 10, flexDirection: 'row', alignItems: 'center', paddingHorizontal: 10}}>
               <FontAwesome size={30} name='comment-o' color='#ff3b3b' />
-              <Text style={{color: '#696969', marginLeft: 10}}>{this.state.messageError}</Text>
+              <Text style={{color: '#696969', marginLeft: 10, marginRight: 25}}>{this.state.messageError}</Text>
             </View>
             }
           </View>

@@ -8,6 +8,7 @@ import { navigateToStatusInfoScreenAction } from '../../actions/NavigationAction
 const mapStateToProps = state => ({
     isAutoLogin: state.autoLoginReducer.isAutoLogin,
     getTokenData: state.getTokenReducer.receivedData,
+    authorData: state.login.receivedData,
 })
 
 const mapDispatchToProps = dispatch => ({
