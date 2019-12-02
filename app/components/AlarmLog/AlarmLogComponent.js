@@ -24,6 +24,7 @@ import ModalDropdown from 'react-native-modal-dropdown';
 import FontAwesome from 'react-native-vector-icons/FontAwesome'
 import { CheckBox } from "react-native-elements";
 import NoDataView from "../CustomView/NoDataView";
+import { generateStatusColor } from "../../utilities/Helper";
 
 const screenWidth = Dimensions.get("window").width;
 const screenHeight = Dimensions.get("window").height;
@@ -164,9 +165,9 @@ export default class AlarmLogComponent extends Component {
                 <View style={{ width: normalize(50), flexDirection: "row" }}>
                   <StatusButton
                     style={{ marginHorizontal: 5 }}
-                    bgColor={item.color}
+                    bgColor={generateStatusColor(item.status)}
                     widthSize={normalize(10)}
-                    title={item.alarm_type}
+                    title={item.status}
                   />
                 </View>
                 <Text

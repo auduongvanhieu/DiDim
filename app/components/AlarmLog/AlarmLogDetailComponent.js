@@ -22,6 +22,7 @@ import { AppColors, AppConstant } from "../../utilities/Constants";
 import StatusButton from "../CustomView/StatusButton";
 import HeaderMenu from "../CustomView/HeaderMenu";
 import { Images } from "../../assets";
+import { generateStatusColor } from "../../utilities/Helper";
 
 const screenWidth = Dimensions.get("window").width;
 const screenHeight = Dimensions.get("window").height;
@@ -64,14 +65,14 @@ export default class AlarmLogDetailComponent extends Component {
     const {navigateToAlarmLogScreen, failureAlarmLogDetailData} = this.props;
     return (
       <Container>
-      {failureAlarmLogDetailData && console.log("__haha__",JSON.stringify(failureAlarmLogDetailData))}
+      {/* {failureAlarmLogDetailData && console.log("__haha__",JSON.stringify(failureAlarmLogDetailData))} */}
         <StatusBar backgroundColor={AppColors.headerBg2}/>
         <HeaderMenu backAction={()=>navigateToAlarmLogScreen()} title={"Alarm Log"} />
         <View style={{paddingVertical: '4%', paddingHorizontal: '7%'}}>
           <Text style={{fontSize: normalize(18), color: '#140f26'}}>{failureAlarmLogDetailData && failureAlarmLogDetailData.target_name}</Text>
           <View style={{flexDirection: 'row'}}>
             <View style={{width: normalize(50), flexDirection: 'row'}}>
-              <StatusButton title={failureAlarmLogDetailData && failureAlarmLogDetailData.alarm_type} bgColor="blue"/>
+              <StatusButton title={failureAlarmLogDetailData && failureAlarmLogDetailData.status} bgColor={failureAlarmLogDetailData && generateStatusColor(failureAlarmLogDetailData.status)}/>
             </View>
             <Image source={Images.ico_clock_b} style={{height: normalize(15), width: normalize(15),  marginLeft: 10}} />
             <Text style={{fontSize: normalize(12), alignSelf: 'center'}}> {failureAlarmLogDetailData && failureAlarmLogDetailData.end_time}</Text>
@@ -96,7 +97,7 @@ export default class AlarmLogDetailComponent extends Component {
           <View style={styles.horizontalBar} />
           <View style={styles.itemContainer}>
             <Text style={styles.textLeft}>Monitoring Type</Text>
-            <Text style={styles.textRight}>{failureAlarmLogDetailData && failureAlarmLogDetailData.alarm_cat}</Text>
+            <Text style={styles.textRight}>{failureAlarmLogDetailData && failureAlarmLogDetailData.alarm_type}</Text>
           </View>
           <View style={styles.horizontalBar} />
           <View style={styles.itemContainer}>

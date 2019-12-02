@@ -57,7 +57,8 @@ export default class SupportWriteComponent extends Component {
       textModelSearch: "",
       listAccountNumberHorizontal: [],
       listAccountNumberModal: [],
-      requestTypeIndex: 0
+      requestTypeIndex: 0,
+      isDisplayAccountNumber: true
     };
   }
 
@@ -84,7 +85,7 @@ export default class SupportWriteComponent extends Component {
       }
     }
     if(nextProps.asRequestRegistrationData && nextProps.asRequestRegistrationData!=this.props.asRequestRegistrationData){
-      const {asRequestListRequest} = this.props;
+      const {asRequestListRequest, navigateToSupportCenterScreen} = this.props;
       Alert.alert(
         "Notification",
         "Request is performed",
@@ -100,6 +101,7 @@ export default class SupportWriteComponent extends Component {
                 contact: "",
               });
               asRequestListRequest({Par: 'cmd=GET_LIST_AS_REQUEST'})
+              navigateToSupportCenterScreen();
             }
           }
         ],
@@ -118,7 +120,7 @@ export default class SupportWriteComponent extends Component {
 
   onPressRegistration = () =>{
     const {asRequestRegistrationRequest, asRequestTypeListData} = this.props;
-    const { email, mobile, title, contact, requestTypeIndex } = this.state;
+    const { email, mobile, title, contact, requestTypeIndex, isDisplayAccountNumber} = this.state;
     var refGuestNo = "";
     this.state.listAccountNumberHorizontal.forEach(element => {
       if(element.added && element.geust_no){
@@ -128,7 +130,10 @@ export default class SupportWriteComponent extends Component {
           refGuestNo = refGuestNo +","+ element.geust_no
       }
     });
-    asRequestRegistrationRequest({Par: `cmd=ADD_AS_REQUEST&cate_idx=${asRequestTypeListData[requestTypeIndex].idx}&title=${title}&content=${contact}&email=${email}&write_htel=${mobile}&refGuestNo=${refGuestNo}`})
+    if(isDisplayAccountNumber)
+      asRequestRegistrationRequest({Par: `cmd=ADD_AS_REQUEST&cate_idx=${asRequestTypeListData[requestTypeIndex].idx}&title=${title}&content=${contact}&email=${email}&write_htel=${mobile}&refGuestNo=${refGuestNo}`})
+    else
+      asRequestRegistrationRequest({Par: `cmd=ADD_AS_REQUEST&cate_idx=${asRequestTypeListData[requestTypeIndex].idx}&title=${title}&content=${contact}&email=${email}&write_htel=${mobile}`})
   }
 
   onPressCancel = () =>{
@@ -180,7 +185,7 @@ export default class SupportWriteComponent extends Component {
       asRequestTypeListData,
       guestNoListData
     } = this.props;
-    const {requestTypeIndex} = this.state;
+    const {requestTypeIndex, isDisplayAccountNumber} = this.state;
     return (
       <KeyboardAvoidingView>
       {/* {asRequestTypeListData && console.log("__haha__", JSON.stringify(asRequestTypeListData))} */}
@@ -200,7 +205,9 @@ export default class SupportWriteComponent extends Component {
               dropdownStyle={{height: normalize(170), marginTop: 10}}
               defaultValue={asRequestTypeListData[requestTypeIndex].name}
               defaultIndex={requestTypeIndex}
-              onSelect={(index)=> this.setState({ requestTypeIndex: index })}
+              onSelect={(index)=> this.setState({ requestTypeIndex: index, 
+                        isDisplayAccountNumber:  asRequestTypeListData[index].idx == 5 
+                        || asRequestTypeListData[index].idx == 6 ? true : false})}
               textStyle={{fontSize: normalize(13), color: '#3b3b4d', fontWeight: 'bold'}}
               renderRow={this._dropdown_renderRow}
               showsVerticalScrollIndicator={false}
@@ -212,41 +219,44 @@ export default class SupportWriteComponent extends Component {
           </View>
         </View>
         <View style={styles.horizontalBar} />
-        <View style={styles.containerHorizontal}>
-          <View style={styles.containerLeft}>
-            <Text style={styles.textLeft}>Account Number</Text>
+        {
+          isDisplayAccountNumber &&
+          <View style={styles.containerHorizontal}>
+            <View style={styles.containerLeft}>
+              <Text style={styles.textLeft}>Account Number</Text>
+            </View>
+            <ScrollView horizontal={true}>
+              {this.state.listAccountNumberHorizontal.map(item => {
+                return item.added == true ? (
+                  <View style={styles.containerAccountNumber}>
+                    <Text
+                      style={{
+                        color: "white",
+                        fontSize: normalize(12),
+                        marginRight: 5
+                      }}
+                    >
+                      {item.geust_no}
+                    </Text>
+                    <Ionicons size={15} name="md-close" color="white" />
+                  </View>
+                ) : null;
+              })}
+            </ScrollView>
+            <Ionicons
+              onPress={() => {
+                // for (let index = 0 ; index < listAccountNumber.length; index++) {
+                //   this.state.listAccountNumberModal.push(listAccountNumber[index]);
+                // }
+                this.toggleModal()
+              }}
+              size={25}
+              name="md-add-circle"
+              color="blue"
+              style={{ marginLeft: 5 }}
+            />
           </View>
-          <ScrollView horizontal={true}>
-            {this.state.listAccountNumberHorizontal.map(item => {
-              return item.added == true ? (
-                <View style={styles.containerAccountNumber}>
-                  <Text
-                    style={{
-                      color: "white",
-                      fontSize: normalize(12),
-                      marginRight: 5
-                    }}
-                  >
-                    {item.geust_no}
-                  </Text>
-                  <Ionicons size={15} name="md-close" color="white" />
-                </View>
-              ) : null;
-            })}
-          </ScrollView>
-          <Ionicons
-            onPress={() => {
-              // for (let index = 0 ; index < listAccountNumber.length; index++) {
-              //   this.state.listAccountNumberModal.push(listAccountNumber[index]);
-              // }
-              this.toggleModal()
-            }}
-            size={25}
-            name="md-add-circle"
-            color="blue"
-            style={{ marginLeft: 5 }}
-          />
-        </View>
+          }
         <View style={styles.horizontalBar} />
         <View style={styles.containerHorizontal}>
           <View style={styles.containerLeft}>

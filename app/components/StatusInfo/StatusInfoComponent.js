@@ -27,7 +27,7 @@ import { Images } from "../../assets";
 import ModalDropdown from 'react-native-modal-dropdown';
 import NoDataView from "../CustomView/NoDataView";
 import { SuperObjects } from "../../utilities/Config";
-import { generateStatusColor, generateImageOS } from "../../utilities/Helper";
+import { generateStatusColor, generateImageOS, generateServerIcon } from "../../utilities/Helper";
 
 const screenWidth = Dimensions.get("window").width;
 const screenHeight = Dimensions.get("window").height;
@@ -196,7 +196,7 @@ export default class StatusInfoComponent extends Component {
                 alarmItemListRequest({Par: `cmd=GET_LIST_ALARM_ITEM&gno=${item.svr_no}`})
               }} 
               style={{flexDirection: 'row', marginVertical: 5, justifyContent: 'center', alignItems: 'center', marginHorizontal: '6%', paddingVertical: 5}}>
-              <Image style={{width: 25, height: 25}} resizeMode='contain' source={generateImageOS(item.os_gubn)} />
+              <Image style={{width: 25, height: 25}} resizeMode='contain' source={generateServerIcon(item.os_gubn,item.server_gubn)} />
               <View style={{backgroundColor: generateStatusColor(item.status), width: normalize(8), height: normalize(8), borderRadius: 5, marginLeft: 10, marginTop: -35}}/>
               <View style={{ flex: 1, marginLeft: 3}}>
                 <Text style={{color: AppColors.textMain, fontSize: normalize(15)}}>{item.guest_name}</Text>

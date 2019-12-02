@@ -52,7 +52,7 @@ import { Api } from '../Api'
 import { START_LOADING, STOP_LOADING, SHOW_ERROR_ALERT } from '../../actions/AppActions/actionTypes';
 import { showErrorAlertAction } from '../../actions/AppActions/actionCreators';
 import I18n from '../../I18n';
-import { navigateToStatusInfoScreenAction } from '../../actions/NavigationActions/actionCreators';
+import { navigateToSupportCenterScreenAction } from '../../actions/NavigationActions/actionCreators';
 import { Images } from '../../assets';
 import { asRequestListRequestAction } from '../../actions/OthersActions/actionCreators';
 
@@ -249,6 +249,7 @@ function* asRequestDetail(action) {
         // yield put({ type: START_LOADING })
         const receivedDataTemp = yield Api.mainApi(action.payload)
         receivedData = JSON.parse(receivedDataTemp)
+        // console.log("__haha__",JSON.stringify(receivedData))
         if (receivedData && receivedData.ReturnValue && receivedData.Items.length>0) {
             yield put({ type: AS_REQUEST_DETAIL_SUCCEEDED, payload: receivedData.Items[0] })
             yield put({ type: STOP_LOADING })
@@ -256,6 +257,7 @@ function* asRequestDetail(action) {
             yield put(showErrorAlertAction({ title: I18n.t('failure'), description: receivedData.ReturnMsg }))
             yield put({ type: AS_REQUEST_DETAIL_FAILED, payload: undefined})
             yield put({ type: STOP_LOADING })
+            yield put(navigateToSupportCenterScreenAction());
         }
     } catch (error) {
         console.log(error);

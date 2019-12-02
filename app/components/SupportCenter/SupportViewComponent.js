@@ -121,7 +121,7 @@ export default class SupportViewComponent extends Component {
     const {listReply} = this.state;
     return (
       <Container>
-        {asRequestDetailData && console.log("__haha__",JSON.stringify(asRequestDetailData))}
+        {/* {asRequestDetailData && console.log("__haha__",JSON.stringify(asRequestDetailData))} */}
         {/* {commentRegistrationData && console.log("__haha__",JSON.stringify(commentRegistrationData))} */}
         <StatusBar backgroundColor={AppColors.headerBg2} />
         <HeaderMenu
@@ -183,11 +183,11 @@ export default class SupportViewComponent extends Component {
           <Text style={styles.textReply}>Reply</Text>
           <FlatList
             data={listReply}
-            ListEmptyComponent={<NoDataView/>}
+            // ListEmptyComponent={<NoDataView/>}
             renderItem={({ item, index }) =>
               item.write_name == Config.userName ? (
                 <View>
-                  <View style={{ flexDirection: "row", marginTop: 20 }}>
+                  <View style={{ flexDirection: "row", marginTop: 30 }}>
                     <Text style={styles.titleComment1}>{item.write_name}</Text>
                     <View style={{ flex: 1 }} />
                     <Text
@@ -203,7 +203,7 @@ export default class SupportViewComponent extends Component {
                 </View>
               ) : (
                 <View>
-                  <View style={{ flexDirection: "row", marginTop: 20 }}>
+                  <View style={{ flexDirection: "row", marginTop: 30 }}>
                     <Text style={styles.titleComment2}>{item.write_name}</Text>
                     <View style={{ flex: 1 }} />
                     <Text
