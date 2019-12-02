@@ -124,7 +124,16 @@ export default class ServerDetailComponent extends Component {
    * Render views
    */
   render() {
-    const {tab, changeTabIndexServerDetail, navData, serverDetailData, alarmItemListData} = this.props;
+    const {
+      tab,
+      changeTabIndexServerDetail,
+      navData,
+      serverDetailData,
+      alarmItemListData,
+
+      navigateToAlarmLogDetailScreen,
+      failureAlarmLogDetailRequest
+    } = this.props;
     const {hourIndex} = this.state;
     return (
       <Container>
@@ -337,6 +346,10 @@ export default class ServerDetailComponent extends Component {
                   style={{
                     marginHorizontal: 20,
                     paddingVertical: normalize(15)
+                  }}
+                  onPress={() => {
+                    navigateToAlarmLogDetailScreen();
+                    failureAlarmLogDetailRequest({Par: `cmd=GET_INFO_ALARM_DOWN_LOG&log_uid=${item.log_uid}`})
                   }}
                 >
                   <View style={{ flexDirection: "row", alignItems: "center" }}>

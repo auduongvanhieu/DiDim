@@ -9,6 +9,14 @@ import { normalize } from "../../utilities/ThemeUtils";
 import firebase from "react-native-firebase";
 
 export default class NavigationComponent extends Component {
+
+  constructor(props) {
+    super(props);
+    this.state={
+      notificationData: undefined
+    }
+  }
+
   componentWillMount() {}
 
   componentDidMount() {
@@ -25,6 +33,41 @@ export default class NavigationComponent extends Component {
     // Firebase
     this.notificationListener;
     this.notificationOpenedListener;
+  }
+
+  componentWillReceiveProps(nextProps){
+
+    if(nextProps.serverListData && nextProps.serverListData != this.props.serverListData && this.state.notificationData){
+      const {title, text, cate, idx } = this.state.notificationData;
+      Alert.alert(
+        title,
+        text,
+        [
+          {
+            text: "Confirm",
+            style: "destructive",
+            onPress: () => {
+              const {
+                navigateToAlarmLogDetailScreen,
+                failureAlarmLogDetailRequest,
+                navigateToSupportViewScreen,
+                asRequestDetailRequest
+              } = this.props;   
+              this.setState({notificationData: undefined}, ()=>{
+                if(cate=="ALARM"){
+                  navigateToAlarmLogDetailScreen();
+                  failureAlarmLogDetailRequest({Par: `cmd=GET_INFO_ALARM_DOWN_LOG&log_uid=${idx}`})  
+                } else {
+                  navigateToSupportViewScreen({board_idx: idx});
+                  asRequestDetailRequest({Par: `cmd=GET_INFO_AS_REQUEST&board_idx=${idx}`})
+                }
+              })
+            }
+          }
+        ],
+        { cancelable: false }
+      );
+    }
   }
 
   // Start firebase
@@ -77,24 +120,41 @@ export default class NavigationComponent extends Component {
           .displayNotification(localNotification)
           .catch(err => console.error(err));
 
-    /*
-     * Hiện thông khi đang mở app
-     * */
-     Alert.alert(
-        title,
-        text,
-        [
-          {
-            text: "Confirm",
-            style: "destructive",
-            onPress: () => {
-              // const { cate, idx } = notification.data;
-              // alert(`cate: ${cate} - idx: ${idx}`)
+      /*
+      * Hiện thông khi đang mở app
+      * */
+      this.setState({notificationData: notification.data})
+      if(this.props.serverListData){
+        const {title, text, cate, idx } = this.state.notificationData;
+        Alert.alert(
+          title,
+          text,
+          [
+            {
+              text: "Confirm",
+              style: "destructive",
+              onPress: () => {
+                const {
+                  navigateToAlarmLogDetailScreen,
+                  failureAlarmLogDetailRequest,
+                  navigateToSupportViewScreen,
+                  asRequestDetailRequest
+                } = this.props;   
+                this.setState({notificationData: undefined}, ()=>{
+                  if(cate=="ALARM"){
+                    navigateToAlarmLogDetailScreen();
+                    failureAlarmLogDetailRequest({Par: `cmd=GET_INFO_ALARM_DOWN_LOG&log_uid=${idx}`})  
+                  } else {
+                    navigateToSupportViewScreen({board_idx: idx});
+                    asRequestDetailRequest({Par: `cmd=GET_INFO_AS_REQUEST&board_idx=${idx}`})
+                  }
+                })
+              }
             }
-          }
-        ],
-        { cancelable: false }
-      );
+          ],
+          { cancelable: false }
+        );
+      }
     });
 
     const channel = new firebase.notifications.Android.Channel(
@@ -111,9 +171,10 @@ export default class NavigationComponent extends Component {
      * */
     this.notificationOpenedListener = firebase
       .notifications()
-      .onNotificationOpened(notificationOpen => {
-        const { title, text } = notificationOpen.notification._data;
-        if (title && title != "") 
+      .onNotificationOpened(notification => {
+        this.setState({notificationData: notification.data})
+        if(this.props.serverListData){
+          const {title, text, cate, idx } = this.state.notificationData;
           Alert.alert(
             title,
             text,
@@ -122,12 +183,27 @@ export default class NavigationComponent extends Component {
                 text: "Confirm",
                 style: "destructive",
                 onPress: () => {
-                  
+                  const {
+                    navigateToAlarmLogDetailScreen,
+                    failureAlarmLogDetailRequest,
+                    navigateToSupportViewScreen,
+                    asRequestDetailRequest
+                  } = this.props;   
+                  this.setState({notificationData: undefined}, ()=>{
+                    if(cate=="ALARM"){
+                      navigateToAlarmLogDetailScreen();
+                      failureAlarmLogDetailRequest({Par: `cmd=GET_INFO_ALARM_DOWN_LOG&log_uid=${idx}`})  
+                    } else {
+                      navigateToSupportViewScreen({board_idx: idx});
+                      asRequestDetailRequest({Par: `cmd=GET_INFO_AS_REQUEST&board_idx=${idx}`})
+                    }
+                  })
                 }
               }
             ],
             { cancelable: false }
           );
+        }
       });
 
     /*
@@ -137,34 +213,7 @@ export default class NavigationComponent extends Component {
       .notifications()
       .getInitialNotification();
     if (notificationOpen) {
-      alert(JSON.stringify(notificationOpen))
-      const { title, text } = notificationOpen.notification._data;
-        if (title && title != "")
-          Alert.alert(
-            title,
-            text,
-            [
-              {
-                text: "Confirm",
-                style: "destructive",
-                onPress: () => {
-                }
-              }
-            ],
-            { cancelable: false }
-          );
-    }
-  }
-
-
-
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.alert !== this.props.alert) {
-      this.dropdown.alertWithType(
-        nextProps.alert.type,
-        nextProps.alert.title,
-        nextProps.alert.description
-      );
+      this.setState({notificationData: notificationOpen.notification._data})
     }
   }
 
