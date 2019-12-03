@@ -31,6 +31,7 @@ import { Config, SuperObjects } from "../../utilities/Config";
 import { WebView } from 'react-native-webview';
 import { generateStatusText, generateStatusColor } from "../../utilities/Helper";
 import NoDataView from "../CustomView/NoDataView";
+import Carousel, { Pagination } from 'react-native-snap-carousel';
 
 const screenWidth = Dimensions.get("window").width;
 const screenHeight = Dimensions.get("window").height;
@@ -46,6 +47,18 @@ const hours = [
   { title: "30 days", value: "30D" }
 ];
 
+const titleLinuxTop = ["UpTime", "Load", "CPU"];
+const deviceLinuxTop = ["uptime", "loadavg", "cpu"];
+
+const titleLinuxBottom = ["Memory", "Swap", "Disk Free Space", "Tcp Connect"];
+const deviceLinuxBottom = ["mem", "swap", "df", "tcpconn"];
+
+const titleWinTop = ["UpTime", "CPU", "Memory"];
+const deviceWinTop = ["uptime", "cpu", "mem"];
+
+const titleWinBottom = ["Disk Free Space", "Tcp Connect"];
+const deviceWinBottom = ["df", "tcpconn"];
+
 export default class ServerDetailComponent extends Component {
   /**
    * Constructor
@@ -55,17 +68,19 @@ export default class ServerDetailComponent extends Component {
     super(props);
     this.state={
       hourIndex: 3,
-      visibleLoadingLoad: true,
-      visibleLoadingCPU: true,
+      visibleLoadingTop: true,
+      visibleLoadingBottom: true,
+      indexGraphTop: 0,
+      indexGraphBottom: 0,
     }
   }
 
-  hideLoadingLoad() {
-    this.setState({ visibleLoadingLoad: false });
+  hideLoadingTop() {
+    this.setState({ visibleLoadingTop: false });
   }
 
-  hideLoadingCPU() {
-    this.setState({ visibleLoadingCPU: false });
+  hideLoadingBottom() {
+    this.setState({ visibleLoadingBottom: false });
   }
 
   componentDidMount(){
@@ -82,9 +97,11 @@ export default class ServerDetailComponent extends Component {
   componentWillReceiveProps(nextProps){
     if(nextProps.tab){
       this.setState({
-        visibleLoadingLoad: true,
-        visibleLoadingCPU: true,
-        hourIndex: 3
+        visibleLoadingTop: true,
+        visibleLoadingBottom: true,
+        hourIndex: 3,
+        indexGraphTop: 0,
+        indexGraphBottom: 0,
       })
     }
   }
@@ -120,6 +137,64 @@ export default class ServerDetailComponent extends Component {
     );
   }
 
+  _renderItemTop = ({item, index}) => {
+    const {
+      navData,
+    } = this.props;
+    const {hourIndex} = this.state;
+    return (
+      <View>
+        <View style={{ height: screenHeight / 4, backgroundColor: "white" }}>
+          <View style={styles.containerChart}>
+            {navData && (
+              <WebView
+                source={{
+                  uri: `${Config.graphURL}?access_token=${Config.sAccessToken}&gno=${navData.gno}&device=${navData.os == "L" ? deviceLinuxTop[index] : deviceWinTop[index]}&period=${hours[hourIndex].value}`
+                }}
+                style={{ width: "185%", height: "150%" }}
+                onLoad={() => this.hideLoadingTop()}
+              />
+            )}
+            {this.state.visibleLoadingTop && (
+              <ActivityIndicator
+                style={{ position: "absolute", top: "40%", left: "45%" }}
+                size="large"
+              />
+            )}
+          </View>
+        </View>
+      </View>);
+  }
+
+  _renderItemBottom = ({item, index}) => {
+    const {
+      navData,
+    } = this.props;
+    const {hourIndex} = this.state;
+    return (
+      <View>
+        <View style={{ height: screenHeight / 4, backgroundColor: "white" }}>
+          <View style={styles.containerChart}>
+            {navData && (
+              <WebView
+                source={{
+                  uri: `${Config.graphURL}?access_token=${Config.sAccessToken}&gno=${navData.gno}&device=${navData.os == "L" ? deviceLinuxBottom[index] : deviceWinBottom[index]}&period=${hours[hourIndex].value}`
+                }}
+                style={{ width: "185%", height: "150%" }}
+                onLoad={() => this.hideLoadingBottom()}
+              />
+            )}
+            {this.state.visibleLoadingBottom && (
+              <ActivityIndicator
+                style={{ position: "absolute", top: "40%", left: "45%" }}
+                size="large"
+              />
+            )}
+          </View>
+        </View>
+      </View>);
+  }
+
   /**
    * Render views
    */
@@ -134,7 +209,7 @@ export default class ServerDetailComponent extends Component {
       navigateToAlarmLogDetailScreen,
       failureAlarmLogDetailRequest
     } = this.props;
-    const {hourIndex} = this.state;
+    const {hourIndex, indexGraphTop, indexGraphBottom} = this.state;
     return (
       <Container>
         {/* {serverDetailData && console.log("__haha__",JSON.stringify(serverDetailData))} */}
@@ -271,7 +346,7 @@ export default class ServerDetailComponent extends Component {
                   defaultValue={hours[hourIndex].title}
                   defaultIndex={hourIndex}
                   onSelect={index => {
-                    this.setState({ hourIndex: index, visibleLoadingLoad: true, visibleLoadingCPU: true });
+                    this.setState({ hourIndex: index, visibleLoadingTop: true, visibleLoadingBottom: true });
                   }}
                   textStyle={{
                     fontSize: normalize(13),
@@ -287,49 +362,27 @@ export default class ServerDetailComponent extends Component {
             </View>
             <ScrollView>
               <View style={styles.containerHeaderTab2}>
-                <Text style={styles.textTitleHeaderTab2}>Load</Text>
+                <Text style={styles.textTitleHeaderTab2}>{navData.os == "L" ? titleLinuxTop[indexGraphTop] : titleWinTop[indexGraphTop]}</Text>
               </View>
-              <View
-                style={{ height: screenHeight / 4, backgroundColor: "white" }}
-              >
-                <View style={styles.containerChart}>
-                { navData && 
-                  <WebView
-                    source={{ uri: `${Config.graphURL}?access_token=${Config.sAccessToken}&gno=${navData.gno}&device=loadavg&period=${hours[hourIndex].value}` }}
-                    style={{width: '185%', height: '150%'}}
-                    onLoad={() => this.hideLoadingLoad()}
-                  />
-                }
-                {this.state.visibleLoadingLoad && (
-                  <ActivityIndicator
-                    style={{ position: 'absolute', top: '40%', left: '45%' }}
-                    size="large"
-                  />
-                )}
-                </View>
-              </View>
+              <Carousel
+                ref={(c) => { this._carousel = c; }}
+                data={navData.os == "L" ? deviceLinuxTop : deviceWinTop}
+                renderItem={this._renderItemTop}
+                sliderWidth={screenWidth}
+                itemWidth={screenWidth}
+                onSnapToItem={(index) => {this.setState({indexGraphTop: index})} }
+              />
               <View style={styles.containerHeaderTab2}>
-                <Text style={styles.textTitleHeaderTab2}>CPU</Text>
+                <Text style={styles.textTitleHeaderTab2}>{navData.os == "L" ? titleLinuxBottom[indexGraphBottom] : titleWinBottom[indexGraphBottom]}</Text>
               </View>
-              <View
-                style={{ height: screenHeight / 4 + normalize(10), backgroundColor: "white" }}
-              >
-                <View style={styles.containerChart}>
-                { navData && 
-                  <WebView
-                    source={{ uri: `${Config.graphURL}?access_token=${Config.sAccessToken}&gno=${navData.gno}&device=cpu&period=${hours[hourIndex].value}` }}
-                    style={{width: '185%', height: '150%'}}
-                    onLoad={() => this.hideLoadingCPU()}
-                  />
-                }
-                {this.state.visibleLoadingCPU && (
-                  <ActivityIndicator
-                    style={{ position: 'absolute', top: '40%', left: '45%' }}
-                    size="large"
-                  />
-                )}
-                </View>
-              </View>
+              <Carousel
+                ref={(c) => { this._carousel = c; }}
+                data={navData.os == "L" ? deviceLinuxBottom : deviceWinBottom}
+                renderItem={this._renderItemBottom}
+                sliderWidth={screenWidth}
+                itemWidth={screenWidth}
+                onSnapToItem={(index) => {this.setState({indexGraphBottom: index})} }
+              />
             </ScrollView>
           </View>
         )}
