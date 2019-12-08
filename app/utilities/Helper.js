@@ -138,7 +138,7 @@ function generateNameColor(shortText) {
     case "해결":
       color = "#FF4D4D";
       break;
-    case "완료":
+    case "종료":
       color = "#14D2B8";
       break;
   }

@@ -151,9 +151,9 @@ export default class LoginComponent extends Component {
                 hideClearButton={true}
                 onSubmit={this.onSubmitForm.bind(this)}
                 initialValues={{
-                  managed_url: "cloud-didim.3-pod.com",
-                  user: "qtsoft",
-                  password: "qtsoft001##"
+                  managed_url: "",
+                  user: "",
+                  password: ""
                 }}
             />
             </View>

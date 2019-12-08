@@ -45,11 +45,11 @@ const hours = [
   { title: "30 days", value: "30D" }
 ];
 
-const titleLinuxTop = ["UpTime", "Load", "CPU"];
-const deviceLinuxTop = ["uptime", "loadavg", "cpu"];
+const titleLinuxTop = ["UpTime", "Load", "CPU", "Memory"];
+const deviceLinuxTop = ["uptime", "loadavg", "cpu", "mem"];
 
-const titleLinuxBottom = ["Memory", "Swap", "Disk Free Space", "Tcp Connect"];
-const deviceLinuxBottom = ["mem", "swap", "df", "tcpconn"];
+const titleLinuxBottom = ["Swap", "Disk Free Space", "Tcp Connect"];
+const deviceLinuxBottom = ["swap", "df", "tcpconn"];
 
 const titleWinTop = ["UpTime", "CPU", "Memory"];
 const deviceWinTop = ["uptime", "cpu", "mem"];
@@ -136,30 +136,28 @@ export default class ServerDetailComponent extends Component {
   };
 
   _renderGraphItem = ({ item, index }) => {
-    const {} = this.props;
+    const {navData} = this.props;
     return (
       <View>
-        {/** TITLE */}
-        {titleLinuxTop && titleLinuxTop[index] && (
+        {/** TITLE TOP*/}
           <View style={styles.containerHeaderTab2}>
             <Text style={styles.textTitleHeaderTab2}>
-              {titleLinuxTop[index]}
+              {navData.os == "L" ? titleLinuxTop[index] : titleWinTop[index]}
             </Text>
           </View>
-        )}
         {/** GRAPHQL */}
-        {titleLinuxTop && titleLinuxTop[index] && this._renderItemTop({ item, index })}
-        {/** TITLE */}
-
-        {titleWinBottom && titleWinBottom[index] && (
+        {this._renderItemTop({ item, index })}
+        {/** TITLE BOTTOM*/}
+        { ((navData.os == "L" && index!=3) || (navData.os == "W" && index!=2)) &&
           <View style={styles.containerHeaderTab2}>
             <Text style={styles.textTitleHeaderTab2}>
-              {titleWinBottom[index]}
+              {navData.os == "L" ? titleLinuxBottom[index] : titleWinBottom[index]}
             </Text>
           </View>
-        )}
+        }
         {/** GRAPHQL */}
-        {titleWinBottom && titleWinBottom[index] && this._renderItemBottom({ item, index })}
+        { ((navData.os == "L" && index!=3) || (navData.os == "W" && index!=2)) && 
+          this._renderItemBottom({ item, index })}
       </View>
     );
   };
@@ -412,7 +410,7 @@ export default class ServerDetailComponent extends Component {
                   this._carousel = c;
                 }}
                 data={
-                  deviceLinuxTop.length > deviceWinTop.length
+                    navData.os == "L"
                     ? deviceLinuxTop
                     : deviceWinTop
                 }

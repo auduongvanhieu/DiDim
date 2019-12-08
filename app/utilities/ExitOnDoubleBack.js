@@ -4,7 +4,7 @@ import {BackHandler, ToastAndroid} from 'react-native';
 import noop from './helpers/noop';
 import { connect } from 'react-redux'
 import getCurrentRouteName from './helpers/getCurrentRoute';
-import {goBackAction } from '../actions/NavigationActions/actionCreators';
+import {goBackAction, navigateToAlarmLogScreenAction, navigateToSupportCenterScreenAction } from '../actions/NavigationActions/actionCreators';
 
 class ExitOnDoubleBack extends Component {
   componentWillMount () {
@@ -27,13 +27,18 @@ class ExitOnDoubleBack extends Component {
   }
 
   _handleBackPress = () => {
-    const {currentNavi,goBack} = this.props;
+    const {currentNavi, goBack, navigateToAlarmLogScreen, navigateToSupportCenterScreen} = this.props;
     console.log("__currentNaviKey__", currentNaviKey)
     let currentNaviKey = getCurrentRouteName(currentNavi);
     if (currentNaviKey && this.props.exitableRoutes.includes(currentNaviKey)) { // exit the app from landing page
       return this._handleExit();
     } else { // in all the other cases, navigate back
-      goBack()
+      switch(currentNaviKey){
+        case "AlarmLogDetail": navigateToAlarmLogScreen(); break;
+        case "SupportView": navigateToSupportCenterScreen(); break;
+        case "SupportWrite": navigateToSupportCenterScreen(); break;
+        default: goBack();
+      }
       return true
     }
   }
@@ -74,6 +79,8 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   goBack: () => dispatch(goBackAction()),
+  navigateToAlarmLogScreen: (params) => dispatch(navigateToAlarmLogScreenAction(params)),
+  navigateToSupportCenterScreen: (params) => dispatch(navigateToSupportCenterScreenAction(params)),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(ExitOnDoubleBack)

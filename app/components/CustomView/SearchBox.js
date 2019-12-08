@@ -21,6 +21,7 @@ export default class SearchBox extends Component {
     title: PropTypes.string,
     value: PropTypes.string,
     onChangeText: PropTypes.func,
+    keyboardType: PropTypes.string,
   };
 
   // Set default prop values
@@ -35,7 +36,7 @@ export default class SearchBox extends Component {
   }
 
   render() {
-    const {title, value, onChangeText} = this.props;
+    const {title, value, onChangeText, keyboardType} = this.props;
     return (
       <View style={styles.headerContainer}>
         <View style={styles.headerContainer2}>
@@ -51,6 +52,7 @@ export default class SearchBox extends Component {
           value={value}
           style={{ flex: 1 }}
           placeholder={title}
+          keyboardType={keyboardType ? keyboardType : 'default'}
         />
       </View>
     );

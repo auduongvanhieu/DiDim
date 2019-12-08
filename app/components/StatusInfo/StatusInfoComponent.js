@@ -120,6 +120,7 @@ export default class StatusInfoComponent extends Component {
     return (
       <Container>
       {/* {serverListData && console.log("__haha__", serverListData)} */}
+      {/* {serverCountingData && console.log("__haha__", serverCountingData)} */}
         <StatusBar backgroundColor={AppColors.headerBg} />
         <HeaderMenuHome title={"Infra"} />
         <View style={{marginLeft: 5}}>

@@ -72,6 +72,7 @@ function LoginForm(props) {
                     editable={props.editable}
                     keyboardType='default'
                     autoCapitalize='none'
+                    returnKeyType={"next"}
                 />
 
                 <Field
@@ -84,6 +85,7 @@ function LoginForm(props) {
                     editable={props.editable}
                     keyboardType='default'
                     autoCapitalize='none'
+                    returnKeyType={"next"}
                 />
 
                 <Field
@@ -99,6 +101,7 @@ function LoginForm(props) {
                     autoCapitalize='none'
                     onRightImgPress={() => {
                     }}
+                    returnKeyType={"done"}
                 />
 
                 {props.hideSubmitButton ? null :

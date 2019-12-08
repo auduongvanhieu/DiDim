@@ -143,6 +143,7 @@ export default class SupportWriteComponent extends Component {
       title: "",
       contact: "",
     });
+    this.props.navigateToSupportCenterScreen();
   }
 
   _dropdown_renderRow = (option,index,isSelected) => {
@@ -226,7 +227,7 @@ export default class SupportWriteComponent extends Component {
               <Text style={styles.textLeft}>Account Number</Text>
             </View>
             <ScrollView horizontal={true}>
-              {this.state.listAccountNumberHorizontal.map(item => {
+              {this.state.listAccountNumberHorizontal.map((item, index) => {
                 return item.added == true ? (
                   <View style={styles.containerAccountNumber}>
                     <Text
@@ -238,7 +239,12 @@ export default class SupportWriteComponent extends Component {
                     >
                       {item.geust_no}
                     </Text>
-                    <Ionicons size={15} name="md-close" color="white" />
+                    <Ionicons 
+                      onPress={()=>{
+                        item.added = false;
+                        this.setState({})
+                      }}
+                      size={15} name="md-close" color="white" />
                   </View>
                 ) : null;
               })}
@@ -379,6 +385,7 @@ export default class SupportWriteComponent extends Component {
               />
               <View style={{ marginLeft: "5%" }}>
                 <SearchBox 
+                  keyboardType='numeric'
                   onChangeText={(textModelSearch) => {
                     this.setState({textModelSearch},()=>{
                       this.state.listAccountNumberModal = listAccountNumber.filter(

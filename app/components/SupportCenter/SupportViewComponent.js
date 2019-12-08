@@ -97,6 +97,7 @@ export default class SupportViewComponent extends Component {
           listReply.push(value)
         }
       }
+      listReply.sort((a,b)=>b.cmt_idx.localeCompare(a.cmt_idx))
       this.setState({listReply: listReply})
     }
 
