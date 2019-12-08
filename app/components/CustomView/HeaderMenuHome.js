@@ -65,10 +65,10 @@ class HeaderMenuHome extends Component {
   async componentWillReceiveProps(nextProps){
     if(nextProps.serverListData && nextProps.serverListData != this.props.serverListData){
       var serverListData = nextProps.serverListData.filter(item  => item.status == 'D')
-      this.state.listAlert[0].title = `확인이 필요한 장애 알람이 ${serverListData.length}건이 있습니다.`
+      this.state.listAlert[0].title = `확인이 필요한 장애 알람이 ${serverListData.length} 건이 있습니다.`
     }
     if(nextProps.asRequestListData && nextProps.asRequestListData != this.props.asRequestListData){
-      this.state.listAlert[1].title = `확인이 필요한 AS요청 답변이 ${nextProps.asRequestListData.length}건이 있습니다.`
+      this.state.listAlert[1].title = `확인이 필요한 AS요청 답변이 ${nextProps.asRequestListData.length} 건이 있습니다.`
     }
     if(nextProps.serverCountingData && nextProps.serverCountingData != this.props.serverCountingData){
       this.setState({numberNotify: nextProps.serverCountingData.total})

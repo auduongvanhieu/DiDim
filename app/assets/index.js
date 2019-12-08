@@ -46,6 +46,8 @@ const Images = {
     message_circle: require('./message_circle.png'),
     pf_thumb: require('./pf_thumb.png'),
     txt_didimcenter: require('./txt_didimcenter.png'),
+    ico_cloud_win: require('./ico_cloud_win.png'),
+    ico_cloud_linux: require('./ico_cloud_linux.png'),
 }
 
 // All Jsons

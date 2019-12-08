@@ -1,11 +1,6 @@
 import React, { Component } from "react";
 import I18n from "../../I18n";
-import { 
-  Container, 
-  Tab, 
-  Tabs,
-  TabHeading
-} from "native-base";
+import { Container, Tab, Tabs, TabHeading } from "native-base";
 import {
   View,
   Dimensions,
@@ -18,20 +13,23 @@ import {
   Image,
   Button,
   TouchableOpacity,
-  ActivityIndicator,
+  ActivityIndicator
 } from "react-native";
 import { normalize } from "../../utilities/ThemeUtils";
 import { AppColors, AppConstant } from "../../utilities/Constants";
 import StatusButton from "../CustomView/StatusButton";
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import FontAwesome from "react-native-vector-icons/FontAwesome";
 import HeaderMenu from "../CustomView/HeaderMenu";
 import { Images } from "../../assets";
-import ModalDropdown from 'react-native-modal-dropdown';
+import ModalDropdown from "react-native-modal-dropdown";
 import { Config, SuperObjects } from "../../utilities/Config";
-import { WebView } from 'react-native-webview';
-import { generateStatusText, generateStatusColor } from "../../utilities/Helper";
+import { WebView } from "react-native-webview";
+import {
+  generateStatusText,
+  generateStatusColor
+} from "../../utilities/Helper";
 import NoDataView from "../CustomView/NoDataView";
-import Carousel, { Pagination } from 'react-native-snap-carousel';
+import Carousel, { Pagination } from "react-native-snap-carousel";
 
 const screenWidth = Dimensions.get("window").width;
 const screenHeight = Dimensions.get("window").height;
@@ -66,13 +64,13 @@ export default class ServerDetailComponent extends Component {
    */
   constructor(props) {
     super(props);
-    this.state={
+    this.state = {
       hourIndex: 3,
       visibleLoadingTop: true,
       visibleLoadingBottom: true,
-      indexGraphTop: 0,
-      indexGraphBottom: 0,
-    }
+      // indexGraphTop: 0,
+      // indexGraphBottom: 0
+    };
   }
 
   hideLoadingTop() {
@@ -83,9 +81,9 @@ export default class ServerDetailComponent extends Component {
     this.setState({ visibleLoadingBottom: false });
   }
 
-  componentDidMount(){
-    this._navListener = this.props.navigation.addListener('didFocus', () => {
-      StatusBar.setBarStyle('light-content');
+  componentDidMount() {
+    this._navListener = this.props.navigation.addListener("didFocus", () => {
+      StatusBar.setBarStyle("light-content");
       StatusBar.setBackgroundColor(AppColors.headerBg2);
     });
   }
@@ -94,19 +92,19 @@ export default class ServerDetailComponent extends Component {
     this._navListener.remove();
   }
 
-  componentWillReceiveProps(nextProps){
-    if(nextProps.tab){
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.tab) {
       this.setState({
         visibleLoadingTop: true,
         visibleLoadingBottom: true,
         hourIndex: 3,
-        indexGraphTop: 0,
-        indexGraphBottom: 0,
-      })
+        // indexGraphTop: 0,
+        // indexGraphBottom: 0
+      });
     }
   }
 
-  _dropdown_renderRow = (option,index,isSelected) => {
+  _dropdown_renderRow = (option, index, isSelected) => {
     return (
       <View
         style={{
@@ -128,20 +126,47 @@ export default class ServerDetailComponent extends Component {
             color: isSelected ? "#1c162e" : "#6c7b8a",
             fontSize: normalize(14),
             fontWeight: "bold",
-            alignSelf: 'center'
+            alignSelf: "center"
           }}
         >
           {option.title}
         </Text>
       </View>
     );
-  }
+  };
 
-  _renderItemTop = ({item, index}) => {
-    const {
-      navData,
-    } = this.props;
-    const {hourIndex} = this.state;
+  _renderGraphItem = ({ item, index }) => {
+    const {} = this.props;
+    return (
+      <View>
+        {/** TITLE */}
+        {titleLinuxTop && titleLinuxTop[index] && (
+          <View style={styles.containerHeaderTab2}>
+            <Text style={styles.textTitleHeaderTab2}>
+              {titleLinuxTop[index]}
+            </Text>
+          </View>
+        )}
+        {/** GRAPHQL */}
+        {titleLinuxTop && titleLinuxTop[index] && this._renderItemTop({ item, index })}
+        {/** TITLE */}
+
+        {titleWinBottom && titleWinBottom[index] && (
+          <View style={styles.containerHeaderTab2}>
+            <Text style={styles.textTitleHeaderTab2}>
+              {titleWinBottom[index]}
+            </Text>
+          </View>
+        )}
+        {/** GRAPHQL */}
+        {titleWinBottom && titleWinBottom[index] && this._renderItemBottom({ item, index })}
+      </View>
+    );
+  };
+
+  _renderItemTop = ({ item, index }) => {
+    const { navData } = this.props;
+    const { hourIndex } = this.state;
     return (
       <View>
         <View style={{ height: screenHeight / 4, backgroundColor: "white" }}>
@@ -149,7 +174,13 @@ export default class ServerDetailComponent extends Component {
             {navData && (
               <WebView
                 source={{
-                  uri: `${Config.graphURL}?access_token=${Config.sAccessToken}&gno=${navData.gno}&device=${navData.os == "L" ? deviceLinuxTop[index] : deviceWinTop[index]}&period=${hours[hourIndex].value}`
+                  uri: `${Config.graphURL}?access_token=${
+                    Config.sAccessToken
+                  }&gno=${navData.gno}&device=${
+                    navData.os == "L"
+                      ? deviceLinuxTop[index]
+                      : deviceWinTop[index]
+                  }&period=${hours[hourIndex].value}`
                 }}
                 style={{ width: "185%", height: "150%" }}
                 onLoad={() => this.hideLoadingTop()}
@@ -163,14 +194,13 @@ export default class ServerDetailComponent extends Component {
             )}
           </View>
         </View>
-      </View>);
-  }
+      </View>
+    );
+  };
 
-  _renderItemBottom = ({item, index}) => {
-    const {
-      navData,
-    } = this.props;
-    const {hourIndex} = this.state;
+  _renderItemBottom = ({ item, index }) => {
+    const { navData } = this.props;
+    const { hourIndex } = this.state;
     return (
       <View>
         <View style={{ height: screenHeight / 4, backgroundColor: "white" }}>
@@ -178,7 +208,13 @@ export default class ServerDetailComponent extends Component {
             {navData && (
               <WebView
                 source={{
-                  uri: `${Config.graphURL}?access_token=${Config.sAccessToken}&gno=${navData.gno}&device=${navData.os == "L" ? deviceLinuxBottom[index] : deviceWinBottom[index]}&period=${hours[hourIndex].value}`
+                  uri: `${Config.graphURL}?access_token=${
+                    Config.sAccessToken
+                  }&gno=${navData.gno}&device=${
+                    navData.os == "L"
+                      ? deviceLinuxBottom[index]
+                      : deviceWinBottom[index]
+                  }&period=${hours[hourIndex].value}`
                 }}
                 style={{ width: "185%", height: "150%" }}
                 onLoad={() => this.hideLoadingBottom()}
@@ -192,8 +228,9 @@ export default class ServerDetailComponent extends Component {
             )}
           </View>
         </View>
-      </View>);
-  }
+      </View>
+    );
+  };
 
   /**
    * Render views
@@ -209,7 +246,7 @@ export default class ServerDetailComponent extends Component {
       navigateToAlarmLogDetailScreen,
       failureAlarmLogDetailRequest
     } = this.props;
-    const {hourIndex, indexGraphTop, indexGraphBottom} = this.state;
+    const { hourIndex/*, indexGraphTop, indexGraphBottom*/ } = this.state;
     return (
       <Container>
         {/* {serverDetailData && console.log("__haha__",JSON.stringify(serverDetailData))} */}
@@ -220,7 +257,10 @@ export default class ServerDetailComponent extends Component {
             {serverDetailData && serverDetailData.guest_name}
           </Text>
           <View style={{ flexDirection: "row" }}>
-            <StatusButton title={navData && generateStatusText(navData.status)} bgColor={navData && generateStatusColor(navData.status)} />
+            <StatusButton
+              title={navData && generateStatusText(navData.status)}
+              bgColor={navData && generateStatusColor(navData.status)}
+            />
             <Text style={{ width: "80%", marginLeft: 10 }}>
               {"IP " + (serverDetailData && serverDetailData.ip)}
             </Text>
@@ -295,7 +335,9 @@ export default class ServerDetailComponent extends Component {
           <ScrollView style={styles.containerTab}>
             <View style={styles.itemContainer}>
               <Text style={styles.textLeft}>Server name</Text>
-              <Text style={styles.textRight}>{serverDetailData.guest_name}</Text>
+              <Text style={styles.textRight}>
+                {serverDetailData.guest_name}
+              </Text>
             </View>
             <View style={styles.horizontalBar} />
             <View style={styles.itemContainer}>
@@ -346,7 +388,11 @@ export default class ServerDetailComponent extends Component {
                   defaultValue={hours[hourIndex].title}
                   defaultIndex={hourIndex}
                   onSelect={index => {
-                    this.setState({ hourIndex: index, visibleLoadingTop: true, visibleLoadingBottom: true });
+                    this.setState({
+                      hourIndex: index,
+                      visibleLoadingTop: true,
+                      visibleLoadingBottom: true
+                    });
                   }}
                   textStyle={{
                     fontSize: normalize(13),
@@ -361,7 +407,24 @@ export default class ServerDetailComponent extends Component {
               </View>
             </View>
             <ScrollView>
-              <View style={styles.containerHeaderTab2}>
+              <Carousel
+                ref={c => {
+                  this._carousel = c;
+                }}
+                data={
+                  deviceLinuxTop.length > deviceWinTop.length
+                    ? deviceLinuxTop
+                    : deviceWinTop
+                }
+                renderItem={this._renderGraphItem}
+                sliderWidth={screenWidth}
+                itemWidth={screenWidth}
+                onSnapToItem={index => {
+                  //this.setState({ indexGraphTop: index });
+                }}
+              />
+
+              {/* <View style={styles.containerHeaderTab2}>
                 <Text style={styles.textTitleHeaderTab2}>{navData.os == "L" ? titleLinuxTop[indexGraphTop] : titleWinTop[indexGraphTop]}</Text>
               </View>
               <Carousel
@@ -382,7 +445,7 @@ export default class ServerDetailComponent extends Component {
                 sliderWidth={screenWidth}
                 itemWidth={screenWidth}
                 onSnapToItem={(index) => {this.setState({indexGraphBottom: index})} }
-              />
+              /> */}
             </ScrollView>
           </View>
         )}
@@ -391,9 +454,11 @@ export default class ServerDetailComponent extends Component {
             {/* {alarmItemListData && console.log("__haha__",JSON.stringify(alarmItemListData))} */}
             <FlatList
               data={alarmItemListData}
-              ItemSeparatorComponent={() => ( <View style={styles.horizontalBar} /> )}
+              ItemSeparatorComponent={() => (
+                <View style={styles.horizontalBar} />
+              )}
               ListFooterComponent={() => <View style={styles.horizontalBar} />}
-              ListEmptyComponent={<NoDataView/>}
+              ListEmptyComponent={<NoDataView />}
               renderItem={({ item }) => (
                 <TouchableOpacity
                   style={{
@@ -402,7 +467,9 @@ export default class ServerDetailComponent extends Component {
                   }}
                   onPress={() => {
                     navigateToAlarmLogDetailScreen();
-                    failureAlarmLogDetailRequest({Par: `cmd=GET_INFO_ALARM_DOWN_LOG&log_uid=${item.log_uid}`})
+                    failureAlarmLogDetailRequest({
+                      Par: `cmd=GET_INFO_ALARM_DOWN_LOG&log_uid=${item.log_uid}`
+                    });
                   }}
                 >
                   <View style={{ flexDirection: "row", alignItems: "center" }}>
@@ -487,13 +554,13 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     fontSize: AppConstant.textMenuSize
   },
-  containerChart: { 
-    margin: 20, 
+  containerChart: {
+    margin: 20,
     flex: 1,
     shadowColor: "#000",
     shadowOffset: {
       width: 0,
-      height: 3,
+      height: 3
     },
     shadowOpacity: 0.27,
     shadowRadius: 4.65,
@@ -507,7 +574,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     justifyContent: "center",
     paddingHorizontal: 10,
-    flexDirection: 'row',
-    alignItems: 'center'
+    flexDirection: "row",
+    alignItems: "center"
   }
 });

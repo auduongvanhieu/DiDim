@@ -74,7 +74,10 @@ class SidebarComponent extends Component {
       </View>
       <View style={{marginLeft: normalize(20)}}>
         <View style={[styles.menuMainView, {marginTop: normalize(12)}]}>
-          <TouchableOpacity onPress={() => {navigateToStatusInfoScreen()}} >
+          <TouchableOpacity onPress={() => {
+            navigateToStatusInfoScreen();
+            closeNavigationDrawer();
+          }} >
             <View style={styles.listRow}>
               <Image
                 style={styles.imgIcon}
@@ -83,7 +86,10 @@ class SidebarComponent extends Component {
             </View>
           </TouchableOpacity>
 
-          <TouchableOpacity onPress={() => {navigateToAlarmLogScreen()}} >
+          <TouchableOpacity onPress={() => {
+            navigateToAlarmLogScreen();
+            closeNavigationDrawer();
+            }} >
             <View style={styles.listRow}>
               <Image
                 style={styles.imgIcon}
@@ -92,7 +98,10 @@ class SidebarComponent extends Component {
             </View>
           </TouchableOpacity>
 
-          <TouchableOpacity onPress={() => {navigateToSupportCenterScreen()}} >
+          <TouchableOpacity onPress={() => {
+            navigateToSupportCenterScreen();
+            closeNavigationDrawer();
+            }} >
             <View style={styles.listRow}>
               <Image
                 style={styles.imgIcon}

@@ -16,6 +16,7 @@ import {
   StyleSheet,
   Picker,
   Image,
+  BackHandler,
 } from "react-native";
 import { normalize } from "../../utilities/ThemeUtils";
 import { AppColors, AppConstant } from "../../utilities/Constants";
@@ -69,13 +70,13 @@ export default class AlarmLogDetailComponent extends Component {
         <StatusBar backgroundColor={AppColors.headerBg2}/>
         <HeaderMenu backAction={()=>navigateToAlarmLogScreen()} title={"Alarm Log"} />
         <View style={{paddingVertical: '4%', paddingHorizontal: '7%'}}>
-          <Text style={{fontSize: normalize(18), color: '#140f26'}}>{failureAlarmLogDetailData && failureAlarmLogDetailData.target_name}</Text>
+          <Text style={{fontSize: normalize(18), color: '#140f26'}}>{failureAlarmLogDetailData && failureAlarmLogDetailData.alarm_name}</Text>
           <View style={{flexDirection: 'row'}}>
             <View style={{width: normalize(50), flexDirection: 'row'}}>
               <StatusButton title={failureAlarmLogDetailData && failureAlarmLogDetailData.status} bgColor={failureAlarmLogDetailData && generateStatusColor(failureAlarmLogDetailData.status)}/>
             </View>
             <Image source={Images.ico_clock_b} style={{height: normalize(15), width: normalize(15),  marginLeft: 10}} />
-            <Text style={{fontSize: normalize(12), alignSelf: 'center'}}> {failureAlarmLogDetailData && failureAlarmLogDetailData.end_time}</Text>
+            <Text style={{fontSize: normalize(12), alignSelf: 'center'}}> {failureAlarmLogDetailData && failureAlarmLogDetailData.start_time}</Text>
           </View>
         </View>
         <View style={{backgroundColor: '#f4f6f9', height: '2.5%', width: '100%'}} />
@@ -101,8 +102,8 @@ export default class AlarmLogDetailComponent extends Component {
           </View>
           <View style={styles.horizontalBar} />
           <View style={styles.itemContainer}>
-            <Text style={styles.textLeft}>Send Time</Text>
-            <Text style={styles.textRight}>{failureAlarmLogDetailData && failureAlarmLogDetailData.start_time}</Text>
+            <Text style={styles.textLeft}>End Time</Text>
+            <Text style={styles.textRight}>{failureAlarmLogDetailData && failureAlarmLogDetailData.end_time}</Text>
           </View>
           <View style={styles.horizontalBar} />
           <View style={styles.itemContainer}>

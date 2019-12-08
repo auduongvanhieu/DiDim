@@ -135,6 +135,9 @@ function generateNameColor(shortText) {
     case "접수":
       color = "#5A7BEF";
       break;
+    case "해결":
+      color = "#FF4D4D";
+      break;
     case "완료":
       color = "#14D2B8";
       break;
@@ -148,7 +151,10 @@ function generateCommentColor(shortText) {
     case "접수":
       color = "#43C7F1";
       break;
-    case "완료":
+    case "해결":
+      color = "#C3CDD9";
+      break;
+    case "종료":
       color = "#C3CDD9";
       break;
   }
@@ -179,6 +185,14 @@ function generateServerIcon(osGubn, serverGubn) {
   switch (serverGubn) {
     case "V1":
       image = Images.ico_cloud;
+      switch (osGubn) {
+        case "W":
+          image = Images.ico_cloud_win;
+          break;
+        case "L":
+          image = Images.ico_cloud_linux;
+          break;
+      }
       break;
     case "X1":
       {
