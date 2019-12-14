@@ -68,8 +68,6 @@ export default class ServerDetailComponent extends Component {
       hourIndex: 3,
       visibleLoadingTop: true,
       visibleLoadingBottom: true,
-      // indexGraphTop: 0,
-      // indexGraphBottom: 0
     };
   }
 
@@ -98,6 +96,7 @@ export default class ServerDetailComponent extends Component {
         visibleLoadingTop: true,
         visibleLoadingBottom: true,
         hourIndex: 3,
+        activeSlide: 0
         // indexGraphTop: 0,
         // indexGraphBottom: 0
       });
@@ -229,6 +228,35 @@ export default class ServerDetailComponent extends Component {
       </View>
     );
   };
+
+  get pagination () {
+    const { activeSlide } = this.state;
+    const { navData } = this.props;
+    return (
+        <Pagination
+          dotsLength={navData && navData.os == "L"
+          ? deviceLinuxTop.length
+          : deviceWinTop.length}
+          activeDotIndex={activeSlide}
+          containerStyle={{}}
+          dotStyle={{
+              width: 5,
+              height: 5,
+              borderRadius: 5,
+              marginHorizontal: 0,
+              backgroundColor: 'black'
+          }}
+          inactiveDotStyle={{
+              width: 5,
+              height: 5,
+              borderRadius: 5,
+              marginHorizontal: 0,
+              backgroundColor: 'black'          
+          }}
+          inactiveDotOpacity={0.4}
+          inactiveDotScale={0.6}
+        />);
+    }
 
   /**
    * Render views
@@ -417,10 +445,9 @@ export default class ServerDetailComponent extends Component {
                 renderItem={this._renderGraphItem}
                 sliderWidth={screenWidth}
                 itemWidth={screenWidth}
-                onSnapToItem={index => {
-                  //this.setState({ indexGraphTop: index });
-                }}
+                onSnapToItem={(index) => this.setState({ activeSlide: index }) }
               />
+              { this.pagination }
             </ScrollView>
           </View>
         )}
