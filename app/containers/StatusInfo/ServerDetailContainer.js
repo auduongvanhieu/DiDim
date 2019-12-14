@@ -6,7 +6,7 @@ import { changeTabIndexServerDetailAction, serverDetailRequestAction, failureAla
 import { navigateToAlarmLogDetailScreenAction } from '../../actions/NavigationActions/actionCreators';
 
 const mapStateToProps = state => ({
-    navData: state.navigationReducer.data,
+    navData: state.navigationReducer.serverDetail,
     tab: state.otherReducer.tabIndexServerDetail,
     serverDetailData: state.otherReducer.serverDetailData,
     alarmItemListData: state.otherReducer.alarmItemListData,

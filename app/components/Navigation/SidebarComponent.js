@@ -131,7 +131,7 @@ class SidebarComponent extends Component {
               <Image
                 style={styles.imgIcon}
                 source={require('../../assets/menu_ico_logout.png')}/> 
-              <Text style={styles.rowTxt}>{'Logout'}</Text>
+              <Text style={styles.rowTxt}>{I18n.t('logout')}</Text>
             </View>
           </TouchableOpacity>
         </View>

@@ -108,15 +108,15 @@ export default class LoginComponent extends Component {
 
     // alert(JSON.stringify(form))
     if(form.managed_url === ""){
-      this.setState({messageError: "URL을 확인 바랍니다!"})
+      this.setState({messageError: I18n.t('loginEmptyUrl')})
       return;
     }
     if(form.user === ""){
-      this.setState({messageError: "User ID 확인 바랍니다!"})
+      this.setState({messageError: I18n.t('loginEmptyUser')})
       return;
     }
     if(form.password === ""){
-      this.setState({messageError: "Password 확인 바랍니다!"})
+      this.setState({messageError: I18n.t('loginEmptyPassword')})
       return;
     }
     Config.userName = form.user;
@@ -139,7 +139,7 @@ export default class LoginComponent extends Component {
         <StatusBar backgroundColor={AppColors.primaryColor}/>
         <ImageBackground resizeMode='stretch' source={Images.bg_login_top} style={{width: '100%',justifyContent: 'center', height: screenHeight/2}}>
           <Image resizeMode='contain' source={Images.didim365_logo} style={{tintColor: 'white', height: normalize(37), alignSelf: 'center' }}/>
-          <Text style={{alignSelf: 'center', color: 'white', fontSize: normalize(15), marginTop: 10}}>Infrastructure Management Service</Text>
+    <Text style={{alignSelf: 'center', color: 'white', fontSize: normalize(15), marginTop: 10}}>{I18n.t('appDiscription')}</Text>
           <Image resizeMode='contain' source={Images.group_logo_login} style={{height: normalize(65), alignSelf: 'center' }}/>
         </ImageBackground>
         <View style={{backgroundColor: '#f4f6f9', flex: 1}} />
@@ -158,7 +158,7 @@ export default class LoginComponent extends Component {
             />
             </View>
             <CheckBox 
-              title='Remember me'
+              title={I18n.t('loginRemember')}
               checkedIcon='dot-circle-o'
               uncheckedIcon='circle-o' 
               containerStyle={{borderWidth: 0, backgroundColor: 'transparent', marginLeft: 0, marginTop: 0, padding: 0}}
@@ -175,7 +175,7 @@ export default class LoginComponent extends Component {
             </View>
             }
           </View>
-          <Text style={{alignSelf: 'center', marginTop: normalize(30)}}>© 2019. Didim365. All rights reserved.</Text>
+  <Text style={{alignSelf: 'center', marginTop: normalize(30)}}>{I18n.t('appFooter')}</Text>
         </View>
       </Container>
     );

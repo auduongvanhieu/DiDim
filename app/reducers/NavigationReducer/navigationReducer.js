@@ -67,7 +67,7 @@ function navigationReducer(state = initialNavState, action) {
     case NAVIGATE_TO_SERVER_DETAIL_SCREEN:
       nextState = RootStack.router.getStateForAction(
         NavigationActions.navigate({ routeName: "ServerDetail" }),
-        { ...state, data: action.payload }
+        { ...state, serverDetail: action.payload }
       );
       break;
     

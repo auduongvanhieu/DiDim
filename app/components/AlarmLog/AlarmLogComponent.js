@@ -117,16 +117,16 @@ export default class AlarmLogComponent extends Component {
       <Container>
       {/* {failureAlarmLogData && console.log("__haha__",JSON.stringify(failureAlarmLogData))} */}
         <StatusBar backgroundColor={AppColors.headerBg} />
-        <HeaderMenuHome title={"Alarm Log"} />
+        <HeaderMenuHome title={I18n.t('alarmLog')} />
         <View style={{ marginLeft: 5 }}>
-          <SearchBox title="Server Name / IP" value={searchText} onChangeText={this.onChangeSearchText}/>
+          <SearchBox title={I18n.t('searchServerHint')} value={searchText} onChangeText={this.onChangeSearchText}/>
         </View>
         <View style={styles.horizontalBar2} />
         <View
           style={{ flexDirection: "row", alignItems: "center", padding: 10 }}
         >
           <View style={{ flex: 1 }} />
-          <Text style={{ fontSize: normalize(14) }}>TimeZone: </Text>
+            <Text style={{ fontSize: normalize(14) }}>{I18n.t('timezone')}</Text>
           <View style={styles.containerPicker} >
             <ModalDropdown 
               options={timeZones}

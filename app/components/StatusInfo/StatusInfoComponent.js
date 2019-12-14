@@ -122,9 +122,9 @@ export default class StatusInfoComponent extends Component {
       {/* {serverListData && console.log("__haha__", serverListData)} */}
       {/* {serverCountingData && console.log("__haha__", serverCountingData)} */}
         <StatusBar backgroundColor={AppColors.headerBg} />
-        <HeaderMenuHome title={"Infra"} />
+        <HeaderMenuHome title={I18n.t('infra')} />
         <View style={{marginLeft: 5}}>
-          <SearchBox title="Server Name / IP" value={searchText} onChangeText={this.onChangeSearchText}/>
+          <SearchBox title={I18n.t('searchServerHint')} value={searchText} onChangeText={this.onChangeSearchText}/>
         </View>
         <View style={{backgroundColor: '#f4f6f9'}}>
           <View style={{backgroundColor: 'white', marginLeft: 10, marginRight: 10, marginVertical: 10, flexDirection: 'row', padding: 10, borderRadius: 12}}>
@@ -160,7 +160,7 @@ export default class StatusInfoComponent extends Component {
         </View>
         <View style={{flexDirection: 'row', alignItems: 'center', padding: 10}}>
             <View style={{flex: 1}}/>
-            <Text style={{fontSize: normalize(15)}}>Sort: </Text>
+            <Text style={{fontSize: normalize(15)}}>{I18n.t('sort')}</Text>
             <View style={styles.containerPicker} >
               <ModalDropdown 
                 options={sorts} 

@@ -1,15 +1,12 @@
 import React from 'react';
-import { reduxForm, Field, formValueSelector } from 'redux-form';
+import { reduxForm, Field } from 'redux-form';
 import { ScrollView, Text, TouchableOpacity } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-import moment from 'moment';
 import styles from './LoginForm.styles';
 import InputField from '../Fields/InputField/InputField';
 import { Images } from '../../../assets';
-import { showPasswordAction, hidePasswordAction } from '../../../actions/OthersActions/actionCreators';
 import { connect } from 'react-redux'
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
-
+import I18n from "../../../I18n";
 isNumber = (text) => {
     return !isNaN(text);
 }
@@ -65,8 +62,8 @@ function LoginForm(props) {
                 <Field
                     name={'managed_url'}
                     component={InputField}
-                    placeholder={'Managed Url'}
-                    label={'Managed Url'}
+                    placeholder={I18n.t('loginUrl')}
+                    label={I18n.t('loginUrl')}
                     hideLabelInEditableMode={true}
                     leftImg={Images.icUser}
                     editable={props.editable}
@@ -78,8 +75,8 @@ function LoginForm(props) {
                 <Field
                     name={'user'}
                     component={InputField}
-                    placeholder={'User ID'}
-                    label={'User ID'}
+                    placeholder={I18n.t('loginUser')}
+                    label={I18n.t('loginUser')}
                     hideLabelInEditableMode={true}
                     leftImg={Images.icUser}
                     editable={props.editable}
@@ -91,8 +88,8 @@ function LoginForm(props) {
                 <Field
                     name={'password'}
                     component={InputField}
-                    placeholder={'Password'}
-                    label={'Password'}
+                    placeholder={I18n.t('loginPassword')}
+                    label={I18n.t('loginPassword')}
                     hideLabelInEditableMode={true}
                     leftImg={Images.icKey}
                     editable={props.editable}

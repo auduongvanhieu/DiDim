@@ -127,7 +127,7 @@ export default class SupportViewComponent extends Component {
         <StatusBar backgroundColor={AppColors.headerBg2} />
         <HeaderMenu
           backAction={() => navigateToSupportCenterScreen()}
-          title={"Support Center"}
+          title={I18n.t('supportCenter')}
         />
         <View style={{ paddingVertical: "4%", paddingHorizontal: "7%" }}>
           <Text style={{ fontSize: normalize(18), color: "#140f26" }}>
@@ -161,7 +161,7 @@ export default class SupportViewComponent extends Component {
         />
         <View style={{ height: screenHeight / 4.5, backgroundColor: "white" }}>
           <TextInput
-            placeholder="문의사항 또는 댓글을 입력해 주세요."
+            placeholder={I18n.t('supportCenterCommentHint')}
             style={{ fontSize: normalize(13), paddingHorizontal: "7%"}}
             value={this.state.comment}
             onChangeText={comment => this.setState({ comment })}
@@ -170,18 +170,18 @@ export default class SupportViewComponent extends Component {
           <Image source={Images.bg_ico_msg} style={styles.imgBgMsg} />
           <View style={styles.containerBtn}>
             <Button 
-              title="작업종료" 
+              title={I18n.t('finishWork')}
               onPress={this.onPressEndTask}
               buttonStyle={styles.btnEndTask} />
             <Button
-              title="Reply"
+              title={I18n.t('reply')}
               onPress={this.onPressReply}
               buttonStyle={styles.btnReply}
             />
           </View>
         </View>
         <View style={{ backgroundColor: "#f4f6f9", flex: 1 }}>
-          <Text style={styles.textReply}>Reply</Text>
+          <Text style={styles.textReply}>{I18n.t('reply')}</Text>
           <FlatList
             data={listReply}
             // ListEmptyComponent={<NoDataView/>}

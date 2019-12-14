@@ -36,13 +36,13 @@ const screenHeight = Dimensions.get("window").height;
 const aspecRatio = screenHeight / screenWidth;
 
 const hours = [
-  { title: "1 hours", value: "1H" },
-  { title: "3 hours", value: "3H" },
-  { title: "6 hours", value: "6H" },
-  { title: "1 day", value: "1D" },
-  { title: "3 days", value: "3D" },
-  { title: "7 days", value: "7D" },
-  { title: "30 days", value: "30D" }
+  { title: "1 " + I18n.t('hour'), value: "1H" },
+  { title: "3 " + I18n.t('hours'), value: "3H" },
+  { title: "6 " + I18n.t('hours'), value: "6H" },
+  { title: "1 " + I18n.t('day'), value: "1D" },
+  { title: "3 " + I18n.t('days'), value: "3D" },
+  { title: "7 " + I18n.t('days'), value: "7D" },
+  { title: "30 " + I18n.t('days'), value: "30D" }
 ];
 
 const titleLinuxTop = ["UpTime", "Load", "CPU", "Memory"];
@@ -137,7 +137,7 @@ export default class ServerDetailComponent extends Component {
 
   _renderGraphItem = ({ item, index }) => {
     const {navData} = this.props;
-    return (
+    return ( navData && (
       <View>
         {/** TITLE TOP*/}
           <View style={styles.containerHeaderTab2}>
@@ -159,7 +159,7 @@ export default class ServerDetailComponent extends Component {
         { ((navData.os == "L" && index!=3) || (navData.os == "W" && index!=2)) && 
           this._renderItemBottom({ item, index })}
       </View>
-    );
+    )) || null;
   };
 
   _renderItemTop = ({ item, index }) => {
@@ -249,7 +249,7 @@ export default class ServerDetailComponent extends Component {
       <Container>
         {/* {serverDetailData && console.log("__haha__",JSON.stringify(serverDetailData))} */}
         <StatusBar backgroundColor={AppColors.headerBg2} />
-        <HeaderMenu title={"Infra"} />
+        <HeaderMenu title={I18n.t('infra')} />
         <View style={{ paddingVertical: "4%", paddingHorizontal: "7%" }}>
           <Text style={{ fontSize: normalize(19), color: "#140f26" }}>
             {serverDetailData && serverDetailData.guest_name}
@@ -332,34 +332,34 @@ export default class ServerDetailComponent extends Component {
         {tab == 0 && serverDetailData && (
           <ScrollView style={styles.containerTab}>
             <View style={styles.itemContainer}>
-              <Text style={styles.textLeft}>Server name</Text>
+              <Text style={styles.textLeft}>{I18n.t('serverName')}</Text>
               <Text style={styles.textRight}>
                 {serverDetailData.guest_name}
               </Text>
             </View>
             <View style={styles.horizontalBar} />
             <View style={styles.itemContainer}>
-              <Text style={styles.textLeft}>Server IP</Text>
+              <Text style={styles.textLeft}>{I18n.t('serverIp')}</Text>
               <Text style={styles.textRight}>{serverDetailData.ip}</Text>
             </View>
             <View style={styles.horizontalBar} />
             <View style={styles.itemContainer}>
-              <Text style={styles.textLeft}>OS</Text>
+              <Text style={styles.textLeft}>{I18n.t('os')}</Text>
               <Text style={styles.textRight}>{serverDetailData.os_type}</Text>
             </View>
             <View style={styles.horizontalBar} />
             <View style={styles.itemContainer}>
-              <Text style={styles.textLeft}>Datacenter</Text>
+              <Text style={styles.textLeft}>{I18n.t('datacenter')}</Text>
               <Text style={styles.textRight}>{serverDetailData.dc_name}</Text>
             </View>
             <View style={styles.horizontalBar} />
             <View style={styles.itemContainer}>
-              <Text style={styles.textLeft}>Server Spec</Text>
+              <Text style={styles.textLeft}>{I18n.t('serverSpec')}</Text>
               <Text style={styles.textRight}>{serverDetailData.hw_spec}</Text>
             </View>
             <View style={styles.horizontalBar} />
             <View style={styles.itemContainer}>
-              <Text style={styles.textLeft}>Product types</Text>
+              <Text style={styles.textLeft}>{I18n.t('productTypes')}</Text>
               <Text style={styles.textRight}>{serverDetailData.prod_gubn}</Text>
             </View>
             <View style={styles.horizontalBar} />
@@ -410,7 +410,7 @@ export default class ServerDetailComponent extends Component {
                   this._carousel = c;
                 }}
                 data={
-                    navData.os == "L"
+                    navData && navData.os == "L"
                     ? deviceLinuxTop
                     : deviceWinTop
                 }
@@ -421,29 +421,6 @@ export default class ServerDetailComponent extends Component {
                   //this.setState({ indexGraphTop: index });
                 }}
               />
-
-              {/* <View style={styles.containerHeaderTab2}>
-                <Text style={styles.textTitleHeaderTab2}>{navData.os == "L" ? titleLinuxTop[indexGraphTop] : titleWinTop[indexGraphTop]}</Text>
-              </View>
-              <Carousel
-                ref={(c) => { this._carousel = c; }}
-                data={navData.os == "L" ? deviceLinuxTop : deviceWinTop}
-                renderItem={this._renderItemTop}
-                sliderWidth={screenWidth}
-                itemWidth={screenWidth}
-                onSnapToItem={(index) => {this.setState({indexGraphTop: index})} }
-              />
-              <View style={styles.containerHeaderTab2}>
-                <Text style={styles.textTitleHeaderTab2}>{navData.os == "L" ? titleLinuxBottom[indexGraphBottom] : titleWinBottom[indexGraphBottom]}</Text>
-              </View>
-              <Carousel
-                ref={(c) => { this._carousel = c; }}
-                data={navData.os == "L" ? deviceLinuxBottom : deviceWinBottom}
-                renderItem={this._renderItemBottom}
-                sliderWidth={screenWidth}
-                itemWidth={screenWidth}
-                onSnapToItem={(index) => {this.setState({indexGraphBottom: index})} }
-              /> */}
             </ScrollView>
           </View>
         )}

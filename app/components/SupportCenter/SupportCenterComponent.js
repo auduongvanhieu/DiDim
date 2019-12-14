@@ -78,7 +78,7 @@ export default class SupportCenterComponent extends Component {
         <StatusBar backgroundColor={AppColors.headerBg} />
         {/* {asRequestListData && console.log("__haha__",JSON.stringify(asRequestListData))} */}
         <HeaderMenuHome
-          title={"Support Center"}
+          title={I18n.t('supportCenter')}
           iconRight={
             <TouchableOpacity
               onPress={()=>navigateToSupportWriteScreen()}

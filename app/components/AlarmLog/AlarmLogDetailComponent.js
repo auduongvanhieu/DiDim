@@ -68,7 +68,7 @@ export default class AlarmLogDetailComponent extends Component {
       <Container>
       {/* {failureAlarmLogDetailData && console.log("__haha__",JSON.stringify(failureAlarmLogDetailData))} */}
         <StatusBar backgroundColor={AppColors.headerBg2}/>
-        <HeaderMenu backAction={()=>navigateToAlarmLogScreen()} title={"Alarm Log"} />
+        <HeaderMenu backAction={()=>navigateToAlarmLogScreen()} title={I18n.t('alarmLog')} />
         <View style={{paddingVertical: '4%', paddingHorizontal: '7%'}}>
           <Text style={{fontSize: normalize(18), color: '#140f26'}}>{failureAlarmLogDetailData && failureAlarmLogDetailData.alarm_name}</Text>
           <View style={{flexDirection: 'row'}}>
@@ -87,27 +87,27 @@ export default class AlarmLogDetailComponent extends Component {
         </View>
         <ScrollView style={styles.containerTab}>
           <View style={styles.itemContainer}>
-            <Text style={styles.textLeft}>Server name</Text>
+            <Text style={styles.textLeft}>{I18n.t('serverName')}</Text>
             <Text style={styles.textRight}>{failureAlarmLogDetailData && failureAlarmLogDetailData.target_name}</Text>
           </View>
           <View style={styles.horizontalBar} />
           <View style={styles.itemContainer}>
-            <Text style={styles.textLeft}>Server IP</Text>
+            <Text style={styles.textLeft}>{I18n.t('serverIp')}</Text>
             <Text style={styles.textRight}>{failureAlarmLogDetailData && failureAlarmLogDetailData.target_ip}</Text>
           </View>
           <View style={styles.horizontalBar} />
           <View style={styles.itemContainer}>
-            <Text style={styles.textLeft}>Monitoring Type</Text>
+            <Text style={styles.textLeft}>{I18n.t('monitoringType')}</Text>
             <Text style={styles.textRight}>{failureAlarmLogDetailData && failureAlarmLogDetailData.alarm_type}</Text>
           </View>
           <View style={styles.horizontalBar} />
           <View style={styles.itemContainer}>
-            <Text style={styles.textLeft}>End Time</Text>
+            <Text style={styles.textLeft}>{I18n.t('endTime')}</Text>
             <Text style={styles.textRight}>{failureAlarmLogDetailData && failureAlarmLogDetailData.end_time}</Text>
           </View>
           <View style={styles.horizontalBar} />
           <View style={styles.itemContainer}>
-            <Text style={styles.textLeft}>Details</Text>
+            <Text style={styles.textLeft}>{I18n.t('details')}</Text>
             <Text style={styles.textRight}>{failureAlarmLogDetailData && failureAlarmLogDetailData.message + "\n"}</Text>
           </View>
           <View style={styles.horizontalBar} />

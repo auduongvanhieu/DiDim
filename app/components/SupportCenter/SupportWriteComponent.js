@@ -192,11 +192,11 @@ export default class SupportWriteComponent extends Component {
       {/* {asRequestTypeListData && console.log("__haha__", JSON.stringify(asRequestTypeListData))} */}
       {/* {guestNoListData && console.log("__haha__", JSON.stringify(guestNoListData))} */}
         <StatusBar backgroundColor={AppColors.headerBg2} />
-        <HeaderMenu backAction={()=>navigateToSupportCenterScreen()} title={"Support Center"} />
+        <HeaderMenu backAction={()=>navigateToSupportCenterScreen()} title={I18n.t('supportCenter')} />
         <ScrollView>
         <View style={styles.containerHorizontal} >
           <View style={styles.containerLeft}>
-            <Text style={styles.textLeft}>Type of Inquiry</Text>
+          <Text style={styles.textLeft}>{I18n.t('typeOfInquiry')}</Text>
           </View>
           <View style={styles.containerPicker} >
             { asRequestTypeListData &&
@@ -224,7 +224,7 @@ export default class SupportWriteComponent extends Component {
           isDisplayAccountNumber &&
           <View style={styles.containerHorizontal}>
             <View style={styles.containerLeft}>
-              <Text style={styles.textLeft}>Account Number</Text>
+              <Text style={styles.textLeft}>{I18n.t('accountNumber')}</Text>
             </View>
             <ScrollView horizontal={true}>
               {this.state.listAccountNumberHorizontal.map((item, index) => {
@@ -270,7 +270,7 @@ export default class SupportWriteComponent extends Component {
           </View>
           <TextInput
             ref={(input) => { this.firstTextInput = input; }}
-            placeholder="Input Mail"
+            placeholder={I18n.t('emailHint')}
             onChangeText={email => this.setState({ email })}
             value={this.state.email}
             style={styles.textRight}
@@ -281,11 +281,11 @@ export default class SupportWriteComponent extends Component {
         <View style={styles.horizontalBar} />
         <View style={styles.containerHorizontal}>
           <View style={styles.containerLeft}>
-            <Text style={styles.textLeft}>Mobile</Text>
+            <Text style={styles.textLeft}>{I18n.t('mobile')}</Text>
           </View>
           <TextInput
             ref={(input) => { this.secondTextInput = input; }}
-            placeholder="Input Mobile Number"
+            placeholder={I18n.t('inputMobileNumber')}
             onChangeText={mobile => this.setState({ mobile })}
             value={this.state.mobile}
             style={styles.textRight}
@@ -297,11 +297,11 @@ export default class SupportWriteComponent extends Component {
         <View style={styles.horizontalBar} />
         <View style={styles.containerHorizontal}>
           <View style={styles.containerLeft}>
-            <Text style={styles.textLeft}>Title</Text>
+            <Text style={styles.textLeft}>{I18n.t('title')}</Text>
           </View>
           <TextInput
             ref={(input) => { this.thirdTextInput = input; }}
-            placeholder="제목을 입력해 주세요."
+            placeholder={I18n.t('titleHint')}
             onChangeText={title => this.setState({ title })}
             value={this.state.title}
             style={styles.textRight}
@@ -313,7 +313,7 @@ export default class SupportWriteComponent extends Component {
         <View style={{ height: normalize(150) }}>
           <TextInput
             ref={(input) => { this.fourTextInput = input; }}
-            placeholder="문의 내용을 입력해 주세요."
+            placeholder={I18n.t('writeCommentHint')}
             onChangeText={contact => this.setState({ contact })}
             value={this.state.contact}
             style={[
@@ -333,12 +333,12 @@ export default class SupportWriteComponent extends Component {
           }}
         >
           <Button
-            title="취 소"
+            title={I18n.t('cancel')}
             buttonStyle={[styles.buttonBottom, { backgroundColor: "#666372" }]}
             onPress={this.onPressCancel}
           />
           <Button
-            title="등 록"
+            title={I18n.t('submit')}
             buttonStyle={[styles.buttonBottom, { backgroundColor: "#ff3b3b" }]}
             onPress={this.onPressRegistration}
           />
@@ -355,7 +355,7 @@ export default class SupportWriteComponent extends Component {
             <View style={styles.containerModel}>
               <View style={styles.containerTopModal}>
                 <Text style={{ fontSize: normalize(18), color: "#140f26" }}>
-                  계정 선택
+                  {I18n.t('modalWriteSupportTitle')}
                 </Text>
                 <View style={{ flex: 1 }} />
                 <Ionicons
@@ -373,7 +373,7 @@ export default class SupportWriteComponent extends Component {
                   fontSize: normalize(12)
                 }}
               >
-                계정번호, 회원명, 아이디로 검색이 가능합니다.
+                {I18n.t('modalWriteSupportSubtitle')}
               </Text>
               <View
                 style={{
@@ -398,7 +398,7 @@ export default class SupportWriteComponent extends Component {
                     })
                   }}
                   value={this.state.textModelSearch}
-                  title="Account Search" />
+                  title={I18n.t('accountSearch')} />
               </View>
               <View style={styles.horizontalBar} />
               <View style={{ height: screenHeight / 3 }}>
@@ -455,7 +455,7 @@ export default class SupportWriteComponent extends Component {
                   }
                   this.toggleModal();
                 }}
-                title="적 용"
+                title={I18n.t('modalWriteSupportSubmit')}
                 buttonStyle={[
                   styles.buttonBottom,
                   { backgroundColor: "#ff3b3b", alignSelf: "center" }
