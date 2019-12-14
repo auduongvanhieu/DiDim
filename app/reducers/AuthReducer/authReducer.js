@@ -11,6 +11,9 @@ import {
 
     VERIFY_SUCCEEDED,
     VERIFY_FAILED,
+
+    DISPOSE_SUCCEEDED,
+    DISPOSE_FAILED
 } from '../../actions/AuthActions/actionTypes'
 
 
@@ -58,11 +61,23 @@ const verifyReducer = (state = {}, actions) => {
     }
 };
 
+const disposeReducer = (state = {}, actions) => {
+    switch (actions.type) {
+        case DISPOSE_SUCCEEDED:
+            return { ...state, receivedData: actions.payload };
+        case DISPOSE_FAILED:
+            return { ...state, receivedData: actions.payload };
+        default:
+            return state;
+    }
+};
+
 
 export {
     authorizeReducer,
     autoLoginReducer,
     getTokenReducer,
-    verifyReducer
+    verifyReducer,
+    disposeReducer
 }
 

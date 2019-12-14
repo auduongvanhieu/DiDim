@@ -52,7 +52,8 @@ class SidebarComponent extends Component {
       navigateToLoginScreen,
       navigateToStatusInfoScreen,
       navigateToAlarmLogScreen,
-      navigateToSupportCenterScreen
+      navigateToSupportCenterScreen,
+      disposeRequest
     } = this.props;
     return (
       <Container style={styles.menuContainer}>
@@ -123,9 +124,10 @@ class SidebarComponent extends Component {
                />
             </View>
           </View>
-          <TouchableOpacity onPress={() => { 
-            clearAuthCache()
-            navigateToLoginScreen()
+          <TouchableOpacity onPress={ () => { 
+            clearAuthCache();
+            disposeRequest();
+            navigateToLoginScreen();
           }} >
             <View style={styles.listRow}>
               <Image

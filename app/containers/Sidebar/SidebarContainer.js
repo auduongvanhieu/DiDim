@@ -7,6 +7,7 @@ import {
     navigateToAlarmLogScreenAction,
     navigateToSupportCenterScreenAction
  } from '../../actions/NavigationActions/actionCreators';
+import { disposeRequestAction } from '../../actions/AuthActions/actionCreators';
 
 const mapStateToProps = state => ({
 })
@@ -17,6 +18,7 @@ const mapDispatchToProps = dispatch => ({
     navigateToStatusInfoScreen: (params) => dispatch(navigateToStatusInfoScreenAction(params)),
     navigateToAlarmLogScreen: (params) => dispatch(navigateToAlarmLogScreenAction(params)),
     navigateToSupportCenterScreen: (params) => dispatch(navigateToSupportCenterScreenAction(params)),
+    disposeRequest: (params) => dispatch(disposeRequestAction(params)),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(SidebarComponent)

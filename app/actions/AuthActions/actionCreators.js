@@ -13,6 +13,10 @@ import {
   VERIFY_REQUEST,
   VERIFY_SUCCEEDED,
   VERIFY_FAILED,
+    
+  DISPOSE_REQUEST,
+  DISPOSE_SUCCEEDED,
+  DISPOSE_FAILED,
 } from "./actionTypes";
 
 const authorizeRequestAction = params => ({
@@ -68,6 +72,21 @@ const verifyFailedAction = error => ({
   payload: error
 });
 
+const disposeRequestAction = params => ({
+  type: DISPOSE_REQUEST,
+  payload: params
+});
+
+const disposeSucceededAction = receivedData => ({
+  type: DISPOSE_SUCCEEDED,
+  payload: receivedData
+});
+
+const disposeFailedAction = error => ({
+  type: DISPOSE_FAILED,
+  payload: error
+});
+
 export {
   authorizeRequestAction,
   authorizeSucceededAction,
@@ -83,4 +102,8 @@ export {
   verifyRequestAction,
   verifySucceededAction,
   verifyFailedAction,
+  
+  disposeRequestAction,
+  disposeSucceededAction,
+  disposeFailedAction,
 };

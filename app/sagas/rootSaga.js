@@ -3,6 +3,7 @@ import {
   watchAuthorize,
   watchGetToken,
   watchVerify,
+  watchDispose
 } from "./AuthSaga/authSaga";
 
 import {
@@ -24,6 +25,7 @@ export default function* rootSaga() {
   yield fork(watchAuthorize),
   yield fork(watchGetToken),
   yield fork(watchVerify),
+  yield fork(watchDispose),
   yield fork(watchServerList),
   yield fork(watchServerDetail),
   yield fork(watchServerCounting),

@@ -14,6 +14,7 @@ import {
   autoLoginReducer,
   getTokenReducer,
   verifyReducer,
+  disposeReducer
 } from "./AuthReducer/authReducer";
 
 import {otherReducer} from "./OthersReducer/othersReducer";
@@ -32,6 +33,7 @@ const allReducers = combineReducers({
   autoLoginReducer,
   getTokenReducer,
   verifyReducer,
+  disposeReducer,
   otherReducer
 });
 

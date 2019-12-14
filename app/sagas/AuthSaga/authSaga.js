@@ -13,6 +13,10 @@ import {
     AUTHORIZE_SUCCEEDED,
     AUTHORIZE_FAILED,
 
+    DISPOSE_REQUEST,
+    DISPOSE_SUCCEEDED,
+    DISPOSE_FAILED,
+
 } from '../../actions/AuthActions/actionTypes'
 import { put, takeLatest } from 'redux-saga/effects'
 import { Api } from '../Api'
@@ -96,6 +100,23 @@ function* verify(action) {
     }
 }
 
+function* dispose(action) {
+    try {
+        const receivedDataTemp = yield Api.dispose(action.payload)
+        receivedData = JSON.parse(receivedDataTemp)
+        // alert(JSON.stringify(receivedData));
+        if (receivedData && receivedData.ReturnValue) {
+            yield put({ type: DISPOSE_SUCCEEDED, payload: receivedData })
+        } else {
+            yield put({ type: DISPOSE_FAILED, payload: receivedData})
+        }
+    } catch (error) {
+        console.log(error);
+        yield put(showErrorAlertAction({ title: I18n.t('failure'), description: I18n.t('connectionErrors') }))
+        yield put({ type: DISPOSE_FAILED, error })
+    }
+}
+
 
 export function* watchAuthorize() {
     yield takeLatest(AUTHORIZE_REQUEST, authorize)
@@ -107,5 +128,9 @@ export function* watchGetToken() {
 
 export function* watchVerify() {
     yield takeLatest(VERIFY_REQUEST, verify)
+}
+
+export function* watchDispose() {
+    yield takeLatest(DISPOSE_REQUEST, dispose)
 }
 
