@@ -30,11 +30,11 @@ const screenWidth = Dimensions.get("window").width;
 const screenHeight = Dimensions.get("window").height;
 
 const timeZones = [
-  { title: "Today", value: "TODAY" },
-  { title: "Yesterday", value: "YESTERDAY" },
-  { title: "1 week", value: "WEEK" },
-  { title: "1 month", value: "1M" },
-  { title: "3 month", value: "3M" },
+  { title: I18n.t('today'), value: "TODAY" },
+  { title: I18n.t('yesterday'), value: "YESTERDAY" },
+  { title: "1" + I18n.t('week'), value: "WEEK" },
+  { title: "1" + I18n.t('month'), value: "1M" },
+  { title: "3" + I18n.t('months'), value: "3M" },
 ];
 export default class AlarmLogComponent extends Component {
   /**

@@ -36,13 +36,13 @@ const screenHeight = Dimensions.get("window").height;
 const aspecRatio = screenHeight / screenWidth;
 
 const hours = [
-  { title: "1 " + I18n.t('hour'), value: "1H" },
-  { title: "3 " + I18n.t('hours'), value: "3H" },
-  { title: "6 " + I18n.t('hours'), value: "6H" },
-  { title: "1 " + I18n.t('day'), value: "1D" },
-  { title: "3 " + I18n.t('days'), value: "3D" },
-  { title: "7 " + I18n.t('days'), value: "7D" },
-  { title: "30 " + I18n.t('days'), value: "30D" }
+  { title: I18n.t('recent') + "1" + I18n.t('hour'), value: "1H" },
+  { title: I18n.t('recent') + "3" + I18n.t('hours'), value: "3H" },
+  { title: I18n.t('recent') + "6" + I18n.t('hours'), value: "6H" },
+  { title: I18n.t('recent') + "1" + I18n.t('day'), value: "1D" },
+  { title: I18n.t('recent') + "3" + I18n.t('days'), value: "3D" },
+  { title: I18n.t('recent') + "7" + I18n.t('days'), value: "7D" },
+  { title: I18n.t('recent') + "30" + I18n.t('days'), value: "30D" }
 ];
 
 const titleLinuxTop = ["UpTime", "Load", "CPU", "Memory"];
@@ -313,7 +313,7 @@ export default class ServerDetailComponent extends Component {
                 alignSelf: "center"
               }}
             >
-              INFO
+              {I18n.t('info')}
             </Text>
           </TouchableOpacity>
           <TouchableOpacity
@@ -333,7 +333,7 @@ export default class ServerDetailComponent extends Component {
                 alignSelf: "center"
               }}
             >
-              GRAPH
+              {I18n.t('graph')}
             </Text>
           </TouchableOpacity>
           <TouchableOpacity
@@ -353,7 +353,7 @@ export default class ServerDetailComponent extends Component {
                 alignSelf: "center"
               }}
             >
-              ALARM
+              {I18n.t('alarm')}
             </Text>
           </TouchableOpacity>
         </View>

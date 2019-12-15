@@ -28,6 +28,7 @@ import {
   serverCountingRequestAction,
   serverListRequestAction
 } from "../../actions/OthersActions/actionCreators";
+import I18n from '../../I18n'
 import { setNotification, getNotification, updateNotification } from '../../utilities/Helper';
 
 const screenWidth = Dimensions.get("window").width;
@@ -66,8 +67,12 @@ class HeaderMenuHome extends Component {
     if(nextProps.serverCountingData && nextProps.serverCountingData != this.props.serverCountingData){
       const {serverCountingData} = nextProps;
       this.setState({numberNotify: serverCountingData.total})
-      this.state.listAlert[0].title = `확인이 필요한 장애 알람이 ${serverCountingData.down} 건이 있습니다.`
-      this.state.listAlert[1].title = `확인이 필요한 AS요청 답변이 ${serverCountingData.as} 건이 있습니다.`
+      this.state.listAlert[0].title = I18n.languageCode == 'ko' ? 
+          `${I18n.t('arlarmNotify')} ${serverCountingData.down} ${I18n.t('thereAre')}`:
+          `${I18n.t('thereAre')} ${serverCountingData.down} ${I18n.t('arlarmNotify')}`
+      this.state.listAlert[1].title = I18n.languageCode == 'ko' ?
+          `${I18n.t('asNotify')} ${serverCountingData.as} ${I18n.t('thereAre')}`:
+          `${I18n.t('thereAre')} ${serverCountingData.as} ${I18n.t('asNotify')}`
     }
   }
 

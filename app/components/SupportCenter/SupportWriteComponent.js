@@ -266,7 +266,7 @@ export default class SupportWriteComponent extends Component {
         <View style={styles.horizontalBar} />
         <View style={styles.containerHorizontal}>
           <View style={styles.containerLeft}>
-            <Text style={styles.textLeft}>e-Mail</Text>
+        <Text style={styles.textLeft}>{I18n.t('email')}</Text>
           </View>
           <TextInput
             ref={(input) => { this.firstTextInput = input; }}

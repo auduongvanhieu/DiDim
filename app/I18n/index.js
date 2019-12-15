@@ -15,8 +15,8 @@ switch (languageCode) {
     case 'ko':
       I18n.translations.ko = require('./languages/ko.json')
       break
-    case 'vi':
-      I18n.translations.vi = require('./languages/vi.json')
+    case 'zh':
+      I18n.translations.vi = require('./languages/zh.json')
       break
 }
 

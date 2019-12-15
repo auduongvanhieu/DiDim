@@ -123,7 +123,7 @@ export default class SupportViewComponent extends Component {
     return (
       <Container>
         {/* {asRequestDetailData && console.log("__haha__",JSON.stringify(asRequestDetailData))} */}
-        {/* {commentRegistrationData && console.log("__haha__",JSON.stringify(commentRegistrationData))} */}
+        {/* {listReply && console.log("__haha__",JSON.stringify(listReply))} */}
         <StatusBar backgroundColor={AppColors.headerBg2} />
         <HeaderMenu
           backAction={() => navigateToSupportCenterScreen()}
@@ -168,17 +168,19 @@ export default class SupportViewComponent extends Component {
             multiline={true}
           />
           <Image source={Images.bg_ico_msg} style={styles.imgBgMsg} />
-          <View style={styles.containerBtn}>
-            <Button 
-              title={I18n.t('finishWork')}
-              onPress={this.onPressEndTask}
-              buttonStyle={styles.btnEndTask} />
-            <Button
-              title={I18n.t('reply')}
-              onPress={this.onPressReply}
-              buttonStyle={styles.btnReply}
-            />
-          </View>
+          { asRequestDetailData && asRequestDetailData.content.work_status_name != "종료" &&
+            <View style={styles.containerBtn}>
+              <Button 
+                title={I18n.t('finishWork')}
+                onPress={this.onPressEndTask}
+                buttonStyle={styles.btnEndTask} />
+              <Button
+                title={I18n.t('reply')}
+                onPress={this.onPressReply}
+                buttonStyle={styles.btnReply}
+              />
+            </View>
+          }
         </View>
         <View style={{ backgroundColor: "#f4f6f9", flex: 1 }}>
           <Text style={styles.textReply}>{I18n.t('reply')}</Text>
@@ -188,7 +190,7 @@ export default class SupportViewComponent extends Component {
             renderItem={({ item, index }) =>
               item.write_name == Config.userName ? (
                 <View>
-                  <View style={{ flexDirection: "row", marginTop: 30 }}>
+                  <View style={{ flexDirection: "row", marginTop: index == 1 ? 45 : 30 }}>
                     <Text style={styles.titleComment1}>{item.write_name}</Text>
                     <View style={{ flex: 1 }} />
                     <Text
@@ -204,7 +206,7 @@ export default class SupportViewComponent extends Component {
                 </View>
               ) : (
                 <View>
-                  <View style={{ flexDirection: "row", marginTop: 30 }}>
+                  <View style={{ flexDirection: "row", marginTop: index == 1 ? 45 : 30  }}>
                     <Text style={styles.titleComment2}>{item.write_name}</Text>
                     <View style={{ flex: 1 }} />
                     <Text

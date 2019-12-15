@@ -46,7 +46,8 @@ export default class StatusInfoComponent extends Component {
     super(props);
     this.state={
       sortIndex: 0,
-      searchText: ''
+      searchText: '',
+      status: 'A'
     }
   }
 
@@ -57,8 +58,9 @@ export default class StatusInfoComponent extends Component {
     });
 
     const {serverListRequest, serverCountingRequest, startLoading} = this.props;
+    const {status} = this.state;
     // startLoading()
-    serverListRequest({Par: `cmd=GET_LIST_SERVER&order=${sorts[this.state.sortIndex].value}&keyword=${this.state.searchText}`});
+    serverListRequest({Par: `cmd=GET_LIST_SERVER&order=${sorts[this.state.sortIndex].value}&keyword=${this.state.searchText}&status=${this.state.status}`});
   }
 
   componentWillUnmount() {
@@ -68,7 +70,7 @@ export default class StatusInfoComponent extends Component {
   onChangeSearchText = (text) => {
     const {serverListRequest} = this.props;
     this.setState({searchText: text}, ()=>{
-      serverListRequest({Par: `cmd=GET_LIST_SERVER&order=${sorts[this.state.sortIndex].value}&keyword=${text}`});
+      serverListRequest({Par: `cmd=GET_LIST_SERVER&order=${sorts[this.state.sortIndex].value}&keyword=${text}&status=${this.state.status}`});
     })
   }
 
@@ -116,7 +118,7 @@ export default class StatusInfoComponent extends Component {
       serverListRequest,
       serverDetailRequest,
     } = this.props;
-    const {sortIndex,searchText} = this.state;
+    const {sortIndex, searchText, status} = this.state;
     return (
       <Container>
       {/* {serverListData && console.log("__haha__", serverListData)} */}
@@ -128,32 +130,61 @@ export default class StatusInfoComponent extends Component {
         </View>
         <View style={{backgroundColor: '#f4f6f9'}}>
           <View style={{backgroundColor: 'white', marginLeft: 10, marginRight: 10, marginVertical: 10, flexDirection: 'row', padding: 10, borderRadius: 12}}>
-            <View>
+            <TouchableOpacity
+              onPress={()=>{
+                this.setState({status: 'A'},()=>{
+                  serverListRequest({Par: `cmd=GET_LIST_SERVER&order=${sorts[sortIndex].value}&keyword=${this.state.searchText}&status=${this.state.status}`});
+                })
+              }}>
               <Text style={{fontSize: normalize(15), color: AppColors.headerBg, fontWeight: 'bold'}}>Status</Text>
               <View style={{flexDirection: 'row', alignItems: 'center'}}>
                 <SimpleLineIcons name='clock' size={13}/>
                 <Text style={{fontSize: normalize(12)}}>{" "+moment(new Date()).format('YYYY.MM.DD HH:mm')+"  "}</Text>
               </View>
-            </View>
+            </TouchableOpacity>
             {
               serverCountingData && 
               <ScrollView horizontal={true}>
-                <View style={{width: screenWidth/7, alignItems: 'center'}}>
+                <TouchableOpacity
+                  onPress={()=>{
+                    this.setState({status: 'U'},()=>{
+                      serverListRequest({Par: `cmd=GET_LIST_SERVER&order=${sorts[sortIndex].value}&keyword=${this.state.searchText}&status=${this.state.status}`});
+                    })
+                  }}
+                  style={{width: screenWidth/7, alignItems: 'center'}}>
                   <Text style={{fontSize: normalize(20), fontWeight: 'bold', color: AppColors.statusUp}}>{serverCountingData.up}</Text>
                   <Text style={{color: 'black'}}>UP</Text>
-                </View>
-                <View style={{width: screenWidth/7, alignItems: 'center'}}>
+                </TouchableOpacity>
+                <TouchableOpacity 
+                  onPress={()=>{
+                    this.setState({status: 'W'},()=>{
+                      serverListRequest({Par: `cmd=GET_LIST_SERVER&order=${sorts[sortIndex].value}&keyword=${this.state.searchText}&status=${this.state.status}`});
+                    })
+                  }}
+                  style={{width: screenWidth/7, alignItems: 'center'}}>
                   <Text style={{fontSize: normalize(20), fontWeight: 'bold', color: AppColors.statusWarn}}>{serverCountingData.warn}</Text>
                   <Text style={{color: 'black'}}>WARN</Text>
-                </View>
-                <View style={{width: screenWidth/7, alignItems: 'center'}}>
+                </TouchableOpacity>
+                <TouchableOpacity 
+                  onPress={()=>{
+                    this.setState({status: 'D'},()=>{
+                      serverListRequest({Par: `cmd=GET_LIST_SERVER&order=${sorts[sortIndex].value}&keyword=${this.state.searchText}&status=${this.state.status}`});
+                    })
+                  }}
+                  style={{width: screenWidth/7, alignItems: 'center'}}>
                   <Text style={{fontSize: normalize(20), fontWeight: 'bold', color: AppColors.statusDown}}>{serverCountingData.down}</Text>
                   <Text style={{color: 'black'}}>DOWN</Text>
-                </View>
-                <View style={{width: screenWidth/7, alignItems: 'center'}}>
+                </TouchableOpacity>
+                <TouchableOpacity 
+                  onPress={()=>{
+                    this.setState({status: 'P'},()=>{
+                      serverListRequest({Par: `cmd=GET_LIST_SERVER&order=${sorts[sortIndex].value}&keyword=${this.state.searchText}&status=${this.state.status}`});
+                    })
+                  }}
+                  style={{width: screenWidth/7, alignItems: 'center'}}>
                   <Text style={{fontSize: normalize(20), fontWeight: 'bold', color: AppColors.statusDisk}}>{serverCountingData.disk}</Text>
                   <Text style={{color: 'black'}}>DISK</Text>
-                </View>
+                </TouchableOpacity>
               </ScrollView>
             }
           </View>
@@ -170,7 +201,7 @@ export default class StatusInfoComponent extends Component {
                 defaultIndex={sortIndex}
                 onSelect={(index)=>{
                   this.setState({ sortIndex: index },()=>{
-                    serverListRequest({Par: `cmd=GET_LIST_SERVER&order=${sorts[index].value}&keyword=${this.state.searchText}`});
+                    serverListRequest({Par: `cmd=GET_LIST_SERVER&order=${sorts[index].value}&keyword=${this.state.searchText}&status=${this.state.status}`});
                   })
                 }}
                 textStyle={{fontSize: normalize(13), color: '#3b3b4d', fontWeight: 'bold'}}
