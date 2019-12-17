@@ -238,18 +238,18 @@ export default class ServerDetailComponent extends Component {
           ? deviceLinuxTop.length
           : deviceWinTop.length}
           activeDotIndex={activeSlide}
-          containerStyle={{}}
+          containerStyle={{margin: -20}}
           dotStyle={{
-              width: 5,
-              height: 5,
-              borderRadius: 5,
+              width: 10,
+              height: 10,
+              borderRadius: 10,
               marginHorizontal: 0,
               backgroundColor: 'black'
           }}
           inactiveDotStyle={{
-              width: 5,
-              height: 5,
-              borderRadius: 5,
+              width: 10,
+              height: 10,
+              borderRadius: 10,
               marginHorizontal: 0,
               backgroundColor: 'black'          
           }}
@@ -432,6 +432,7 @@ export default class ServerDetailComponent extends Component {
                 <FontAwesome size={20} name="angle-down" />
               </View>
             </View>
+            { this.pagination }
             <ScrollView>
               <Carousel
                 ref={c => {
@@ -447,7 +448,6 @@ export default class ServerDetailComponent extends Component {
                 itemWidth={screenWidth}
                 onSnapToItem={(index) => this.setState({ activeSlide: index }) }
               />
-              { this.pagination }
             </ScrollView>
           </View>
         )}
@@ -557,7 +557,7 @@ const styles = StyleSheet.create({
     fontSize: AppConstant.textMenuSize
   },
   containerChart: {
-    margin: 20,
+    margin: 10,
     flex: 1,
     shadowColor: "#000",
     shadowOffset: {
