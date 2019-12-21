@@ -66,7 +66,23 @@ export default class SupportWriteComponent extends Component {
     this._navListener = this.props.navigation.addListener('didFocus', () => {
       StatusBar.setBarStyle('light-content');
       StatusBar.setBackgroundColor(AppColors.headerBg2);
+      this.setState({
+        checked: false,
+        email: "",
+        mobile: "",
+        title: "",
+        contact: "",
+        refreshModal: false,
+        isModalVisible: false,
+        textModelSearch: "",
+        listAccountNumberHorizontal: [],
+        listAccountNumberModal: [],
+      })
+      const {asRequestTypeListRequest, guestNoListRequest} = this.props;
+      asRequestTypeListRequest({Par: "cmd=GET_LIST_AS_REQUEST_TYPE"});
+      guestNoListRequest({Par: "cmd=GET_LIST_GUEST_NO"});
     });
+
     const {asRequestTypeListRequest, guestNoListRequest} = this.props;
     asRequestTypeListRequest({Par: "cmd=GET_LIST_AS_REQUEST_TYPE"});
     guestNoListRequest({Par: "cmd=GET_LIST_GUEST_NO"});
@@ -74,6 +90,8 @@ export default class SupportWriteComponent extends Component {
 
   componentWillReceiveProps(nextProps){
     if(nextProps.guestNoListData && nextProps.guestNoListDa!=this.props.guestNoListData){
+      this.state.listAccountNumberHorizontal = []
+      this.state.listAccountNumberModal = []
       var listAccountNumberTemp = nextProps.guestNoListData;
       for (let index = 0 ; index < listAccountNumberTemp.length; index++) {
         listAccountNumberTemp[index].id = index;
@@ -199,13 +217,13 @@ export default class SupportWriteComponent extends Component {
           <Text style={styles.textLeft}>{I18n.t('typeOfInquiry')}</Text>
           </View>
           <View style={styles.containerPicker} >
-            { asRequestTypeListData &&
+            { (asRequestTypeListData && this.state.requestTypeIndex >= 0) &&
             <ModalDropdown 
               options={asRequestTypeListData}
               style={styles.dropdown}
               dropdownStyle={{height: normalize(170), marginTop: 10}}
-              defaultValue={asRequestTypeListData[requestTypeIndex].name}
-              defaultIndex={requestTypeIndex}
+              defaultValue={asRequestTypeListData[this.state.requestTypeIndex].name}
+              defaultIndex={this.state.requestTypeIndex}
               onSelect={(index)=> this.setState({ requestTypeIndex: index, 
                         isDisplayAccountNumber:  asRequestTypeListData[index].idx == 5 
                         || asRequestTypeListData[index].idx == 6 ? true : false})}

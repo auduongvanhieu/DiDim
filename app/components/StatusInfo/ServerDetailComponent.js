@@ -51,11 +51,11 @@ const deviceLinuxTop = ["cpu", "loadavg", "tcpconn", "df"];
 const titleLinuxBottom = ["Memory", "Swap", "UpTime"];
 const deviceLinuxBottom = ["mem", "swap", "uptime"];
 
-const titleWinTop = ["UpTime", "CPU", "Memory"];
-const deviceWinTop = ["uptime", "cpu", "mem"];
+const titleWinTop = ["CPU", "Tcp Connect", "Disk Free Space"];
+const deviceWinTop = ["cpu", "tcpconn", "df"];
 
-const titleWinBottom = ["Disk Free Space", "Tcp Connect"];
-const deviceWinBottom = ["df", "tcpconn"];
+const titleWinBottom = ["Memory", "UpTime"];
+const deviceWinBottom = ["mem", "uptime"];
 
 export default class ServerDetailComponent extends Component {
   /**
