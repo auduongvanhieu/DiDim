@@ -58,7 +58,9 @@ export default class LoginComponent extends Component {
   componentWillReceiveProps(nextProps){
     if(nextProps.authorData && nextProps.authorData != this.props.authorData){
       const {authorData} = nextProps;
-      this.setState({messageError: authorData.ReturnMsg});
+      if(authorData.ReturnValue == false) {
+        this.setState({messageError: authorData.ReturnMsg});
+      }
     }
   }
 
@@ -100,7 +102,6 @@ export default class LoginComponent extends Component {
 
   onSubmitForm = form => {
     const { authorizeRequest, getTokenRequest } = this.props;
-
     // var text = aesEncrypt("cmd=GET_LIST_AS_REQUEST", "XCKD3C1C2Z6B8VCCUFBSW8UPA9AR8VL7")
     // console.log("__haha__", text)
     // var text2 = aesDecrypt("WpfNQNZqwuD3LPonzqYFXIZ8C4/IQMFeOZGg6zogDH6tA38u+D6BagZtWKsEZGPgmu4MrZGM6b41aiXi/FHfqUovQKsACB8OWK3eAh0UyFmd82Y83qqfsSaNANX1W/m2n2reWCEsRGuQJIhm/6oS5PO28S7vVuth5U8p4WTY3kIBw8dO7xJuqnGost+a1T86hPDEPNlP6dolIOxWzNrsLwMJKLs+xKD0nAGI4Z3AF8dC5Vhh0ueY2STavb04o0pl8NiBkBj4SEbxHimBtJIVJhd+A3TQmfN5wiwAXGD8jb5pw+xGxvU4a/HFupCevPVBLkVKypGnwzvHUVDm7zcY3OyeNqTIfQsONN2s4GquJA5m81s4aAwaUDMxm3/ByDJF9xHG+pLDk2CsX1uBcRjO1YBo9EzDY0Lt/VOpNjDcCloLXYW8N2g0GM/INS6jnJRejyVxvJk+nVnmU6WW9j6x5oxn7DklzUk3vc4G5lVxny4Oy5zhewGjt8c/T8MZ41zFB1NwwAy9A8DA9HkcZjHZrsd/bcRSDwpRlUffKV9AV7Y=", "XCKD3C1C2Z6B8VCCUFBSW8UPA9AR8VL7")
@@ -151,9 +152,9 @@ export default class LoginComponent extends Component {
                 hideClearButton={true}
                 onSubmit={this.onSubmitForm.bind(this)}
                 initialValues={{
-                  managed_url: "",
-                  user: "",
-                  password: ""
+                  managed_url: "cloud-didim.3-pod.com",
+                  user: "qtsoft",
+                  password: "qtsoft001##"
                 }}
             />
             </View>
@@ -175,7 +176,7 @@ export default class LoginComponent extends Component {
             </View>
             }
           </View>
-  <Text style={{alignSelf: 'center', marginTop: normalize(30)}}>{I18n.t('appFooter')}</Text>
+          <Text style={{alignSelf: 'center', marginTop: normalize(30)}}>{I18n.t('appFooter')}</Text>
         </View>
       </Container>
     );

@@ -9,6 +9,7 @@ const mapStateToProps = state => ({
     isAutoLogin: state.autoLoginReducer.isAutoLogin,
     getTokenData: state.getTokenReducer.receivedData,
     authorData: state.login.receivedData,
+    veryfyData: state.verifyReducer.receivedData,
 })
 
 const mapDispatchToProps = dispatch => ({

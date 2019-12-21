@@ -66,6 +66,14 @@
     "alarmLogMenu": "장애 로그",
     "supportCenterMenu": "고객지원",
     "pushAlarm": "Push alarm",
-    "logout": "Logout"
-
+    "logout": "Logout",
+    "requestStatusNotice": "공지",
+    "requestStatusRegistration": "접수",
+    "requestStatusSolution": "해결",
+    "requestStatusClose": "종료",
+    "requestTypeTechical": "기술지원",
+    "requestTypeError": "장애/오류 확인",
+    "requestTypeTaxInvoice": "세금계산서",
+    "requestTypeBill": "요금 관련",
+    "requestTypeConsult": "컨설팅/견적 관련"
 }

@@ -66,6 +66,14 @@
     "alarmLogMenu": "障碍记录",
     "supportCenterMenu": "客服中心",
     "pushAlarm": "Push alarm",
-    "logout": "Logout"
-
+    "logout": "Logout",
+    "requestStatusNotice": "公告",
+    "requestStatusRegistration": "接收",
+    "requestStatusSolution": "解决",
+    "requestStatusClose": "结束",
+    "requestTypeTechical": "技术援助",
+    "requestTypeError": "障碍/错误确认",
+    "requestTypeTaxInvoice": "税单",
+    "requestTypeBill": "收费",
+    "requestTypeConsult": "咨询/联系"
 }

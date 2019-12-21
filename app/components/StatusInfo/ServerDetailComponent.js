@@ -45,11 +45,11 @@ const hours = [
   { title: I18n.t('recent') + "30" + I18n.t('days'), value: "30D" }
 ];
 
-const titleLinuxTop = ["UpTime", "Load", "CPU", "Memory"];
-const deviceLinuxTop = ["uptime", "loadavg", "cpu", "mem"];
+const titleLinuxTop = ["CPU", "Load", "Tcp Connect", "Disk Free Space"];
+const deviceLinuxTop = ["cpu", "loadavg", "tcpconn", "df"];
 
-const titleLinuxBottom = ["Swap", "Disk Free Space", "Tcp Connect"];
-const deviceLinuxBottom = ["swap", "df", "tcpconn"];
+const titleLinuxBottom = ["Memory", "Swap", "UpTime"];
+const deviceLinuxBottom = ["mem", "swap", "uptime"];
 
 const titleWinTop = ["UpTime", "CPU", "Memory"];
 const deviceWinTop = ["uptime", "cpu", "mem"];

@@ -66,5 +66,14 @@
     "alarmLogMenu": "Alarm Log",
     "supportCenterMenu": "Support Center",
     "pushAlarm": "Push alarm",
-    "logout": "Logout"
+    "logout": "Logout",
+    "requestStatusNotice": "Notice",
+    "requestStatusRegistration": "Registration",
+    "requestStatusSolution": "Solution",
+    "requestStatusClose": "Close",
+    "requestTypeTechical": "Techical Support",
+    "requestTypeError": "Alert/Error Confirm",
+    "requestTypeTaxInvoice": "Tax invoice",
+    "requestTypeBill": "Bill",
+    "requestTypeConsult": "Consulting/Estimate"
 }

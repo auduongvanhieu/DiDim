@@ -68,8 +68,8 @@ class HeaderMenuHome extends Component {
       const {serverCountingData} = nextProps;
       this.setState({numberNotify: serverCountingData.total})
       this.state.listAlert[0].title = I18n.languageCode == 'ko' ? 
-          `${I18n.t('arlarmNotify')} ${serverCountingData.down} ${I18n.t('thereAre')}`:
-          `${I18n.t('thereAre')} ${serverCountingData.down} ${I18n.t('arlarmNotify')}`
+          `${I18n.t('arlarmNotify')} ${parseInt(serverCountingData.down, 0) + parseInt(serverCountingData.warn,0)} ${I18n.t('thereAre')}`:
+          `${I18n.t('thereAre')} ${parseInt(serverCountingData.down, 0) + parseInt(serverCountingData.warn,0)} ${I18n.t('arlarmNotify')}`
       this.state.listAlert[1].title = I18n.languageCode == 'ko' ?
           `${I18n.t('asNotify')} ${serverCountingData.as} ${I18n.t('thereAre')}`:
           `${I18n.t('thereAre')} ${serverCountingData.as} ${I18n.t('asNotify')}`
