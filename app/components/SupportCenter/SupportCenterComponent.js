@@ -115,7 +115,7 @@ export default class SupportCenterComponent extends Component {
                     style={{ marginHorizontal: 5 }}
                     bgColor={generateNameColor(item.work_status_name)}
                     widthSize={normalize(10)}
-                    title={item.work_status_name}
+                    title={I18n.t(`${item.work_status_name}`)}
                   />
                 </View>
                 { item.cmt_cnt>0 &&

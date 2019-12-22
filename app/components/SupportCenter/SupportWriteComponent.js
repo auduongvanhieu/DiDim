@@ -137,8 +137,14 @@ export default class SupportWriteComponent extends Component {
   };
 
   onPressRegistration = () =>{
-    const {asRequestRegistrationRequest, asRequestTypeListData} = this.props;
+    const {asRequestRegistrationRequest, asRequestTypeListData, showErrorAlert} = this.props;
     const { email, mobile, title, contact, requestTypeIndex, isDisplayAccountNumber} = this.state;
+
+    if(!this.isEmail(email)){
+      showErrorAlert({ title: I18n.t('failure'), description: I18n.t('errorEmail') });
+      return;
+    }
+
     var refGuestNo = "";
     this.state.listAccountNumberHorizontal.forEach(element => {
       if(element.added && element.geust_no){
@@ -193,6 +199,11 @@ export default class SupportWriteComponent extends Component {
         </Text>
       </View>
     );
+  }
+
+  isEmail = (text) => {
+    let reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+    return reg.test(text);
   }
 
   /**

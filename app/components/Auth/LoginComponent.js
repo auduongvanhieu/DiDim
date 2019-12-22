@@ -62,6 +62,12 @@ export default class LoginComponent extends Component {
         this.setState({messageError: authorData.ReturnMsg});
       }
     }
+    if(nextProps.veryfyData && nextProps.veryfyData != this.props.veryfyData){
+      const {veryfyData} = nextProps;
+      if(veryfyData.ReturnValue) {
+        this.setState({messageError: veryfyData.ReturnMsg});
+      }
+    }
   }
 
   cacheMyLogin = async form => {

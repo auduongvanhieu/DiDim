@@ -4,7 +4,7 @@ import {BackHandler, ToastAndroid} from 'react-native';
 import noop from './helpers/noop';
 import { connect } from 'react-redux'
 import getCurrentRouteName from './helpers/getCurrentRoute';
-import {goBackAction, navigateToAlarmLogScreenAction, navigateToSupportCenterScreenAction } from '../actions/NavigationActions/actionCreators';
+import {goBackAction, navigateToAlarmLogScreenAction, navigateToSupportCenterScreenAction, navigateToStatusInfoScreenAction } from '../actions/NavigationActions/actionCreators';
 
 class ExitOnDoubleBack extends Component {
   componentWillMount () {
@@ -27,7 +27,7 @@ class ExitOnDoubleBack extends Component {
   }
 
   _handleBackPress = () => {
-    const {currentNavi, goBack, navigateToAlarmLogScreen, navigateToSupportCenterScreen} = this.props;
+    const {currentNavi, goBack, navigateToAlarmLogScreen, navigateToSupportCenterScreen, navigateToStatusInfoScreen} = this.props;
     console.log("__currentNaviKey__", currentNaviKey)
     let currentNaviKey = getCurrentRouteName(currentNavi);
     if (currentNaviKey && this.props.exitableRoutes.includes(currentNaviKey)) { // exit the app from landing page
@@ -37,6 +37,8 @@ class ExitOnDoubleBack extends Component {
         case "AlarmLogDetail": navigateToAlarmLogScreen(); break;
         case "SupportView": navigateToSupportCenterScreen(); break;
         case "SupportWrite": navigateToSupportCenterScreen(); break;
+        case "AlarmLog": navigateToStatusInfoScreen(); break;
+        case "SupportCenter": navigateToStatusInfoScreen(); break;
         default: goBack();
       }
       return true
@@ -81,6 +83,7 @@ const mapDispatchToProps = dispatch => ({
   goBack: () => dispatch(goBackAction()),
   navigateToAlarmLogScreen: (params) => dispatch(navigateToAlarmLogScreenAction(params)),
   navigateToSupportCenterScreen: (params) => dispatch(navigateToSupportCenterScreenAction(params)),
+  navigateToStatusInfoScreen: (params) => dispatch(navigateToStatusInfoScreenAction(params)),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(ExitOnDoubleBack)

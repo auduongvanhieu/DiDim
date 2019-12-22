@@ -12,6 +12,8 @@
     "loginPassword": "Password",
     "failure": "Failure",
     "connectionErrors": "An error occurred, please check the connection again.",
+    "errorEmail": "Email invalidate",
+    "confirm": "confirm",
 
     "infra": "Infra",
     "infraMenu": "Infra",

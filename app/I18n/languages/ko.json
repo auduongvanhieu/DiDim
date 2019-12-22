@@ -12,6 +12,8 @@
     "loginPassword": "Password",
     "failure": "실패",
     "connectionErrors": "오류가 발생했습니다. 연결을 다시 확인하십시오.",
+    "errorEmail": "이메일 무효화",
+    "confirm": "확인하다",
 
     "infra": "인프라",
     "infraMenu": "인프라",

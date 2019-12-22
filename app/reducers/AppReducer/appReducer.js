@@ -6,6 +6,8 @@ import {
   SHOW_INFO_DIALOG,
   HIDE_INFO_DIALOG
 } from "../../actions/AppActions/actionTypes";
+import { Alert } from "react-native";
+import I18n from "../../I18n";
 
 const appReducer = (state = [], actions) => {
   switch (actions.type) {
@@ -24,6 +26,14 @@ const appReducer = (state = [], actions) => {
         }
       };
     case SHOW_ERROR_ALERT:
+      Alert.alert(
+        actions.payload.title,
+        actions.payload.description,
+        [
+          {text: I18n.t('confirm'), onPress: () => {}},
+        ],
+        {cancelable: true},
+      );
       return {
         ...state,
         alert: {

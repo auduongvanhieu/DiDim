@@ -12,6 +12,8 @@
     "loginPassword": "Password",
     "failure": "失败",
     "connectionErrors": "发生错误，请再次检查连接。",
+    "errorEmail": "电子邮件无效",
+    "confirm": "确认",
 
     "infra": "基础设施",
     "infraMenu": "基础设施",

@@ -52,8 +52,7 @@ export default class App extends Component {
       <Provider store={store}>
         <PersistGate persistor={persistor}>
           <ExitOnDoubleBack 
-            exitableRoutes={["Login", "StatusInfo", "AlarmLog",
-              "SupportCenter",
+            exitableRoutes={["Login", "StatusInfo",
             ]}>
             <NavigationContainer />
           </ExitOnDoubleBack>
