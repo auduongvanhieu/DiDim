@@ -10,6 +10,8 @@ import {
 import { disposeRequestAction } from '../../actions/AuthActions/actionCreators';
 
 const mapStateToProps = state => ({
+    verifyData: state.verifyReducer.receivedData,
+    authorData: state.login.receivedData,
 })
 
 const mapDispatchToProps = dispatch => ({

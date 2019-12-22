@@ -30,8 +30,24 @@ class SidebarComponent extends Component {
     this.state = {
       userInfo: {},
       expanded: false,
-      switchValue: true
+      switchValue: true,
+      key: ""
     };
+  }
+
+  componentWillReceiveProps(nextProps){
+    if(nextProps.verifyData){
+      const {verifyData} = nextProps;
+      if(verifyData.ReturnValue) {
+        this.setState({key: verifyData.ReturnMsg});
+      }
+    }
+    if(nextProps.authorData){
+      const {authorData} = nextProps;
+      if(authorData.ReturnValue) {
+        this.setState({key: authorData.ReturnMsg});
+      }
+    }
   }
 
   async componentDidMount() {
@@ -53,7 +69,7 @@ class SidebarComponent extends Component {
       navigateToStatusInfoScreen,
       navigateToAlarmLogScreen,
       navigateToSupportCenterScreen,
-      disposeRequest
+      disposeRequest, 
     } = this.props;
     return (
       <Container style={styles.menuContainer}>
@@ -137,6 +153,12 @@ class SidebarComponent extends Component {
             </View>
           </TouchableOpacity>
         </View>
+        </View>
+        <View style={{flex:1}}/>
+        <View style={{flexDirection: 'row', marginLeft: normalize(30), marginBottom: 20}}>
+          <Image style={{width: 18, height: 18,}} source={require('../../assets/ico_key.png')} />
+          <Text style={{color:'red', fontSize: 14, }}> PushAlarm Key:  </Text>
+        <Text style={{color:'white', fontSize: 14, }}>{this.state.key}</Text>
         </View>
         <Ionicons onPress={()=>closeNavigationDrawer()} style={{position: 'absolute', right: 10, top: 10}} name="md-close" color='white' size={30} />
       </Container>

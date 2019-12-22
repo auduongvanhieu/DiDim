@@ -28,6 +28,7 @@ import { Images } from "../../assets";
 import NoDataView from "../CustomView/NoDataView";
 import { Config } from "../../utilities/Config";
 import { generateNameColor } from "../../utilities/Helper";
+import WebView from "react-native-webview";
 
 const screenWidth = Dimensions.get("window").width;
 const screenHeight = Dimensions.get("window").height;
@@ -43,7 +44,6 @@ export default class SupportViewComponent extends Component {
       hour: "",
       comment: "",
       listReply: [],
-      mainContent: {}
     }
   }
 
@@ -86,7 +86,6 @@ export default class SupportViewComponent extends Component {
     if(nextProps.asRequestDetailData && nextProps.asRequestDetailData!=this.props.asRequestDetailData){
       var values = Object.values(nextProps.asRequestDetailData);
       listReply = [];
-      mainContent = {}
       for(i=0; i<values.length; i++){
         var value = values[i];
         var content = value.content;
@@ -96,14 +95,11 @@ export default class SupportViewComponent extends Component {
         if(value.cmt_idx){
           value.content = content;
           listReply.push(value)
-        } else {
-          mainContent = value;
-          content = content.replace('\n', '');
-          mainContent.content = content;
         }
       }
       listReply.sort((a,b)=>b.cmt_idx.localeCompare(a.cmt_idx))
-      this.setState({listReply: listReply, mainContent: mainContent, comment: ""})
+      listReply.push(nextProps.asRequestDetailData.content)
+      this.setState({listReply: listReply, comment: ""})
     }
 
     if(nextProps.commentRegistrationData && nextProps.commentRegistrationData!=this.props.commentRegistrationData){
@@ -206,7 +202,8 @@ export default class SupportViewComponent extends Component {
                     <Image source={Images.ico_clock_b} style={styles.clock1} />
                   </View>
                   <View style={styles.bgComment1}>
-                    <Text style={{ color: "white" }}>{item.content + "\n\n" + mainContent.content}</Text>
+                    {/* <Text style={{ color: "white" }}>{item.content}</Text> */}
+                    <WebView textZoom={250} style={{backgroundColor: 'transparent', marginTop: 6}} source={{html: item.content}} />
                   </View>
                 </View>
               ) : (
@@ -290,9 +287,10 @@ const styles = StyleSheet.create({
   bgComment1: {
     backgroundColor: "#243b4a74",
     marginLeft: "7%",
-    padding: "3%",
+    paddingHorizontal: "3%",
     borderTopLeftRadius: 10,
     borderBottomLeftRadius: 10,
+    height:40,
     marginTop: 5
   },
   bgComment2: {
