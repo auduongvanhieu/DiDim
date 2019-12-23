@@ -142,8 +142,8 @@ class SidebarComponent extends Component {
           </View>
           <TouchableOpacity onPress={ () => { 
             clearAuthCache();
-            disposeRequest();
             navigateToLoginScreen();
+            // disposeRequest({});
           }} >
             <View style={styles.listRow}>
               <Image

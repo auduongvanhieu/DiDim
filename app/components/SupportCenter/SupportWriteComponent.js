@@ -174,7 +174,7 @@ export default class SupportWriteComponent extends Component {
     return (
       <View
         style={{
-          width: normalize(120),
+          width: normalize(160),
           padding: 10,
           flexDirection: "row",
           justifyContent: "flex-start"
@@ -195,7 +195,7 @@ export default class SupportWriteComponent extends Component {
             alignSelf: 'center'
           }}
         >
-          {option.name}
+          {I18n.t(`${option.name}`)}
         </Text>
       </View>
     );
@@ -233,7 +233,7 @@ export default class SupportWriteComponent extends Component {
               options={asRequestTypeListData}
               style={styles.dropdown}
               dropdownStyle={{height: normalize(170), marginTop: 10}}
-              defaultValue={asRequestTypeListData[this.state.requestTypeIndex].name}
+              defaultValue={I18n.t(`${asRequestTypeListData[this.state.requestTypeIndex].name}`)}
               defaultIndex={this.state.requestTypeIndex}
               onSelect={(index)=> this.setState({ requestTypeIndex: index, 
                         isDisplayAccountNumber:  asRequestTypeListData[index].idx == 5 
@@ -241,7 +241,7 @@ export default class SupportWriteComponent extends Component {
               textStyle={{fontSize: normalize(13), color: '#3b3b4d', fontWeight: 'bold'}}
               renderRow={this._dropdown_renderRow}
               showsVerticalScrollIndicator={false}
-              renderButtonText={rowData => <Text>{rowData.name}</Text>}
+              renderButtonText={rowData => <Text>{I18n.t(`${rowData.name}`)}</Text>}
             />
             }
             <View style={{flex: 1}} />
@@ -514,7 +514,7 @@ const styles = StyleSheet.create({
   },
   containerPicker: {
     height: normalize(30),
-    width: normalize(100),
+    width: normalize(160),
     backgroundColor: "#f2f2f4",
     borderRadius: 10,
     justifyContent: "center",
@@ -563,7 +563,7 @@ const styles = StyleSheet.create({
   dropdown: {
     justifyContent: "center",
     left: 10,
-    width: normalize(100),
+    width: normalize(150),
     height: "100%",
     position: "absolute",
     backgroundColor: "transparent"

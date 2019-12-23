@@ -135,8 +135,8 @@ export default class SupportViewComponent extends Component {
             {asRequestDetailData && asRequestDetailData.content.title} 
           </Text>
           <View style={{ flexDirection: "row" }}>
-            <View style={{ width: normalize(50), flexDirection: "row" }}>
-              <StatusButton title={asRequestDetailData && asRequestDetailData.content.work_status_name}
+            <View style={{ width: normalize(60), flexDirection: "row" }}>
+              <StatusButton title={asRequestDetailData && I18n.t(`${asRequestDetailData.content.work_status_name}`)}
                 bgColor={asRequestDetailData && generateNameColor(asRequestDetailData.content.work_status_name)} />
             </View>
             <Image
@@ -191,7 +191,7 @@ export default class SupportViewComponent extends Component {
             renderItem={({ item, index }) =>
               item.write_name == Config.userName ? (
                 <View>
-                  <View style={{ flexDirection: "row", marginTop: index == 1 ? 45 : 30 }}>
+                  <View style={{ flexDirection: "row", marginTop: index == listReply.length-1 ? 45 : 30 }}>
                     <Text style={styles.titleComment1}>{item.write_name}</Text>
                     <View style={{ flex: 1 }} />
                     <Text
@@ -208,7 +208,7 @@ export default class SupportViewComponent extends Component {
                 </View>
               ) : (
                 <View>
-                  <View style={{ flexDirection: "row", marginTop: index == 1 ? 45 : 30  }}>
+                  <View style={{ flexDirection: "row", marginTop: index == listReply.length-1 ? 45 : 30  }}>
                     <Text style={styles.titleComment2}>{item.write_name}</Text>
                     <View style={{ flex: 1 }} />
                     <Text

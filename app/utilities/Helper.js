@@ -129,16 +129,16 @@ function generateStatusColor(shortText) {
 function generateNameColor(shortText) {
   var color = "blue";
   switch (shortText) {
-    case "공지":
+    case "requestStatusNotice":
       color = "#666372";
       break;
-    case "접수":
+    case "requestStatusRegistration":
       color = "#5A7BEF";
       break;
-    case "해결":
+    case "requestStatusSolution":
       color = "#FF4D4D";
       break;
-    case "종료":
+    case "requestStatusClose":
       color = "#14D2B8";
       break;
   }
@@ -148,13 +148,13 @@ function generateNameColor(shortText) {
 function generateCommentColor(shortText) {
   var color = "blue";
   switch (shortText) {
-    case "접수":
+    case "requestStatusRegistration":
       color = "#43C7F1";
       break;
-    case "해결":
+    case "requestStatusSolution":
       color = "#C3CDD9";
       break;
-    case "종료":
+    case "requestStatusClose":
       color = "#C3CDD9";
       break;
   }

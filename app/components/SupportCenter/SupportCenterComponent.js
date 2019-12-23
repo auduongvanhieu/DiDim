@@ -110,7 +110,7 @@ export default class SupportCenterComponent extends Component {
               style={{ marginHorizontal: 20, paddingVertical: normalize(15) }}
             >
               <View style={{ flexDirection: "row", alignItems: "center" }}>
-                <View style={{ width: normalize(55), flexDirection: "row" }}>
+                <View style={{ width: normalize(60), flexDirection: "row" }}>
                   <StatusButton
                     style={{ marginHorizontal: 5 }}
                     bgColor={generateNameColor(item.work_status_name)}
