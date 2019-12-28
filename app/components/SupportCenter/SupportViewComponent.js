@@ -25,11 +25,8 @@ import { AppColors, AppConstant } from "../../utilities/Constants";
 import StatusButton from "../CustomView/StatusButton";
 import HeaderMenu from "../CustomView/HeaderMenu";
 import { Images } from "../../assets";
-import NoDataView from "../CustomView/NoDataView";
 import { Config } from "../../utilities/Config";
 import { generateNameColor } from "../../utilities/Helper";
-import WebView from "react-native-webview";
-import AutoResizeHeightWebView from '../CustomView/AutoResizeHeightWebView'
 import AutoHeightWebView from 'react-native-autoheight-webview'
 
 const screenWidth = Dimensions.get("window").width;
