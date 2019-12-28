@@ -157,7 +157,7 @@ class SidebarComponent extends Component {
         <View style={{flex:1}}/>
         <View style={{flexDirection: 'row', marginLeft: normalize(30), marginBottom: 20}}>
           <Image style={{width: 18, height: 18,}} source={require('../../assets/ico_key.png')} />
-          <Text style={{color:'red', fontSize: 14, }}> PushAlarm Key:  </Text>
+          <Text style={{color:'red', fontSize: 14, }}> {I18n.t('pushAlarmKey')}:  </Text>
         <Text style={{color:'white', fontSize: 14, }}>{this.state.key}</Text>
         </View>
         <Ionicons onPress={()=>closeNavigationDrawer()} style={{position: 'absolute', right: 10, top: 10}} name="md-close" color='white' size={30} />

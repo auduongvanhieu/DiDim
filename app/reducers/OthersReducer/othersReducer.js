@@ -37,6 +37,8 @@ import {
 
     AS_REQUEST_REGISTRATION_SUCCEEDED,
     AS_REQUEST_REGISTRATION_FAILED,
+
+    AS_REQUEST_REGISTRATION_INIT
 } from '../../actions/OthersActions/actionTypes';
 
 const otherReducer = (state = {tabIndexServerDetail: 0}, actions) => {
@@ -104,6 +106,9 @@ const otherReducer = (state = {tabIndexServerDetail: 0}, actions) => {
         case AS_REQUEST_REGISTRATION_FAILED:
             return { ...state, asRequestRegistrationData: actions.payload };
             
+        case AS_REQUEST_REGISTRATION_INIT:
+            return { ...state, asRequestRegistrationInit: actions.payload };
+
         default:
             return state;
     }

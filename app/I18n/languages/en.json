@@ -12,7 +12,10 @@
     "loginPassword": "Password",
     "failure": "Failure",
     "connectionErrors": "An error occurred, please check the connection again.",
-    "errorEmail": "Email invalidate",
+    "errorEmail": "Not a valid Email address.",
+    "phoneEmpty": "Please enter your mobile number.",
+    "titleEmpty": "Please enter the title.",
+    "questionEmpty": "Please enter the question.",
     "confirm": "confirm",
 
     "infra": "Infra",
@@ -77,5 +80,6 @@
     "requestTypeError": "Alert/Error Confirm",
     "requestTypeTaxInvoice": "Tax invoice",
     "requestTypeBill": "Bill",
-    "requestTypeConsult": "Consulting/Estimate"
+    "requestTypeConsult": "Consulting/Estimate",
+    "pushAlarmKey": "PushAlarm Key"
 }

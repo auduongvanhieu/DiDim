@@ -8,6 +8,7 @@ const mapStateToProps = state => ({
     asRequestTypeListData: state.otherReducer.asRequestTypeListData,
     guestNoListData: state.otherReducer.guestNoListData,
     asRequestRegistrationData: state.otherReducer.asRequestRegistrationData,
+    asRequestRegistrationInit: state.otherReducer.asRequestRegistrationInit,
 })
 
 const mapDispatchToProps = dispatch => ({

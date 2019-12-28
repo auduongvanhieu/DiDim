@@ -27,14 +27,6 @@ import { generateStatusColor, generateNameColor, generateCommentColor } from "..
 const screenWidth = Dimensions.get("window").width;
 const screenHeight = Dimensions.get("window").height;
 
-const listSupport = [
-  {alarmType: 'DOWN', title: "URL", alarmName: '2019년 04월 월간 보고서', 'failureTime': '2019-09-09 11:13:00', color: AppColors.statusDown},
-  {alarmType: 'DOWN', title: "web1 server", alarmName: '사이버위협 동향분석 및 접근시도 차단 요청', 'failureTime': '2019-09-09 11:13:00', color: AppColors.statusDown},
-  {alarmType: 'UP', title: "db master", alarmName: 'WAS accesslog 저장 불가 현상', 'failureTime': '2019-09-09 11:13:00', color: AppColors.statusUp},
-  {alarmType: 'DOWN', title: "db slave", alarmName: '운영 서버 서비스 실행 문의', 'failureTime': '2019-09-09 11:13:00', color: AppColors.statusDown},
-]
-
-
 export default class SupportCenterComponent extends Component {
   /**
    * Constructor
@@ -71,7 +63,8 @@ export default class SupportCenterComponent extends Component {
       navigateToSupportWriteScreen,
       asRequestListData,
       asRequestDetailRequest,
-      startLoading
+      startLoading,
+      asRequestRegistrationInit
     } = this.props;
     return (
       <Container>
@@ -81,7 +74,10 @@ export default class SupportCenterComponent extends Component {
           title={I18n.t('supportCenter')}
           iconRight={
             <TouchableOpacity
-              onPress={()=>navigateToSupportWriteScreen()}
+              onPress={()=>{
+                asRequestRegistrationInit({data: (new Date())})
+                navigateToSupportWriteScreen()
+              }}
               style={{marginLeft: 10}}>
               <Image
                 source={Images.btn_write}

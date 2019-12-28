@@ -29,6 +29,8 @@ import NoDataView from "../CustomView/NoDataView";
 import { Config } from "../../utilities/Config";
 import { generateNameColor } from "../../utilities/Helper";
 import WebView from "react-native-webview";
+import AutoResizeHeightWebView from '../CustomView/AutoResizeHeightWebView'
+import AutoHeightWebView from 'react-native-autoheight-webview'
 
 const screenWidth = Dimensions.get("window").width;
 const screenHeight = Dimensions.get("window").height;
@@ -89,9 +91,9 @@ export default class SupportViewComponent extends Component {
       for(i=0; i<values.length; i++){
         var value = values[i];
         var content = value.content;
-        content = content.replace(/<p>/g, '');
-        content = content.replace(/<\/p>/g, '\n');
-        content = content.replace(/<br>/g, '');
+        // content = content.replace(/<p>/g, '');
+        // content = content.replace(/<\/p>/g, '\n');
+        // content = content.replace(/<br>/g, '');
         if(value.cmt_idx){
           value.content = content;
           listReply.push(value)
@@ -131,7 +133,7 @@ export default class SupportViewComponent extends Component {
           title={I18n.t('supportCenter')}
         />
         <View style={{ paddingVertical: "4%", paddingHorizontal: "7%" }}>
-          <Text style={{ fontSize: normalize(18), color: "#140f26" }}>
+          <Text numberOfLines={1} style={{ fontSize: normalize(18), color: "#140f26" }}>
             {asRequestDetailData && asRequestDetailData.content.title} 
           </Text>
           <View style={{ flexDirection: "row" }}>
@@ -153,7 +155,7 @@ export default class SupportViewComponent extends Component {
             />
             <Text style={{ fontSize: normalize(12), alignSelf: "center" }}>
               {" "}
-              기술지원
+              {I18n.t('requestTypeTechical')}
             </Text>
           </View>
         </View>
@@ -169,7 +171,7 @@ export default class SupportViewComponent extends Component {
             multiline={true}
           />
           <Image source={Images.bg_ico_msg} style={styles.imgBgMsg} />
-          { asRequestDetailData && asRequestDetailData.content.work_status_name != "종료" &&
+          { asRequestDetailData && asRequestDetailData.content.work_status_name != "requestStatusClose" &&
             <View style={styles.containerBtn}>
               <Button 
                 title={I18n.t('finishWork')}
@@ -201,14 +203,30 @@ export default class SupportViewComponent extends Component {
                     </Text>
                     <Image source={Images.ico_clock_b} style={styles.clock1} />
                   </View>
-                  <View style={styles.bgComment1}>
+                  <View style={[styles.bgComment1, {marginBottom: index == listReply.length-1 ? 20 : 0}]}>
                     {/* <Text style={{ color: "white" }}>{item.content}</Text> */}
-                    <WebView textZoom={250} style={{backgroundColor: 'transparent', marginTop: 6}} source={{html: item.content}} />
+                    <AutoHeightWebView
+                      style={{ width: '100%'}}
+                      customScript={`document.body.style.background = 'transparent';`}
+                      customStyle={`
+                        * {
+                          font-family: 'Times New Roman';
+                        }
+                        p {
+                          font-size: 16px;
+                        }
+                      `}
+                      onSizeUpdated={size => {console.log(size.height)}}
+                      source={{html: item.content}}
+                      scalesPageToFit={true}
+                      zoomable={false}
+                      textZoom={200}
+                    />                  
                   </View>
                 </View>
               ) : (
                 <View>
-                  <View style={{ flexDirection: "row", marginTop: index == listReply.length-1 ? 45 : 30  }}>
+                  <View style={{ flexDirection: "row", marginTop: index == listReply.length-1 ? 45 : 30, marginBottom: index == listReply.length-1 ? 10 : 0  }}>
                     <Text style={styles.titleComment2}>{item.write_name}</Text>
                     <View style={{ flex: 1 }} />
                     <Text
@@ -218,11 +236,26 @@ export default class SupportViewComponent extends Component {
                     </Text>
                     <Image source={Images.ico_clock_b} style={styles.clock2} />
                   </View>
-                  <View style={styles.bgComment2}>
-                    <Text style={{ marginLeft: "7%", color: "#1c162e" }}>
-                      {item.content}
-                    </Text>
-                  </View>
+                  <View style={[styles.bgComment2, {marginBottom: index == listReply.length-1 ? 20 : 0}]}>
+                    {/* <Text style={{ marginLeft: "7%", color: "#1c162e" }}>{item.content}</Text> */}
+                    <AutoHeightWebView
+                      style={{ width: '100%'}}
+                      customScript={`document.body.style.background = 'transparent';`}
+                      customStyle={`
+                        * {
+                          font-family: 'Times New Roman';
+                        }
+                        p {
+                          font-size: 16px;
+                        }
+                      `}
+                      onSizeUpdated={size => {console.log(size.height)}}
+                      source={{html: item.content}}
+                      scalesPageToFit={true}
+                      zoomable={false}
+                      textZoom={200}
+                    />
+                  </View>                  
                 </View>
               )
             }
@@ -290,8 +323,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: "3%",
     borderTopLeftRadius: 10,
     borderBottomLeftRadius: 10,
-    height:40,
-    marginTop: 5
+    marginTop: 5,
+    paddingVertical: 10
   },
   bgComment2: {
     backgroundColor: "white",
@@ -299,7 +332,8 @@ const styles = StyleSheet.create({
     padding: "3%",
     borderTopRightRadius: 10,
     borderBottomRightRadius: 10,
-    marginTop: 5
+    marginTop: 5,
+    paddingVertical: 10
   },
   textReply: {
     fontSize: normalize(13),

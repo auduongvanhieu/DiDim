@@ -48,6 +48,8 @@ import {
     AS_REQUEST_REGISTRATION_REQUEST,
     AS_REQUEST_REGISTRATION_SUCCEEDED,
     AS_REQUEST_REGISTRATION_FAILED,
+
+    AS_REQUEST_REGISTRATION_INIT
 } from "./actionTypes";
 
 const changeTabIndexServerDetailAction = (index) => ({
@@ -248,6 +250,11 @@ const asRequestRegistrationFailedAction = error => ({
   payload: error
 });
 
+const asRequestRegistrationInitAction = params => ({
+  type: AS_REQUEST_REGISTRATION_INIT,
+  payload: params
+});
+
 export {
     changeTabIndexServerDetailAction,
 
@@ -298,4 +305,6 @@ export {
     asRequestRegistrationRequestAction,
     asRequestRegistrationSucceededAction,
     asRequestRegistrationFailedAction,
+
+    asRequestRegistrationInitAction
 };

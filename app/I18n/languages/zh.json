@@ -12,7 +12,10 @@
     "loginPassword": "Password",
     "failure": "失败",
     "connectionErrors": "发生错误，请再次检查连接。",
-    "errorEmail": "电子邮件无效",
+    "errorEmail": "不是有效的电子邮件地址。",
+    "phoneEmpty": "请输入您的手机号码。",
+    "titleEmpty": "请输入标题。",
+    "questionEmpty": "질문을 입력하십시오.",
     "confirm": "确认",
 
     "infra": "基础设施",
@@ -77,5 +80,6 @@
     "requestTypeError": "障碍/错误确认",
     "requestTypeTaxInvoice": "税单",
     "requestTypeBill": "收费",
-    "requestTypeConsult": "咨询/联系"
+    "requestTypeConsult": "咨询/联系",
+    "pushAlarmKey": "PushAlarm Key"
 }

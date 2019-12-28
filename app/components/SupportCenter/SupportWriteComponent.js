@@ -126,6 +126,16 @@ export default class SupportWriteComponent extends Component {
         { cancelable: false }
       );
     }
+    if(nextProps.asRequestRegistrationInit && nextProps.asRequestRegistrationInit!=this.props.asRequestRegistrationInit){
+      this.setState({
+        email: "",
+        mobile: "",
+        title: "",
+        contact: "",
+        isDisplayAccountNumber: true
+      }, ()=>{
+        this.modalDropdown.select(0)
+      });    }
   }
 
   componentWillUnmount() {
@@ -142,6 +152,18 @@ export default class SupportWriteComponent extends Component {
 
     if(!this.isEmail(email)){
       showErrorAlert({ title: I18n.t('failure'), description: I18n.t('errorEmail') });
+      return;
+    }
+    if(mobile == ""){
+      showErrorAlert({ title: I18n.t('failure'), description: I18n.t('phoneEmpty') });
+      return;
+    }
+    if(title == ""){
+      showErrorAlert({ title: I18n.t('failure'), description: I18n.t('titleEmpty') });
+      return;
+    }
+    if(contact == ""){
+      showErrorAlert({ title: I18n.t('failure'), description: I18n.t('questionEmpty') });
       return;
     }
 
@@ -166,8 +188,12 @@ export default class SupportWriteComponent extends Component {
       mobile: "",
       title: "",
       contact: "",
+      isDisplayAccountNumber: true
+    }, ()=>{
+      this.modalDropdown.select(0)
+      this.props.navigateToSupportCenterScreen();
     });
-    this.props.navigateToSupportCenterScreen();
+
   }
 
   _dropdown_renderRow = (option,index,isSelected) => {
@@ -221,7 +247,7 @@ export default class SupportWriteComponent extends Component {
       {/* {asRequestTypeListData && console.log("__haha__", JSON.stringify(asRequestTypeListData))} */}
       {/* {guestNoListData && console.log("__haha__", JSON.stringify(guestNoListData))} */}
         <StatusBar backgroundColor={AppColors.headerBg2} />
-        <HeaderMenu backAction={()=>navigateToSupportCenterScreen()} title={I18n.t('supportCenter')} />
+        <HeaderMenu backAction={()=>this.onPressCancel()} title={I18n.t('supportCenter')} />
         <ScrollView>
         <View style={styles.containerHorizontal} >
           <View style={styles.containerLeft}>
@@ -230,6 +256,7 @@ export default class SupportWriteComponent extends Component {
           <View style={styles.containerPicker} >
             { (asRequestTypeListData && this.state.requestTypeIndex >= 0) &&
             <ModalDropdown 
+              ref={modalDropdown => this.modalDropdown = modalDropdown}
               options={asRequestTypeListData}
               style={styles.dropdown}
               dropdownStyle={{height: normalize(170), marginTop: 10}}
@@ -304,6 +331,7 @@ export default class SupportWriteComponent extends Component {
             value={this.state.email}
             style={styles.textRight}
             returnKeyType={"next"}
+            keyboardType="email-address"
             onSubmitEditing={() => { this.secondTextInput.focus(); }}
           />
         </View>
@@ -332,6 +360,7 @@ export default class SupportWriteComponent extends Component {
             ref={(input) => { this.thirdTextInput = input; }}
             placeholder={I18n.t('titleHint')}
             onChangeText={title => this.setState({ title })}
+            maxLength={100}
             value={this.state.title}
             style={styles.textRight}
             returnKeyType={"next"}
@@ -478,10 +507,6 @@ export default class SupportWriteComponent extends Component {
               </View>
               <Button
                 onPress={() => {
-                  this.state.listAccountNumberHorizontal = []
-                  for (let index = 0 ; index < listAccountNumber.length; index++) {
-                    this.state.listAccountNumberHorizontal.push(listAccountNumber[index]);
-                  }
                   this.toggleModal();
                 }}
                 title={I18n.t('modalWriteSupportSubmit')}

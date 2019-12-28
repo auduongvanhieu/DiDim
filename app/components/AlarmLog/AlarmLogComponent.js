@@ -172,18 +172,20 @@ export default class AlarmLogComponent extends Component {
                 </View>
                 <Text
                   style={{
+                    flex: 2,
                     alignSelf: "center",
                     color: "#131315",
-                    fontWeight: "bold"
+                    fontWeight: "bold",
+                    marginBottom: -15
                   }}
                 >
-                  {item.alarm_name}
+                  {item.alarm_name + "\n"}
                 </Text>
                 <Text
                   style={{
                     flex: 1,
                     textAlign: "right",
-                    fontSize: normalize(9)
+                    fontSize: normalize(9), 
                   }}
                 >
                   {item.start_time + " "}

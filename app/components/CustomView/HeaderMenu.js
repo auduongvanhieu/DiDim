@@ -15,17 +15,6 @@ import AntDesign from 'react-native-vector-icons/AntDesign'
 const screenWidth = Dimensions.get("window").width;
 const screenHeight = Dimensions.get("window").height;
 
-const listAlert = [
-  {
-    title: "확인이 필요한 장애 알람이 3건이 있습니다.",
-    image: Images.ico_alert_error
-  },
-  {
-    title: "확인이 필요한 AS요청 답변이 2건이 있습니다.",
-    image: Images.ico_alert_as
-  }
-]
-
 class HeaderMenu extends Component {
   tooltipRef = createRef();
 
