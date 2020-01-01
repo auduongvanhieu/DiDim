@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import I18n from "../../I18n";
-import { 
-  Container, 
+import {
+  Container,
   Picker,
 } from "native-base";
 import {
@@ -34,20 +34,20 @@ export default class SupportCenterComponent extends Component {
    */
   constructor(props) {
     super(props);
-    this.state={
+    this.state = {
       timeZone: ""
     }
   }
 
-  componentDidMount(){
+  componentDidMount() {
     this._navListener = this.props.navigation.addListener('didFocus', () => {
       StatusBar.setBarStyle('light-content');
       StatusBar.setBackgroundColor(AppColors.headerBg);
     });
 
-    const {asRequestListRequest, startLoading} = this.props;
+    const { asRequestListRequest, startLoading } = this.props;
     startLoading();
-    asRequestListRequest({Par: 'cmd=GET_LIST_AS_REQUEST'})
+    asRequestListRequest({ Par: 'cmd=GET_LIST_AS_REQUEST' })
   }
 
   componentWillUnmount() {
@@ -74,11 +74,11 @@ export default class SupportCenterComponent extends Component {
           title={I18n.t('supportCenter')}
           iconRight={
             <TouchableOpacity
-              onPress={()=>{
-                asRequestRegistrationInit({data: (new Date())})
+              onPress={() => {
+                asRequestRegistrationInit({ data: (new Date()) })
                 navigateToSupportWriteScreen()
               }}
-              style={{marginLeft: 10}}>
+              style={{ marginLeft: 10 }}>
               <Image
                 source={Images.btn_write}
                 style={{ color: "white", height: 30, width: 30 }}
@@ -95,13 +95,13 @@ export default class SupportCenterComponent extends Component {
           ItemSeparatorComponent={() => <View style={styles.horizontalBar} />}
           ListFooterComponent={() => <View style={styles.horizontalBar} />}
           ListHeaderComponent={() => <View style={styles.horizontalBar} />}
-          ListEmptyComponent={<NoDataView/>}
+          ListEmptyComponent={<NoDataView />}
           renderItem={({ item }) => (
             <TouchableOpacity
               onPress={() => {
                 startLoading()
-                navigateToSupportViewScreen({board_idx: item.board_idx});
-                asRequestDetailRequest({Par: `cmd=GET_INFO_AS_REQUEST&board_idx=${item.board_idx}`})
+                navigateToSupportViewScreen({ board_idx: item.board_idx });
+                asRequestDetailRequest({ Par: `cmd=GET_INFO_AS_REQUEST&board_idx=${item.board_idx}` })
               }}
               style={{ marginHorizontal: 20, paddingVertical: normalize(15) }}
             >
@@ -114,30 +114,38 @@ export default class SupportCenterComponent extends Component {
                     title={I18n.t(`${item.work_status_name}`)}
                   />
                 </View>
-                { item.cmt_cnt>0 &&
-                <View style={{ width: normalize(40), flexDirection: "row" }}>
-                  <StatusButton
-                    style={{ marginHorizontal: 5 }}
-                    bgColor={generateCommentColor(item.work_status_name)}
-                    widthSize={normalize(10)}
-                    title={"    "+item.cmt_cnt}
-                  />
-                    <View style={{position: 'absolute', height: '100%', width: normalize(30), justifyContent: 'center'}}>
-                    <Image
-                      source={Images.ico_msg}
-                      style={{ height: normalize(10), width: normalize(10), alignSelf: 'center' }}
-                    />
+                {item.cmt_cnt > 0 &&
+                  <View style={{ width: normalize(40), flexDirection: "row", alignItems: 'center', justifyContent: 'center' }}>
+
+                    <StatusButton
+                      style={{ marginHorizontal: 5 }}
+                      bgColor={generateCommentColor(item.work_status_name)}
+                      widthSize={normalize(10)}
+                    >
+                      <Image
+                        source={Images.ico_msg}
+                        style={{ height: normalize(6), width: normalize(6) }}
+                      />
+                      <Text style={{
+                        fontSize: normalize(8),
+                        marginLeft: normalize(2),
+                        color: 'white'
+                      }}>
+                        {item.cmt_cnt}
+                      </Text>
+                    </StatusButton>
+
                   </View>
-                </View>
                 }
                 <Text
                   style={{
                     flex: 1,
                     textAlign: "right",
-                    fontSize: normalize(9)
+                    fontSize: normalize(9),
+                    marginRight: normalize(2)
                   }}
                 >
-                  {item.writeday + " "}
+                  {item.writeday}
                 </Text>
                 <Image
                   source={Images.ico_clock_b}
@@ -151,6 +159,8 @@ export default class SupportCenterComponent extends Component {
                   marginLeft: 5,
                   marginTop: 5
                 }}
+                numberOfLines={1}
+                ellipsizeMode='tail'
               >
                 {item.title}
               </Text>
@@ -165,13 +175,15 @@ export default class SupportCenterComponent extends Component {
 
 const styles = StyleSheet.create({
   horizontalBar: {
-    height: 0.5,
-    width: "100%",
-    backgroundColor: "#6c7b8a"
-  },
-  horizontalBar2: {
     height: 1,
     width: "100%",
-    backgroundColor: "#76848b"
+    backgroundColor: "#6c7b8a",
+    opacity: 0.2
+  },
+  horizontalBar2: {
+    height: 2,
+    width: "100%",
+    backgroundColor: "#76848b",
+    opacity: 0.4
   },
 });

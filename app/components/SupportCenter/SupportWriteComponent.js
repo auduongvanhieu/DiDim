@@ -387,7 +387,7 @@ export default class SupportWriteComponent extends Component {
           style={{
             flexDirection: "row",
             justifyContent: "center",
-            marginTop: 30
+            marginTop: normalize(6),
           }}
         >
           <Button
@@ -512,7 +512,7 @@ export default class SupportWriteComponent extends Component {
                 title={I18n.t('modalWriteSupportSubmit')}
                 buttonStyle={[
                   styles.buttonBottom,
-                  { backgroundColor: "#ff3b3b", alignSelf: "center" }
+                  { backgroundColor: "#ff3b3b", alignSelf: "center", marginBottom: normalize(12) }
                 ]}
               />
             </View>
@@ -557,9 +557,10 @@ const styles = StyleSheet.create({
     marginRight: 10
   },
   horizontalBar: {
-    height: 0.5,
+    height: 1,
     width: "100%",
-    backgroundColor: "#6c7b8a"
+    backgroundColor: "#6c7b8a",
+    opacity: 0.1
   },
   horizontalBar2: {
     opacity: 0.1,

@@ -172,23 +172,25 @@ export default class AlarmLogComponent extends Component {
                 </View>
                 <Text
                   style={{
-                    flex: 2,
-                    alignSelf: "center",
+                    flex: 1,
+                    flexShrink: 1,
                     color: "#131315",
                     fontWeight: "bold",
-                    marginBottom: -15
                   }}
+                  numberOfLines={1}
+                  ellipsizeMode={'tail'}
                 >
-                  {item.alarm_name + "\n"}
+                  {item.alarm_name}
                 </Text>
                 <Text
                   style={{
-                    flex: 1,
                     textAlign: "right",
-                    fontSize: normalize(9), 
+                    fontSize: normalize(9),
+                    marginRight: normalize(2) 
                   }}
+                  numberOfLines={1}
                 >
-                  {item.start_time + " "}
+                  {item.start_time}
                 </Text>
                 <Image
                   source={Images.ico_clock_r}
@@ -216,14 +218,16 @@ export default class AlarmLogComponent extends Component {
 
 const styles = StyleSheet.create({
   horizontalBar: {
-    height: 0.5,
-    width: "100%",
-    backgroundColor: "#6c7b8a"
-  },
-  horizontalBar2: {
     height: 1,
     width: "100%",
-    backgroundColor: "#76848b"
+    backgroundColor: "#6c7b8a",
+    opacity: 0.2
+  },
+  horizontalBar2: {
+    height: 2,
+    width: "100%",
+    backgroundColor: "#76848b",
+    opacity: 0.4
   },
   containerPicker: {
     height: normalize(30),

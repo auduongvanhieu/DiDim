@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import I18n from "../../I18n";
-import { 
-  Container, 
-  Tab, 
+import {
+  Container,
+  Tab,
   Tabs,
   TabHeading
 } from "native-base";
@@ -17,6 +17,8 @@ import {
   Picker,
   Image,
   TextInput,
+  Platform,
+  TouchableOpacity,
 } from "react-native";
 import { Button } from 'react-native-elements';
 
@@ -39,14 +41,14 @@ export default class SupportViewComponent extends Component {
    */
   constructor(props) {
     super(props);
-    this.state={
+    this.state = {
       hour: "",
       comment: "",
       listReply: [],
     }
   }
 
-  componentDidMount(){
+  componentDidMount() {
     this._navListener = this.props.navigation.addListener('didFocus', () => {
       StatusBar.setBarStyle('light-content');
       StatusBar.setBackgroundColor(AppColors.headerBg2);
@@ -63,9 +65,9 @@ export default class SupportViewComponent extends Component {
       navData,
     } = this.props;
     const { comment } = this.state;
-    if(comment)
-      commentRegistrationRequest({Par: `cmd=UPDATE_AS_REQUEST_REPLY&board_idx=${navData.board_idx}&qna_kind=AddComment&write_content=${comment}`});
-    this.setState({comment: ""})
+    if (comment)
+      commentRegistrationRequest({ Par: `cmd=UPDATE_AS_REQUEST_REPLY&board_idx=${navData.board_idx}&qna_kind=AddComment&write_content=${comment}` });
+    this.setState({ comment: "" })
   }
 
   onPressEndTask = () => {
@@ -75,39 +77,39 @@ export default class SupportViewComponent extends Component {
       navigateToSupportCenterScreen
     } = this.props;
     const { comment } = this.state;
-    if(comment)
-      commentRegistrationRequest({Par: `cmd=UPDATE_AS_REQUEST_REPLY&board_idx=${navData.board_idx}&qna_kind=Close&write_content=${comment}`});
-    this.setState({comment: ""})
+    if (comment)
+      commentRegistrationRequest({ Par: `cmd=UPDATE_AS_REQUEST_REPLY&board_idx=${navData.board_idx}&qna_kind=Close&write_content=${comment}` });
+    this.setState({ comment: "" })
     // navigateToSupportCenterScreen()
   }
 
-  componentWillReceiveProps(nextProps){
-    if(nextProps.asRequestDetailData && nextProps.asRequestDetailData!=this.props.asRequestDetailData){
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.asRequestDetailData && nextProps.asRequestDetailData != this.props.asRequestDetailData) {
       var values = Object.values(nextProps.asRequestDetailData);
       listReply = [];
-      for(i=0; i<values.length; i++){
+      for (i = 0; i < values.length; i++) {
         var value = values[i];
         var content = value.content;
         // content = content.replace(/<p>/g, '');
         // content = content.replace(/<\/p>/g, '\n');
         // content = content.replace(/<br>/g, '');
-        if(value.cmt_idx){
+        if (value.cmt_idx) {
           value.content = content;
           listReply.push(value)
         }
       }
-      listReply.sort((a,b)=>b.cmt_idx.localeCompare(a.cmt_idx))
+      listReply.sort((a, b) => b.cmt_idx.localeCompare(a.cmt_idx))
       listReply.push(nextProps.asRequestDetailData.content)
-      this.setState({listReply: listReply, comment: ""})
+      this.setState({ listReply: listReply, comment: "" })
     }
 
-    if(nextProps.commentRegistrationData && nextProps.commentRegistrationData!=this.props.commentRegistrationData){
+    if (nextProps.commentRegistrationData && nextProps.commentRegistrationData != this.props.commentRegistrationData) {
       const {
         asRequestDetailRequest,
         navData,
       } = this.props;
-      if(navData && navData.board_idx)
-        asRequestDetailRequest({Par: `cmd=GET_INFO_AS_REQUEST&board_idx=${navData.board_idx}`})
+      if (navData && navData.board_idx)
+        asRequestDetailRequest({ Par: `cmd=GET_INFO_AS_REQUEST&board_idx=${navData.board_idx}` })
     }
   }
 
@@ -119,7 +121,7 @@ export default class SupportViewComponent extends Component {
       navigateToSupportCenterScreen,
       asRequestDetailData,
     } = this.props;
-    const {listReply, mainContent} = this.state;
+    const { listReply, mainContent } = this.state;
     return (
       <Container>
         {/* {asRequestDetailData && console.log("__haha__",JSON.stringify(asRequestDetailData))} */}
@@ -131,9 +133,9 @@ export default class SupportViewComponent extends Component {
         />
         <View style={{ paddingVertical: "4%", paddingHorizontal: "7%" }}>
           <Text numberOfLines={1} style={{ fontSize: normalize(18), color: "#140f26" }}>
-            {asRequestDetailData && asRequestDetailData.content.title} 
+            {asRequestDetailData && asRequestDetailData.content.title}
           </Text>
-          <View style={{ flexDirection: "row" }}>
+          <View style={{ flexDirection: "row", marginTop: Platform.OS == 'ios' ? normalize(6) : 0 }}>
             <View style={{ width: normalize(60), flexDirection: "row" }}>
               <StatusButton title={asRequestDetailData && I18n.t(`${asRequestDetailData.content.work_status_name}`)}
                 bgColor={asRequestDetailData && generateNameColor(asRequestDetailData.content.work_status_name)} />
@@ -142,7 +144,7 @@ export default class SupportViewComponent extends Component {
               source={Images.ico_clock_b}
               style={{ height: normalize(13), width: normalize(13), marginLeft: 10, alignSelf: "center" }}
             />
-            <Text style={{ fontSize: normalize(12), alignSelf: "center" }}>
+            <Text style={{ fontSize: normalize(11), alignSelf: "center", color: 'grey' }}>
               {" "}
               {asRequestDetailData && asRequestDetailData.content.writeday}
             </Text>
@@ -150,7 +152,7 @@ export default class SupportViewComponent extends Component {
               source={Images.ico_tag}
               style={{ height: normalize(13), width: normalize(13), marginLeft: 10, alignSelf: "center" }}
             />
-            <Text style={{ fontSize: normalize(12), alignSelf: "center" }}>
+            <Text style={{ fontSize: normalize(11), alignSelf: "center", color: 'grey' }}>
               {" "}
               {I18n.t('requestTypeTechical')}
             </Text>
@@ -162,22 +164,33 @@ export default class SupportViewComponent extends Component {
         <View style={{ height: screenHeight / 4.5, backgroundColor: "white" }}>
           <TextInput
             placeholder={I18n.t('supportCenterCommentHint')}
-            style={{ fontSize: normalize(13), paddingHorizontal: "7%"}}
+            style={{ fontSize: normalize(13), paddingHorizontal: "7%" }}
             value={this.state.comment}
             onChangeText={comment => this.setState({ comment })}
             multiline={true}
           />
           <Image source={Images.bg_ico_msg} style={styles.imgBgMsg} />
-          { asRequestDetailData && asRequestDetailData.content.work_status_name != "requestStatusClose" &&
+          {asRequestDetailData && asRequestDetailData.content.work_status_name != "requestStatusClose" &&
             <View style={styles.containerBtn}>
-              <Button 
+              {/* <TouchableOpacity style={{
+                backgroundColor: "#1c162e",
+                paddingHorizontal: normalize(6),
+                paddingVertical: normalize(6),
+                alignItems: 'center',
+                justifyContent: 'center'
+              }}>
+                <Text style={{ fontSize: normalize(14), color: '#ffffff' }}>{I18n.t('finishWork')}</Text>
+              </TouchableOpacity> */}
+              <Button
                 title={I18n.t('finishWork')}
                 onPress={this.onPressEndTask}
+                fontSize={normalize(15)}
                 buttonStyle={styles.btnEndTask} />
               <Button
                 title={I18n.t('reply')}
                 onPress={this.onPressReply}
                 buttonStyle={styles.btnReply}
+                fontSize={normalize(15)}
               />
             </View>
           }
@@ -190,7 +203,7 @@ export default class SupportViewComponent extends Component {
             renderItem={({ item, index }) =>
               item.write_name == Config.userName ? (
                 <View>
-                  <View style={{ flexDirection: "row", marginTop: index == listReply.length-1 ? 45 : 30 }}>
+                  <View style={{ flexDirection: "row", marginTop: index == listReply.length - 1 ? 45 : 30 }}>
                     <Text style={styles.titleComment1}>{item.write_name}</Text>
                     <View style={{ flex: 1 }} />
                     <Text
@@ -200,10 +213,10 @@ export default class SupportViewComponent extends Component {
                     </Text>
                     <Image source={Images.ico_clock_b} style={styles.clock1} />
                   </View>
-                  <View style={[styles.bgComment1, {marginBottom: index == listReply.length-1 ? 20 : 0}]}>
+                  <View style={[styles.bgComment1, { marginBottom: index == listReply.length - 1 ? 20 : 0 }]}>
                     {/* <Text style={{ color: "white" }}>{item.content}</Text> */}
                     <AutoHeightWebView
-                      style={{ width: '100%'}}
+                      style={{ width: '100%' }}
                       customScript={`document.body.style.background = 'transparent';`}
                       customStyle={`
                         * {
@@ -213,48 +226,48 @@ export default class SupportViewComponent extends Component {
                           font-size: 16px;
                         }
                       `}
-                      onSizeUpdated={size => {console.log(size.height)}}
-                      source={{html: item.content}}
-                      scalesPageToFit={true}
-                      zoomable={false}
-                      textZoom={200}
-                    />                  
-                  </View>
-                </View>
-              ) : (
-                <View>
-                  <View style={{ flexDirection: "row", marginTop: index == listReply.length-1 ? 45 : 30, marginBottom: index == listReply.length-1 ? 10 : 0  }}>
-                    <Text style={styles.titleComment2}>{item.write_name}</Text>
-                    <View style={{ flex: 1 }} />
-                    <Text
-                      style={{ fontSize: normalize(10), alignSelf: "center" }}
-                    >
-                      {item.writeday}
-                    </Text>
-                    <Image source={Images.ico_clock_b} style={styles.clock2} />
-                  </View>
-                  <View style={[styles.bgComment2, {marginBottom: index == listReply.length-1 ? 20 : 0}]}>
-                    {/* <Text style={{ marginLeft: "7%", color: "#1c162e" }}>{item.content}</Text> */}
-                    <AutoHeightWebView
-                      style={{ width: '100%'}}
-                      customScript={`document.body.style.background = 'transparent';`}
-                      customStyle={`
-                        * {
-                          font-family: 'Times New Roman';
-                        }
-                        p {
-                          font-size: 16px;
-                        }
-                      `}
-                      onSizeUpdated={size => {console.log(size.height)}}
-                      source={{html: item.content}}
+                      onSizeUpdated={size => { console.log(size.height) }}
+                      source={{ html: item.content }}
                       scalesPageToFit={true}
                       zoomable={false}
                       textZoom={200}
                     />
-                  </View>                  
+                  </View>
                 </View>
-              )
+              ) : (
+                  <View>
+                    <View style={{ flexDirection: "row", marginTop: index == listReply.length - 1 ? 45 : 30, marginBottom: index == listReply.length - 1 ? 10 : 0 }}>
+                      <Text style={styles.titleComment2}>{item.write_name}</Text>
+                      <View style={{ flex: 1 }} />
+                      <Text
+                        style={{ fontSize: normalize(10), alignSelf: "center" }}
+                      >
+                        {item.writeday}
+                      </Text>
+                      <Image source={Images.ico_clock_b} style={styles.clock2} />
+                    </View>
+                    <View style={[styles.bgComment2, { marginBottom: index == listReply.length - 1 ? 20 : 0 }]}>
+                      {/* <Text style={{ marginLeft: "7%", color: "#1c162e" }}>{item.content}</Text> */}
+                      <AutoHeightWebView
+                        style={{ width: '100%' }}
+                        customScript={`document.body.style.background = 'transparent';`}
+                        customStyle={`
+                        * {
+                          font-family: 'Times New Roman';
+                        }
+                        p {
+                          font-size: 16px;
+                        }
+                      `}
+                        onSizeUpdated={size => { console.log(size.height) }}
+                        source={{ html: item.content }}
+                        scalesPageToFit={true}
+                        zoomable={false}
+                        textZoom={200}
+                      />
+                    </View>
+                  </View>
+                )
             }
           />
         </View>
@@ -313,7 +326,7 @@ const styles = StyleSheet.create({
     fontSize: normalize(12),
     marginLeft: "7%",
     alignSelf: "center"
-  }, 
+  },
   bgComment1: {
     backgroundColor: "#243b4a74",
     marginLeft: "7%",
@@ -337,18 +350,20 @@ const styles = StyleSheet.create({
     marginLeft: "7%",
     fontWeight: "bold",
     marginTop: 5
-  }, 
+  },
   btnReply: {
     backgroundColor: "#ff3b3b",
     height: normalize(30),
     width: normalize(70),
-    marginLeft: 10
-  }, 
+    marginLeft: 10,
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
   btnEndTask: {
     backgroundColor: "#1c162e",
     height: normalize(30),
     width: normalize(70)
-  }, 
+  },
   containerBtn: {
     height: normalize(60),
     width: normalize(60),
@@ -358,7 +373,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     width: "100%",
     justifyContent: "flex-end"
-  }, 
+  },
   imgBgMsg: {
     height: normalize(70),
     width: normalize(70),

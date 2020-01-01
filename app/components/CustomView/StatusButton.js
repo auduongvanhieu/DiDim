@@ -32,12 +32,19 @@ export default class StatusButton extends Component {
     }
 
     render() {
-        const { widthSize, bgColor, title, style } = this.props;
-        return (
-            <View style={[styles.Container, style && style, widthSize && {width: widthSize}, bgColor && {backgroundColor: bgColor}]}>
-                <Text style={{color: 'white', alignSelf: 'center', fontSize: normalize(8)}}>{title}</Text>
-            </View>
-        );
+        const { widthSize, bgColor, title, style, children } = this.props;
+        if (children)
+            return (
+                <View style={[{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }, styles.Container, style && style, widthSize && { width: widthSize }, bgColor && { backgroundColor: bgColor }]}>
+                    {children}
+                </View>
+            );
+        else
+            return (
+                <View style={[styles.Container, style && style, widthSize && { width: widthSize }, bgColor && { backgroundColor: bgColor }]}>
+                    <Text style={{ color: 'white', alignSelf: 'center', fontSize: normalize(8) }}>{title}</Text>
+                </View>
+            );
     }
 }
 
