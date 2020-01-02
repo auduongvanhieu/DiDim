@@ -30,10 +30,13 @@ import {
 } from "../../utilities/Helper";
 import NoDataView from "../CustomView/NoDataView";
 import Carousel, { Pagination } from "react-native-snap-carousel";
+import AutoHeightWebView from 'react-native-autoheight-webview'
 
 const screenWidth = Dimensions.get("window").width;
 const screenHeight = Dimensions.get("window").height;
 const aspecRatio = screenHeight / screenWidth;
+
+let langCode = I18n.languageCode
 
 const hours = [
   { title: I18n.t('recent') + "1" + I18n.t('hour'), value: "1H" },
@@ -166,7 +169,7 @@ export default class ServerDetailComponent extends Component {
     const { hourIndex } = this.state;
     return (
       <View>
-        <View style={{ height: screenHeight / 4, backgroundColor: "white" }}>
+        <View style={{ height: screenHeight / 4 + 10,backgroundColor: "white",}}>
           <View style={styles.containerChart}>
             {navData && (
               <WebView
@@ -177,9 +180,11 @@ export default class ServerDetailComponent extends Component {
                     navData.os == "L"
                       ? deviceLinuxTop[index]
                       : deviceWinTop[index]
-                  }&period=${hours[hourIndex].value}`
+                  }&period=${hours[hourIndex].value}&lang=${
+                    langCode
+                  }`
                 }}
-                style={{ width: "185%", height: "150%" }}
+                style={{ width: "185%", height: "155%" }}
                 onLoad={() => this.hideLoadingTop()}
               />
             )}
@@ -200,7 +205,7 @@ export default class ServerDetailComponent extends Component {
     const { hourIndex } = this.state;
     return (
       <View>
-        <View style={{ height: screenHeight / 4, backgroundColor: "white" }}>
+        <View style={{ height: screenHeight / 4 + 10, backgroundColor: "white" }}>
           <View style={styles.containerChart}>
             {navData && (
               <WebView
@@ -211,9 +216,11 @@ export default class ServerDetailComponent extends Component {
                     navData.os == "L"
                       ? deviceLinuxBottom[index]
                       : deviceWinBottom[index]
-                  }&period=${hours[hourIndex].value}`
+                  }&period=${hours[hourIndex].value}&lang=${
+                    langCode
+                  }`
                 }}
-                style={{ width: "185%", height: "150%" }}
+                style={{ width: "185%", height: "155%" }}
                 onLoad={() => this.hideLoadingBottom()}
               />
             )}
@@ -404,7 +411,7 @@ export default class ServerDetailComponent extends Component {
             >
               <View style={{ flex: 1 }} />
               <Text style={{ fontSize: AppConstant.textMainSize }}>
-                Time Zone:{" "}
+                {I18n.t('timezone')}
               </Text>
               <View style={styles.containerPicker}>
                 <ModalDropdown

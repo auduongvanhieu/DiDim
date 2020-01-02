@@ -224,8 +224,9 @@ export default class StatusInfoComponent extends Component {
                 SuperObjects.serverSelected = item;
                 navigateToServerDetailScreen({gno: item.svr_no, status: item.status, os: item.os_gubn})
                 changeTabIndexServerDetail(0)
-                serverDetailRequest({Par: `cmd=GET_INFO_SERVER&gno=${item.svr_no}`})
-                alarmItemListRequest({Par: `cmd=GET_LIST_ALARM_ITEM&gno=${item.svr_no}`})
+                let langCode = I18n.languageCode
+                serverDetailRequest({Par: `cmd=GET_INFO_SERVER&gno=${item.svr_no}&lang=${langCode}`})
+                alarmItemListRequest({Par: `cmd=GET_LIST_ALARM_ITEM&gno=${item.svr_no}&lang=${langCode}`})
               }} 
               style={{flexDirection: 'row', marginVertical: 5, justifyContent: 'center', alignItems: 'center', marginHorizontal: '6%', paddingVertical: 5}}>
               <Image style={{width: 25, height: 25}} resizeMode='contain' source={generateServerIcon(item.os_gubn,item.server_gubn)} />

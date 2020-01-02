@@ -82,7 +82,7 @@ export default class AlarmLogDetailComponent extends Component {
         <View style={{backgroundColor: '#f4f6f9', height: '2.5%', width: '100%'}} />
         <View style={{height: normalize(60)}}>
           <View style={{borderColor: '#1c162e', justifyContent: 'center', alignItems: 'center', borderBottomWidth: 3, width: '33%', height: '100%'}}>
-            <Text style={{color: '#140f26', fontSize: normalize(16), fontWeight: 'bold'}}>INFO</Text>
+            <Text style={{color: '#140f26', fontSize: normalize(16), fontWeight: 'bold'}}>{I18n.t('info')}</Text>
           </View>
         </View>
         <ScrollView style={styles.containerTab}>

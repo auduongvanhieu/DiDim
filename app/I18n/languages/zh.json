@@ -14,6 +14,7 @@
     "connectionErrors": "发生错误，请再次检查连接。",
     "errorEmail": "不是有效的电子邮件地址。",
     "phoneEmpty": "请输入您的手机号码。",
+    "errorPhone": "无效的手机号码。",
     "titleEmpty": "请输入标题。",
     "questionEmpty": "질문을 입력하십시오.",
     "confirm": "确认",

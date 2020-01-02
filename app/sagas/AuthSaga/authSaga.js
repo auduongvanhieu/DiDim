@@ -102,8 +102,7 @@ function* verify(action) {
 
 function* dispose(action) {
     try {
-        const receivedDataTemp = yield Api.dispose(action.payload)
-        receivedData = JSON.parse(receivedDataTemp)
+        const receivedData = yield Api.dispose(action.payload)
         // alert(JSON.stringify(receivedData));
         if (receivedData && receivedData.ReturnValue) {
             yield put({ type: DISPOSE_SUCCEEDED, payload: receivedData })
@@ -112,7 +111,7 @@ function* dispose(action) {
         }
     } catch (error) {
         console.log(error);
-        yield put(showErrorAlertAction({ title: I18n.t('failure'), description: I18n.t('connectionErrors') }))
+        // yield put(showErrorAlertAction({ title: I18n.t('failure'), description: I18n.t('connectionErrors') }))
         yield put({ type: DISPOSE_FAILED, error })
     }
 }

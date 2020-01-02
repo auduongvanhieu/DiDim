@@ -158,6 +158,10 @@ export default class SupportWriteComponent extends Component {
       showErrorAlert({ title: I18n.t('failure'), description: I18n.t('phoneEmpty') });
       return;
     }
+    if(!this.isNumberPhone(mobile)){
+      showErrorAlert({ title: I18n.t('failure'), description: I18n.t('errorPhone') });
+      return;
+    }
     if(title == ""){
       showErrorAlert({ title: I18n.t('failure'), description: I18n.t('titleEmpty') });
       return;
@@ -232,6 +236,13 @@ export default class SupportWriteComponent extends Component {
     return reg.test(text);
   }
 
+  isNumberPhone = (phone) => {
+    let reg = /^[0-9]{3}[-]?[0-9]{3,4}[-]?[0-9]{4}$/
+    if(reg.test(phone)){
+      return true;
+    }
+    return false;
+  }
   /**
    * Render views
    */

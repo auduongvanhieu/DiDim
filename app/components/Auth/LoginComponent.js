@@ -76,7 +76,7 @@ export default class LoginComponent extends Component {
   };
 
   getCache = async () => {
-    const { getTokenRequest, verifyRequest, authorizeRequest } = this.props;
+    const { getTokenRequest, verifyRequest, authorizeRequest, changeLoginForm } = this.props;
 
     const objectToken = await getObjectToken();
     console.log("__token__", JSON.stringify(objectToken))
@@ -86,11 +86,17 @@ export default class LoginComponent extends Component {
         const authCache = await getAuthCache();
         Config.userName = authCache.user;
         if(authCache) {
+          changeLoginForm("managed_url", authCache.managed_url);
+          changeLoginForm("user", authCache.user);
+          changeLoginForm("password", "");
           verifyRequest({
             Par: qs.stringify(authCache)
           })
         }
       } else {
+        changeLoginForm("managed_url", "");
+        changeLoginForm("user", "");
+        changeLoginForm("password", "");
         this.setState({isRemember: false});
       }
     }
@@ -122,6 +128,7 @@ export default class LoginComponent extends Component {
     }
     Config.userName = form.user;
     this.cacheMyLogin(form);
+    this.getCache();
     getTokenRequest(form);
   };
 
@@ -152,9 +159,9 @@ export default class LoginComponent extends Component {
                 hideClearButton={true}
                 onSubmit={this.onSubmitForm.bind(this)}
                 initialValues={{
-                  managed_url: "cloud-didim.3-pod.com",
-                  user: "qtsoft",
-                  password: "qtsoft001##"
+                  managed_url: "",
+                  user: "",
+                  password: ""
                 }}
             />
             </View>

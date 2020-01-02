@@ -14,6 +14,7 @@
     "connectionErrors": "오류가 발생했습니다. 연결을 다시 확인하십시오.",
     "errorEmail": "유효한 이메일 주소가 아닙니다.",
     "phoneEmpty": "휴대폰 번호를 입력하십시오.",
+    "errorPhone": "유효한 휴대 전화 번호가 아닙니다.",
     "titleEmpty": "제목을 입력하십시오.",
     "questionEmpty": "질문을 입력하십시오.",
     "confirm": "확인하다",
