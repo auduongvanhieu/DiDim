@@ -47,7 +47,8 @@ export default class StatusInfoComponent extends Component {
     this.state={
       sortIndex: 0,
       searchText: '',
-      status: 'A'
+      status: 'A',
+      isRefreshing: false
     }
   }
 
@@ -55,12 +56,11 @@ export default class StatusInfoComponent extends Component {
     this._navListener = this.props.navigation.addListener('didFocus', () => {
       StatusBar.setBarStyle('light-content');
       StatusBar.setBackgroundColor(AppColors.headerBg);
-    });
 
-    const {serverListRequest, serverCountingRequest, startLoading} = this.props;
-    const {status} = this.state;
-    // startLoading()
-    serverListRequest({Par: `cmd=GET_LIST_SERVER&order=${sorts[this.state.sortIndex].value}&keyword=${this.state.searchText}&status=${this.state.status}`});
+      const {serverListRequest} = this.props;
+      // startLoading()
+      serverListRequest({Par: `cmd=GET_LIST_SERVER&order=${sorts[this.state.sortIndex].value}&keyword=${this.state.searchText}&status=${this.state.status}`});
+    });
   }
 
   componentWillUnmount() {
@@ -103,6 +103,20 @@ export default class StatusInfoComponent extends Component {
         </Text>
       </View>
     );
+  }
+
+  componentWillReceiveProps(nextProps){
+    if(nextProps.serverListData && nextProps.serverListData != this.props.serverListData){
+      this.setState({ isRefreshing: false });
+    }
+  }
+
+
+  onRefresh() {
+    this.setState({ isRefreshing: true });
+    const {serverListRequest} = this.props;
+    // startLoading()
+    serverListRequest({Par: `cmd=GET_LIST_SERVER&order=${sorts[this.state.sortIndex].value}&keyword=${this.state.searchText}&status=${this.state.status}`});
   }
 
   /**
@@ -213,6 +227,8 @@ export default class StatusInfoComponent extends Component {
             </View>
         </View>
         <FlatList
+          refreshing= {this.state.isRefreshing}
+          onRefresh = {this.onRefresh.bind(this)}
           data={serverListData}
           ListEmptyComponent={<NoDataView/>}
           ItemSeparatorComponent={()=> <View style={{height: 1, width: '100%', backgroundColor: AppColors.textHolder}}/>}

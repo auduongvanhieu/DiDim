@@ -8,6 +8,7 @@ import {
     navigateToSupportCenterScreenAction
  } from '../../actions/NavigationActions/actionCreators';
 import { disposeRequestAction } from '../../actions/AuthActions/actionCreators';
+import { serverCountingRequestAction } from '../../actions/OthersActions/actionCreators';
 
 const mapStateToProps = state => ({
     verifyData: state.verifyReducer.receivedData,
@@ -21,6 +22,7 @@ const mapDispatchToProps = dispatch => ({
     navigateToAlarmLogScreen: (params) => dispatch(navigateToAlarmLogScreenAction(params)),
     navigateToSupportCenterScreen: (params) => dispatch(navigateToSupportCenterScreenAction(params)),
     disposeRequest: (params) => dispatch(disposeRequestAction(params)),
+    serverCountingRequest: (params) => dispatch(serverCountingRequestAction(params)),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(SidebarComponent)

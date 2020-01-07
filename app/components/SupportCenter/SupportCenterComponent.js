@@ -35,7 +35,8 @@ export default class SupportCenterComponent extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      timeZone: ""
+      timeZone: "",
+      isRefreshing: false
     }
   }
 
@@ -43,15 +44,28 @@ export default class SupportCenterComponent extends Component {
     this._navListener = this.props.navigation.addListener('didFocus', () => {
       StatusBar.setBarStyle('light-content');
       StatusBar.setBackgroundColor(AppColors.headerBg);
-    });
 
-    const { asRequestListRequest, startLoading } = this.props;
-    startLoading();
-    asRequestListRequest({ Par: 'cmd=GET_LIST_AS_REQUEST' })
+      const { asRequestListRequest, startLoading } = this.props;
+      startLoading();
+      asRequestListRequest({ Par: 'cmd=GET_LIST_AS_REQUEST' })
+    });
   }
 
   componentWillUnmount() {
     this._navListener.remove();
+  }
+
+  componentWillReceiveProps(nextProps){
+    if(nextProps.asRequestListData && nextProps.asRequestListData != this.props.asRequestListData){
+      this.setState({ isRefreshing: false });
+    }
+  }
+
+  onRefresh() {
+    this.setState({ isRefreshing: true });
+
+    const { asRequestListRequest } = this.props;
+    asRequestListRequest({ Par: 'cmd=GET_LIST_AS_REQUEST' })
   }
 
   /**
@@ -91,6 +105,8 @@ export default class SupportCenterComponent extends Component {
         </View> */}
         <View style={styles.horizontalBar2} />
         <FlatList
+          refreshing= {this.state.isRefreshing}
+          onRefresh = {this.onRefresh.bind(this)}
           data={asRequestListData}
           ItemSeparatorComponent={() => <View style={styles.horizontalBar} />}
           ListFooterComponent={() => <View style={styles.horizontalBar} />}

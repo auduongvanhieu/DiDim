@@ -45,7 +45,8 @@ export default class AlarmLogComponent extends Component {
     super(props);
     this.state={
       timeZoneIndex: 3,
-      searchText: ''
+      searchText: '',
+      isRefreshing: false
     }
   }
 
@@ -53,11 +54,13 @@ export default class AlarmLogComponent extends Component {
     this._navListener = this.props.navigation.addListener('didFocus', () => {
       StatusBar.setBarStyle('light-content');
       StatusBar.setBackgroundColor(AppColors.headerBg);
+
+      const {failureAlarmLogRequest, startLoading} = this.props;
+      startLoading();
+      failureAlarmLogRequest({Par: `cmd=GET_LIST_ALARM_DOWN_LOG&keyword=${this.state.searchText}&period=${timeZones[this.state.timeZoneIndex].value}`});
     });
 
-    const {failureAlarmLogRequest, startLoading} = this.props;
-    startLoading();
-    failureAlarmLogRequest({Par: `cmd=GET_LIST_ALARM_DOWN_LOG&keyword=${this.state.searchText}&period=${timeZones[this.state.timeZoneIndex].value}`});
+
   }
 
   componentWillUnmount() {
@@ -100,6 +103,19 @@ export default class AlarmLogComponent extends Component {
         </Text>
       </View>
     );
+  }
+
+  componentWillReceiveProps(nextProps){
+    if(nextProps.failureAlarmLogData && nextProps.failureAlarmLogData != this.props.failureAlarmLogData){
+      this.setState({ isRefreshing: false });
+    }
+  }
+
+  onRefresh() {
+    this.setState({ isRefreshing: true });
+
+    const {failureAlarmLogRequest} = this.props;
+    failureAlarmLogRequest({Par: `cmd=GET_LIST_ALARM_DOWN_LOG&keyword=${this.state.searchText}&period=${timeZones[this.state.timeZoneIndex].value}`});
   }
 
   /**
@@ -148,6 +164,8 @@ export default class AlarmLogComponent extends Component {
           </View>
         </View>
         <FlatList
+          refreshing= {this.state.isRefreshing}
+          onRefresh = {this.onRefresh.bind(this)}
           data={failureAlarmLogData}
           ItemSeparatorComponent={() => <View style={styles.horizontalBar} />}
           ListFooterComponent={() => <View style={styles.horizontalBar} />}

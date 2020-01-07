@@ -116,7 +116,6 @@ export function* watchServerDetail() {
 
 function* serverCounting(action) {
     try {
-        yield put({ type: START_LOADING })
         const receivedDataTemp = yield Api.mainApi(action.payload)
         receivedData = JSON.parse(receivedDataTemp)
         if (receivedData && receivedData.ReturnValue && receivedData.Items.length > 0) {
@@ -125,13 +124,11 @@ function* serverCounting(action) {
         } else {
             yield put(showErrorAlertAction({ title: I18n.t('failure'), description: receivedData.ReturnMsg }))
             yield put({ type: SERVER_COUNTING_FAILED, payload: receivedData})
-            yield put({ type: STOP_LOADING })
         }
     } catch (error) {
         console.log(error);
         yield put(showErrorAlertAction({ title: I18n.t('failure'), description: I18n.t('connectionErrors') }))
         yield put({ type: SERVER_COUNTING_FAILED, error })
-        yield put({ type: STOP_LOADING })
     }
 }
 

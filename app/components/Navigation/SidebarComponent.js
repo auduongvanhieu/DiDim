@@ -70,6 +70,7 @@ class SidebarComponent extends Component {
       navigateToAlarmLogScreen,
       navigateToSupportCenterScreen,
       disposeRequest, 
+      serverCountingRequest
     } = this.props;
     return (
       <Container style={styles.menuContainer}>
@@ -94,6 +95,7 @@ class SidebarComponent extends Component {
           <TouchableOpacity onPress={() => {
             navigateToStatusInfoScreen();
             closeNavigationDrawer();
+            serverCountingRequest({Par: "cmd=GET_COUNT_ALERT_AND_AS"});
           }} >
             <View style={styles.listRow}>
               <Image
@@ -106,6 +108,7 @@ class SidebarComponent extends Component {
           <TouchableOpacity onPress={() => {
             navigateToAlarmLogScreen();
             closeNavigationDrawer();
+            serverCountingRequest({Par: "cmd=GET_COUNT_ALERT_AND_AS"});
             }} >
             <View style={styles.listRow}>
               <Image
@@ -118,6 +121,7 @@ class SidebarComponent extends Component {
           <TouchableOpacity onPress={() => {
             navigateToSupportCenterScreen();
             closeNavigationDrawer();
+            serverCountingRequest({Par: "cmd=GET_COUNT_ALERT_AND_AS"});
             }} >
             <View style={styles.listRow}>
               <Image
