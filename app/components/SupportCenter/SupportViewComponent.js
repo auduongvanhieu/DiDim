@@ -65,8 +65,10 @@ export default class SupportViewComponent extends Component {
       navData,
     } = this.props;
     const { comment } = this.state;
-    if (comment)
-      commentRegistrationRequest({ Par: `cmd=UPDATE_AS_REQUEST_REPLY&board_idx=${navData.board_idx}&qna_kind=AddComment&write_content=${comment}` });
+    if (comment){
+      var submitComment = comment.replace('\n', '</br>')
+      commentRegistrationRequest({ Par: `cmd=UPDATE_AS_REQUEST_REPLY&board_idx=${navData.board_idx}&qna_kind=AddComment&write_content=${submitComment}` });
+    }
     this.setState({ comment: "" })
   }
 
@@ -163,8 +165,9 @@ export default class SupportViewComponent extends Component {
         />
         <View style={{ height: screenHeight / 4.5, backgroundColor: "white" }}>
           <TextInput
+            selectTextOnFocus = {true}
             placeholder={I18n.t('supportCenterCommentHint')}
-            style={{ fontSize: normalize(13), paddingHorizontal: "7%" }}
+            style={{ fontSize: normalize(13), paddingHorizontal: "7%", marginBottom: 35}}
             value={this.state.comment}
             onChangeText={comment => this.setState({ comment })}
             multiline={true}
@@ -256,14 +259,20 @@ export default class SupportViewComponent extends Component {
                           font-family: 'Times New Roman';
                         }
                         p {
-                          font-size: 16px;
+                          font-size: 20px;
+                          width= 30px;
                         }
                       `}
                         onSizeUpdated={size => { console.log(size.height) }}
-                        source={{ html: item.content }}
+                        files={[{
+                          href: 'cssfileaddress',
+                          type: 'text/css',
+                          rel: 'stylesheet'
+                        }]}
+                        source={{ html: `<p style="font-weight: 400;font-style: normal;font-size: 21px;line-height: 1.58;letter-spacing: -.003em; width: 10px;">${item.content}</p>` }}
                         scalesPageToFit={true}
                         zoomable={false}
-                        textZoom={200}
+                        // textZoom={250}
                       />
                     </View>
                   </View>
@@ -353,23 +362,23 @@ const styles = StyleSheet.create({
   },
   btnReply: {
     backgroundColor: "#ff3b3b",
-    height: normalize(30),
-    width: normalize(70),
+    height: normalize(25),
+    width: normalize(60),
     marginLeft: 10,
     alignItems: 'center',
     justifyContent: 'center'
   },
   btnEndTask: {
     backgroundColor: "#1c162e",
-    height: normalize(30),
-    width: normalize(70)
+    height: normalize(25),
+    width: normalize(60)
   },
   containerBtn: {
     height: normalize(60),
     width: normalize(60),
     position: "absolute",
     right: "7%",
-    bottom: -20,
+    bottom: -30,
     flexDirection: "row",
     width: "100%",
     justifyContent: "flex-end"
