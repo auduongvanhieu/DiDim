@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import I18n from "../../I18n";
-import { 
-  Container, 
-  Tab, 
+import {
+  Container,
+  Tab,
   Tabs,
   TabHeading
 } from "native-base";
@@ -58,11 +58,12 @@ export default class SupportWriteComponent extends Component {
       listAccountNumberHorizontal: [],
       listAccountNumberModal: [],
       requestTypeIndex: 0,
-      isDisplayAccountNumber: true
+      isDisplayAccountNumber: true,
+      choosedIndex: [],
     };
   }
 
-  componentDidMount(){
+  componentDidMount() {
     this._navListener = this.props.navigation.addListener('didFocus', () => {
       StatusBar.setBarStyle('light-content');
       StatusBar.setBackgroundColor(AppColors.headerBg2);
@@ -78,32 +79,32 @@ export default class SupportWriteComponent extends Component {
         listAccountNumberHorizontal: [],
         listAccountNumberModal: [],
       })
-      const {asRequestTypeListRequest, guestNoListRequest} = this.props;
-      asRequestTypeListRequest({Par: "cmd=GET_LIST_AS_REQUEST_TYPE"});
-      guestNoListRequest({Par: "cmd=GET_LIST_GUEST_NO"});
+      const { asRequestTypeListRequest, guestNoListRequest } = this.props;
+      asRequestTypeListRequest({ Par: "cmd=GET_LIST_AS_REQUEST_TYPE" });
+      guestNoListRequest({ Par: "cmd=GET_LIST_GUEST_NO" });
     });
 
-    const {asRequestTypeListRequest, guestNoListRequest} = this.props;
-    asRequestTypeListRequest({Par: "cmd=GET_LIST_AS_REQUEST_TYPE"});
-    guestNoListRequest({Par: "cmd=GET_LIST_GUEST_NO"});
+    const { asRequestTypeListRequest, guestNoListRequest } = this.props;
+    asRequestTypeListRequest({ Par: "cmd=GET_LIST_AS_REQUEST_TYPE" });
+    guestNoListRequest({ Par: "cmd=GET_LIST_GUEST_NO" });
   }
 
-  componentWillReceiveProps(nextProps){
-    if(nextProps.guestNoListData && nextProps.guestNoListDa!=this.props.guestNoListData){
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.guestNoListData && nextProps.guestNoListDa != this.props.guestNoListData) {
       this.state.listAccountNumberHorizontal = []
       this.state.listAccountNumberModal = []
       var listAccountNumberTemp = nextProps.guestNoListData;
-      for (let index = 0 ; index < listAccountNumberTemp.length; index++) {
+      //remove all list account number
+      listAccountNumber.splice(0, listAccountNumber.length);
+      for (let index = 0; index < listAccountNumberTemp.length; index++) {
         listAccountNumberTemp[index].id = index;
-        listAccountNumberTemp[index].added = false;
-
         listAccountNumber.push(listAccountNumberTemp[index]);
         this.state.listAccountNumberHorizontal.push(listAccountNumberTemp[index]);
         this.state.listAccountNumberModal.push(listAccountNumberTemp[index]);
       }
     }
-    if(nextProps.asRequestRegistrationData && nextProps.asRequestRegistrationData!=this.props.asRequestRegistrationData){
-      const {asRequestListRequest, navigateToSupportCenterScreen} = this.props;
+    if (nextProps.asRequestRegistrationData && nextProps.asRequestRegistrationData != this.props.asRequestRegistrationData) {
+      const { asRequestListRequest, navigateToSupportCenterScreen } = this.props;
       Alert.alert(
         "Notification",
         "Request is performed",
@@ -118,7 +119,7 @@ export default class SupportWriteComponent extends Component {
                 title: "",
                 contact: "",
               });
-              asRequestListRequest({Par: 'cmd=GET_LIST_AS_REQUEST'})
+              asRequestListRequest({ Par: 'cmd=GET_LIST_AS_REQUEST' })
               navigateToSupportCenterScreen();
             }
           }
@@ -126,16 +127,17 @@ export default class SupportWriteComponent extends Component {
         { cancelable: false }
       );
     }
-    if(nextProps.asRequestRegistrationInit && nextProps.asRequestRegistrationInit!=this.props.asRequestRegistrationInit){
+    if (nextProps.asRequestRegistrationInit && nextProps.asRequestRegistrationInit != this.props.asRequestRegistrationInit) {
       this.setState({
         email: "",
         mobile: "",
         title: "",
         contact: "",
         isDisplayAccountNumber: true
-      }, ()=>{
+      }, () => {
         this.modalDropdown.select(0)
-      });    }
+      });
+    }
   }
 
   componentWillUnmount() {
@@ -146,61 +148,62 @@ export default class SupportWriteComponent extends Component {
     this.setState({ isModalVisible: !this.state.isModalVisible });
   };
 
-  onPressRegistration = () =>{
-    const {asRequestRegistrationRequest, asRequestTypeListData, showErrorAlert} = this.props;
-    const { email, mobile, title, contact, requestTypeIndex, isDisplayAccountNumber} = this.state;
+  onPressRegistration = () => {
+    const { asRequestRegistrationRequest, asRequestTypeListData, showErrorAlert } = this.props;
+    const { email, mobile, title, contact, requestTypeIndex, isDisplayAccountNumber, choosedIndex } = this.state;
 
-    if(!this.isEmail(email)){
+    if (!this.isEmail(email)) {
       showErrorAlert({ title: I18n.t('failure'), description: I18n.t('errorEmail') });
       return;
     }
-    if(mobile == ""){
+    if (mobile == "") {
       showErrorAlert({ title: I18n.t('failure'), description: I18n.t('phoneEmpty') });
       return;
     }
-    if(!this.isNumberPhone(mobile)){
+    if (!this.isNumberPhone(mobile)) {
       showErrorAlert({ title: I18n.t('failure'), description: I18n.t('errorPhone') });
       return;
     }
-    if(title == ""){
+    if (title == "") {
       showErrorAlert({ title: I18n.t('failure'), description: I18n.t('titleEmpty') });
       return;
     }
-    if(contact == ""){
+    if (contact == "") {
       showErrorAlert({ title: I18n.t('failure'), description: I18n.t('questionEmpty') });
       return;
     }
 
     var refGuestNo = "";
-    this.state.listAccountNumberHorizontal.forEach(element => {
-      if(element.added && element.geust_no){
-        if(refGuestNo == "")
+    this.state.listAccountNumberHorizontal.map((element,index) => {
+      if (choosedIndex.includes(index) && element.geust_no) {
+        if (refGuestNo == "")
           refGuestNo = refGuestNo + element.geust_no
         else
-          refGuestNo = refGuestNo +","+ element.geust_no
+          refGuestNo = refGuestNo + "," + element.geust_no
       }
     });
-    if(isDisplayAccountNumber)
-      asRequestRegistrationRequest({Par: `cmd=ADD_AS_REQUEST&cate_idx=${asRequestTypeListData[requestTypeIndex].idx}&title=${title}&content=${contact}&email=${email}&write_htel=${mobile}&refGuestNo=${refGuestNo}`})
-    else
-      asRequestRegistrationRequest({Par: `cmd=ADD_AS_REQUEST&cate_idx=${asRequestTypeListData[requestTypeIndex].idx}&title=${title}&content=${contact}&email=${email}&write_htel=${mobile}`})
+    alert(refGuestNo)
+    // if (isDisplayAccountNumber)
+    //   asRequestRegistrationRequest({ Par: `cmd=ADD_AS_REQUEST&cate_idx=${asRequestTypeListData[requestTypeIndex].idx}&title=${title}&content=${contact}&email=${email}&write_htel=${mobile}&refGuestNo=${refGuestNo}` })
+    // else
+    //   asRequestRegistrationRequest({ Par: `cmd=ADD_AS_REQUEST&cate_idx=${asRequestTypeListData[requestTypeIndex].idx}&title=${title}&content=${contact}&email=${email}&write_htel=${mobile}` })
   }
 
-  onPressCancel = () =>{
+  onPressCancel = () => {
     this.setState({
       email: "",
       mobile: "",
       title: "",
       contact: "",
       isDisplayAccountNumber: true
-    }, ()=>{
+    }, () => {
       this.modalDropdown.select(0)
       this.props.navigateToSupportCenterScreen();
     });
 
   }
 
-  _dropdown_renderRow = (option,index,isSelected) => {
+  _dropdown_renderRow = (option, index, isSelected) => {
     return (
       <View
         style={{
@@ -238,7 +241,7 @@ export default class SupportWriteComponent extends Component {
 
   isNumberPhone = (phone) => {
     let reg = /^[0-9]{3}[-]?[0-9]{3,4}[-]?[0-9]{4}$/
-    if(reg.test(phone)){
+    if (reg.test(phone)) {
       return true;
     }
     return false;
@@ -252,166 +255,166 @@ export default class SupportWriteComponent extends Component {
       asRequestTypeListData,
       guestNoListData
     } = this.props;
-    const {requestTypeIndex, isDisplayAccountNumber} = this.state;
+    const { requestTypeIndex, isDisplayAccountNumber, choosedIndex } = this.state;
     return (
       <KeyboardAvoidingView>
-      {/* {asRequestTypeListData && console.log("__haha__", JSON.stringify(asRequestTypeListData))} */}
-      {/* {guestNoListData && console.log("__haha__", JSON.stringify(guestNoListData))} */}
+        {/* {asRequestTypeListData && console.log("__haha__", JSON.stringify(asRequestTypeListData))} */}
+        {/* {guestNoListData && console.log("__haha__", JSON.stringify(guestNoListData))} */}
         <StatusBar backgroundColor={AppColors.headerBg2} />
-        <HeaderMenu backAction={()=>this.onPressCancel()} title={I18n.t('supportCenter')} />
+        <HeaderMenu backAction={() => this.onPressCancel()} title={I18n.t('supportCenter')} />
         <ScrollView>
-        <View style={styles.containerHorizontal} >
-          <View style={styles.containerLeft}>
-          <Text style={styles.textLeft}>{I18n.t('typeOfInquiry')}</Text>
+          <View style={styles.containerHorizontal} >
+            <View style={styles.containerLeft}>
+              <Text style={styles.textLeft}>{I18n.t('typeOfInquiry')}</Text>
+            </View>
+            <View style={styles.containerPicker} >
+              {(asRequestTypeListData && this.state.requestTypeIndex >= 0) &&
+                <ModalDropdown
+                  ref={modalDropdown => this.modalDropdown = modalDropdown}
+                  options={asRequestTypeListData}
+                  style={styles.dropdown}
+                  dropdownStyle={{ height: normalize(170), marginTop: 10 }}
+                  defaultValue={I18n.t(`${asRequestTypeListData[this.state.requestTypeIndex].name}`)}
+                  defaultIndex={this.state.requestTypeIndex}
+                  onSelect={(index) => this.setState({
+                    requestTypeIndex: index,
+                    isDisplayAccountNumber: asRequestTypeListData[index].idx == 5
+                      || asRequestTypeListData[index].idx == 6 ? true : false
+                  })}
+                  textStyle={{ fontSize: normalize(13), color: '#3b3b4d', fontWeight: 'bold' }}
+                  renderRow={this._dropdown_renderRow}
+                  showsVerticalScrollIndicator={false}
+                  renderButtonText={rowData => <Text>{I18n.t(`${rowData.name}`)}</Text>}
+                />
+              }
+              <View style={{ flex: 1 }} />
+              <MaterialIcons size={20} name='unfold-more' />
+            </View>
           </View>
-          <View style={styles.containerPicker} >
-            { (asRequestTypeListData && this.state.requestTypeIndex >= 0) &&
-            <ModalDropdown 
-              ref={modalDropdown => this.modalDropdown = modalDropdown}
-              options={asRequestTypeListData}
-              style={styles.dropdown}
-              dropdownStyle={{height: normalize(170), marginTop: 10}}
-              defaultValue={I18n.t(`${asRequestTypeListData[this.state.requestTypeIndex].name}`)}
-              defaultIndex={this.state.requestTypeIndex}
-              onSelect={(index)=> this.setState({ requestTypeIndex: index, 
-                        isDisplayAccountNumber:  asRequestTypeListData[index].idx == 5 
-                        || asRequestTypeListData[index].idx == 6 ? true : false})}
-              textStyle={{fontSize: normalize(13), color: '#3b3b4d', fontWeight: 'bold'}}
-              renderRow={this._dropdown_renderRow}
-              showsVerticalScrollIndicator={false}
-              renderButtonText={rowData => <Text>{I18n.t(`${rowData.name}`)}</Text>}
-            />
-            }
-            <View style={{flex: 1}} />
-            <MaterialIcons size={20} name='unfold-more' />
-          </View>
-        </View>
-        <View style={styles.horizontalBar} />
-        {
-          isDisplayAccountNumber &&
+          <View style={styles.horizontalBar} />
+          {
+            isDisplayAccountNumber &&
+            <View style={styles.containerHorizontal}>
+              <View style={styles.containerLeft}>
+                <Text style={styles.textLeft}>{I18n.t('accountNumber')}</Text>
+              </View>
+              <ScrollView horizontal={true}>
+                {this.state.listAccountNumberHorizontal.map((item, index) => {
+                  return choosedIndex.includes(index) ? (
+                    <View style={styles.containerAccountNumber}>
+                      <Text
+                        style={{
+                          color: "white",
+                          fontSize: normalize(12),
+                          marginRight: 5
+                        }}
+                      >
+                        {item.geust_no}
+                      </Text>
+                      <Ionicons
+                        onPress={() => {
+                        }}
+                        size={15} name="md-close" color="white" />
+                    </View>
+                  ) : null;
+                })}
+              </ScrollView>
+              <Ionicons
+                onPress={() => {
+                  // for (let index = 0 ; index < listAccountNumber.length; index++) {
+                  //   this.state.listAccountNumberModal.push(listAccountNumber[index]);
+                  // }
+                  this.toggleModal()
+                }}
+                size={25}
+                name="md-add-circle"
+                color="blue"
+                style={{ marginLeft: 5 }}
+              />
+            </View>
+          }
+          <View style={styles.horizontalBar} />
           <View style={styles.containerHorizontal}>
             <View style={styles.containerLeft}>
-              <Text style={styles.textLeft}>{I18n.t('accountNumber')}</Text>
+              <Text style={styles.textLeft}>{I18n.t('email')}</Text>
             </View>
-            <ScrollView horizontal={true}>
-              {this.state.listAccountNumberHorizontal.map((item, index) => {
-                return item.added == true ? (
-                  <View style={styles.containerAccountNumber}>
-                    <Text
-                      style={{
-                        color: "white",
-                        fontSize: normalize(12),
-                        marginRight: 5
-                      }}
-                    >
-                      {item.geust_no}
-                    </Text>
-                    <Ionicons 
-                      onPress={()=>{
-                        item.added = false;
-                        this.setState({})
-                      }}
-                      size={15} name="md-close" color="white" />
-                  </View>
-                ) : null;
-              })}
-            </ScrollView>
-            <Ionicons
-              onPress={() => {
-                // for (let index = 0 ; index < listAccountNumber.length; index++) {
-                //   this.state.listAccountNumberModal.push(listAccountNumber[index]);
-                // }
-                this.toggleModal()
-              }}
-              size={25}
-              name="md-add-circle"
-              color="blue"
-              style={{ marginLeft: 5 }}
+            <TextInput
+              ref={(input) => { this.firstTextInput = input; }}
+              placeholder={I18n.t('emailHint')}
+              onChangeText={email => this.setState({ email })}
+              value={this.state.email}
+              style={styles.textRight}
+              returnKeyType={"next"}
+              keyboardType="email-address"
+              onSubmitEditing={() => { this.secondTextInput.focus(); }}
             />
           </View>
-          }
-        <View style={styles.horizontalBar} />
-        <View style={styles.containerHorizontal}>
-          <View style={styles.containerLeft}>
-        <Text style={styles.textLeft}>{I18n.t('email')}</Text>
+          <View style={styles.horizontalBar} />
+          <View style={styles.containerHorizontal}>
+            <View style={styles.containerLeft}>
+              <Text style={styles.textLeft}>{I18n.t('mobile')}</Text>
+            </View>
+            <TextInput
+              ref={(input) => { this.secondTextInput = input; }}
+              placeholder={I18n.t('inputMobileNumber')}
+              onChangeText={mobile => this.setState({ mobile })}
+              value={this.state.mobile}
+              style={styles.textRight}
+              returnKeyType={"next"}
+              keyboardType={"phone-pad"}
+              onSubmitEditing={() => { this.thirdTextInput.focus(); }}
+            />
           </View>
-          <TextInput
-            ref={(input) => { this.firstTextInput = input; }}
-            placeholder={I18n.t('emailHint')}
-            onChangeText={email => this.setState({ email })}
-            value={this.state.email}
-            style={styles.textRight}
-            returnKeyType={"next"}
-            keyboardType="email-address"
-            onSubmitEditing={() => { this.secondTextInput.focus(); }}
-          />
-        </View>
-        <View style={styles.horizontalBar} />
-        <View style={styles.containerHorizontal}>
-          <View style={styles.containerLeft}>
-            <Text style={styles.textLeft}>{I18n.t('mobile')}</Text>
+          <View style={styles.horizontalBar} />
+          <View style={styles.containerHorizontal}>
+            <View style={styles.containerLeft}>
+              <Text style={styles.textLeft}>{I18n.t('title')}</Text>
+            </View>
+            <TextInput
+              ref={(input) => { this.thirdTextInput = input; }}
+              placeholder={I18n.t('titleHint')}
+              onChangeText={title => this.setState({ title })}
+              maxLength={100}
+              value={this.state.title}
+              style={styles.textRight}
+              returnKeyType={"next"}
+              onSubmitEditing={() => { this.fourTextInput.focus(); }}
+            />
           </View>
-          <TextInput
-            ref={(input) => { this.secondTextInput = input; }}
-            placeholder={I18n.t('inputMobileNumber')}
-            onChangeText={mobile => this.setState({ mobile })}
-            value={this.state.mobile}
-            style={styles.textRight}
-            returnKeyType={"next"}
-            keyboardType={"numeric"}
-            onSubmitEditing={() => { this.thirdTextInput.focus(); }}
-          />
-        </View>
-        <View style={styles.horizontalBar} />
-        <View style={styles.containerHorizontal}>
-          <View style={styles.containerLeft}>
-            <Text style={styles.textLeft}>{I18n.t('title')}</Text>
+          <View style={styles.horizontalBar} />
+          <View style={{ height: normalize(150) }}>
+            <TextInput
+              ref={(input) => { this.fourTextInput = input; }}
+              placeholder={I18n.t('writeCommentHint')}
+              onChangeText={contact => this.setState({ contact })}
+              value={this.state.contact}
+              style={[
+                styles.textRight,
+                { marginLeft: "6.7%", textAlign: "left" }
+              ]}
+              multiline={true}
+              returnKeyType={"done"}
+            />
           </View>
-          <TextInput
-            ref={(input) => { this.thirdTextInput = input; }}
-            placeholder={I18n.t('titleHint')}
-            onChangeText={title => this.setState({ title })}
-            maxLength={100}
-            value={this.state.title}
-            style={styles.textRight}
-            returnKeyType={"next"}
-            onSubmitEditing={() => { this.fourTextInput.focus(); }}
-          />
-        </View>
-        <View style={styles.horizontalBar} />
-        <View style={{ height: normalize(150) }}>
-          <TextInput
-            ref={(input) => { this.fourTextInput = input; }}
-            placeholder={I18n.t('writeCommentHint')}
-            onChangeText={contact => this.setState({ contact })}
-            value={this.state.contact}
-            style={[
-              styles.textRight,
-              { marginLeft: "6.7%", textAlign: "left" }
-            ]}
-            multiline={true}
-            returnKeyType={"done"}
-          />
-        </View>
-        <View style={styles.horizontalBar} />
-        <View
-          style={{
-            flexDirection: "row",
-            justifyContent: "center",
-            marginTop: normalize(6),
-          }}
-        >
-          <Button
-            title={I18n.t('cancel')}
-            buttonStyle={[styles.buttonBottom, { backgroundColor: "#666372" }]}
-            onPress={this.onPressCancel}
-          />
-          <Button
-            title={I18n.t('submit')}
-            buttonStyle={[styles.buttonBottom, { backgroundColor: "#ff3b3b" }]}
-            onPress={this.onPressRegistration}
-          />
-        </View>
+          <View style={styles.horizontalBar} />
+          <View
+            style={{
+              flexDirection: "row",
+              justifyContent: "center",
+              marginTop: normalize(6),
+            }}
+          >
+            <Button
+              title={I18n.t('cancel')}
+              buttonStyle={[styles.buttonBottom, { backgroundColor: "#666372" }]}
+              onPress={this.onPressCancel}
+            />
+            <Button
+              title={I18n.t('submit')}
+              buttonStyle={[styles.buttonBottom, { backgroundColor: "#ff3b3b" }]}
+              onPress={this.onPressRegistration}
+            />
+          </View>
         </ScrollView>
         <Modal
           style={{ margin: 0 }}
@@ -453,15 +456,15 @@ export default class SupportWriteComponent extends Component {
                 }}
               />
               <View style={{ marginLeft: "5%" }}>
-                <SearchBox 
-                  keyboardType='numeric'
+                <SearchBox
+                  keyboardType='default'
                   onChangeText={(textModelSearch) => {
-                    this.setState({textModelSearch},()=>{
-                      this.state.listAccountNumberModal = listAccountNumber.filter(
-                        item => item.geust_no.includes(this.state.textModelSearch) ||
-                        item.name.includes(this.state.textModelSearch)
-                      )
+                    this.setState({ textModelSearch }, () => {
                       this.setState({
+                        listAccountNumberModal: listAccountNumber.filter(
+                          item => `${item.geust_no}`.toLowerCase().includes(`${this.state.textModelSearch}`.toLowerCase()) ||
+                            `${item.name}`.toLowerCase().includes(`${this.state.textModelSearch}`.toLowerCase())
+                        ),
                         refreshModal: !this.state.refreshModal
                       })
                     })
@@ -495,15 +498,26 @@ export default class SupportWriteComponent extends Component {
                         checkedColor="red"
                         checkedIcon="check-circle"
                         uncheckedIcon="circle-o"
-                        checked={item.added}
+                        checked={choosedIndex.includes(index)}
                         onPress={() => {
-                          this.state.listAccountNumberModal[index].added = !this
-                            .state.listAccountNumberModal[index].added;
-                          listAccountNumber[index].added = this
-                            .state.listAccountNumberModal[index].added;
+                          const { choosedIndex } = this.state;
+                          if (!choosedIndex.includes(index)) {
+                            choosedIndex.push(index);
+                          }
+                          else {
+                            if(choosedIndex.indexOf(index) >= 0)
+                            choosedIndex.splice(choosedIndex.indexOf(index), 1);
+                          }
                           this.setState({
-                            refreshModal: !this.state.refreshModal
+                            choosedIndex
                           });
+                          // this.state.listAccountNumberModal[index].added = !this
+                          //   .state.listAccountNumberModal[index].added;
+                          // listAccountNumber[index].added = this
+                          //   .state.listAccountNumberModal[index].added;
+                          // this.setState({
+                          //   refreshModal: !this.state.refreshModal
+                          // });
                         }}
                         containerStyle={{
                           borderWidth: 0,
