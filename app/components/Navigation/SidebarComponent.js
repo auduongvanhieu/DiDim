@@ -20,7 +20,7 @@ import I18n  from '../../I18n'
 import { AppColors, AppConstant } from "../../utilities/Constants";
 import { normalize } from "../../utilities/ThemeUtils";
 import LabeledSwitch from "../CustomView/LabeledSwitch";
-import { clearAuthCache, getReceiveNotify, setReceiveNotify, getAutoLogin, setAutoLogin } from "../../utilities/Helper";
+import { clearAuthCache, getReceiveNotify, setReceiveNotify, getAutoLogin, setAutoLogin, setObjectToken } from "../../utilities/Helper";
 import { Config } from "../../utilities/Config";
 
 class SidebarComponent extends Component {
@@ -150,7 +150,10 @@ class SidebarComponent extends Component {
             else
               setAutoLogin(false);
             navigateToLoginScreen();
-            disposeRequest({});
+            disposeRequest({
+              Par: {}
+            });
+            setObjectToken({access_token: ""});
           }} >
             <View style={styles.listRow}>
               <Image

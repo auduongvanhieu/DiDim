@@ -4,6 +4,7 @@ import { getTokenRequestAction, verifyRequestAction } from '../../actions/AuthAc
 import { submit, change} from 'redux-form'
 import { authorizeRequestAction } from '../../actions/AuthActions/actionCreators';
 import { navigateToStatusInfoScreenAction } from '../../actions/NavigationActions/actionCreators';
+import { stopLoadingAction } from '../../actions/AppActions/actionCreators';
 
 const mapStateToProps = state => ({
     isAutoLogin: state.autoLoginReducer.isAutoLogin,
@@ -19,6 +20,7 @@ const mapDispatchToProps = dispatch => ({
     getTokenRequest: (params) => dispatch(getTokenRequestAction(params)),
     verifyRequest: (params) => dispatch(verifyRequestAction(params)),
     authorizeRequest: (params) => dispatch(authorizeRequestAction(params)),
+    stopLoading: () => dispatch(stopLoadingAction()),
 
 })
 

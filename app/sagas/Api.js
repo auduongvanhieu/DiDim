@@ -48,14 +48,18 @@ function* authorize(params) {
 
 function* dispose(params) {
   const objectToken = yield getObjectToken();
-  const response = yield axios.post(Config.authURL + "/Dispose.aspx",{AccessToken: objectToken.access_token}, {
+  params.Par = qs.stringify({AccessToken: objectToken.access_token});
+  params.Par = aesEncrypt(params.Par,objectToken.secret_token);
+  params.AccessToken = objectToken.access_token;
+
+  const response = yield axios.post(Config.authURL + "/Dispose.aspx",qs.stringify(params), {
     headers: { "Content-Type": "application/x-www-form-urlencoded" }
   });
   // console.log("__haha__",response.data);
 
   const resultTemp = yield response.status === 200 ? response.data : {};
-  // const result = aesDecrypt(resultTemp, objectToken.secret_token)
-  return resultTemp;
+  const result = aesDecrypt(resultTemp, objectToken.secret_token)
+  return result;
 }
 
 function* mainApi(params) {

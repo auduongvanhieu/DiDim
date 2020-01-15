@@ -54,12 +54,13 @@ export default class LoginComponent extends Component {
 
   componentDidMount() {
     this.getCache();
+    this.props.stopLoading();
   }
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.authorData && nextProps.authorData != this.props.authorData) {
       const { authorData } = nextProps;
-      if (authorData.ReturnValue == false) {
+      if (authorData.ReturnValue === false) {
         this.setState({ messageError: authorData.ReturnMsg });
       }
     }
