@@ -511,13 +511,6 @@ export default class SupportWriteComponent extends Component {
                           this.setState({
                             choosedIndex
                           });
-                          // this.state.listAccountNumberModal[index].added = !this
-                          //   .state.listAccountNumberModal[index].added;
-                          // listAccountNumber[index].added = this
-                          //   .state.listAccountNumberModal[index].added;
-                          // this.setState({
-                          //   refreshModal: !this.state.refreshModal
-                          // });
                         }}
                         containerStyle={{
                           borderWidth: 0,

@@ -54,7 +54,7 @@ import { showErrorAlertAction } from '../../actions/AppActions/actionCreators';
 import I18n from '../../I18n';
 import { navigateToSupportCenterScreenAction } from '../../actions/NavigationActions/actionCreators';
 import { Images } from '../../assets';
-import { asRequestListRequestAction } from '../../actions/OthersActions/actionCreators';
+import { asRequestListRequestAction, asRequestDetailRequestAction } from '../../actions/OthersActions/actionCreators';
 
 function* serverList(action) {
     try {
@@ -271,13 +271,14 @@ export function* watchAsRequestDetail() {
 
 function* commentRegistration(action) {
     try {
-        // yield put({ type: START_LOADING })
+        yield put({ type: START_LOADING })
         const receivedDataTemp = yield Api.mainApi(action.payload)
         receivedData = JSON.parse(receivedDataTemp)
         if (receivedData && receivedData.ReturnValue) {
             yield put({ type: COMMENT_REGISTRATION_SUCCEEDED, payload: receivedData })
-            yield put({ type: STOP_LOADING })
             yield put(asRequestListRequestAction({Par: 'cmd=GET_LIST_AS_REQUEST'}));
+            yield put(asRequestDetailRequestAction({ Par: `cmd=GET_INFO_AS_REQUEST&board_idx=${action.id}` }))
+            yield put({ type: STOP_LOADING })
         } else {
             yield put(showErrorAlertAction({ title: I18n.t('failure'), description: receivedData.ReturnMsg }))
             yield put({ type: COMMENT_REGISTRATION_FAILED, payload: undefined})

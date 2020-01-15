@@ -16,7 +16,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
     navigateToSupportCenterScreen: (params) => dispatch(navigateToSupportCenterScreenAction(params)),
     asRequestListRequest: (params) => dispatch(asRequestListRequestAction(params)),
-    commentRegistrationRequest: (params) => dispatch(commentRegistrationRequestAction(params)),
+    commentRegistrationRequest: (params,id) => dispatch(commentRegistrationRequestAction(params,id)),
     asRequestDetailRequest: (params) => dispatch(asRequestDetailRequestAction(params)),
 })
 

@@ -19,6 +19,8 @@ import {
   TextInput,
   Platform,
   TouchableOpacity,
+  Alert,
+  Keyboard
 } from "react-native";
 import { Button } from 'react-native-elements';
 
@@ -65,11 +67,12 @@ export default class SupportViewComponent extends Component {
       navData,
     } = this.props;
     const { comment } = this.state;
-    if (comment){
-      var submitComment = comment.replace('\n', '</br>')
-      commentRegistrationRequest({ Par: `cmd=UPDATE_AS_REQUEST_REPLY&board_idx=${navData.board_idx}&qna_kind=AddComment&write_content=${submitComment}` });
+    if (comment) {
+      var submitComment = comment.split("\n").join("</br>")
+      commentRegistrationRequest({ Par: `cmd=UPDATE_AS_REQUEST_REPLY&board_idx=${navData.board_idx}&qna_kind=AddComment&write_content=${submitComment}` }, navData.board_idx);
     }
     this.setState({ comment: "" })
+    Keyboard.dismiss();
   }
 
   onPressEndTask = () => {
@@ -80,8 +83,9 @@ export default class SupportViewComponent extends Component {
     } = this.props;
     const { comment } = this.state;
     if (comment)
-      commentRegistrationRequest({ Par: `cmd=UPDATE_AS_REQUEST_REPLY&board_idx=${navData.board_idx}&qna_kind=Close&write_content=${comment}` });
+      commentRegistrationRequest({ Par: `cmd=UPDATE_AS_REQUEST_REPLY&board_idx=${navData.board_idx}&qna_kind=Close&write_content=${comment}` }, navData.board_idx);
     this.setState({ comment: "" })
+    Keyboard.dismiss();
     // navigateToSupportCenterScreen()
   }
 
@@ -124,6 +128,7 @@ export default class SupportViewComponent extends Component {
       asRequestDetailData,
     } = this.props;
     const { listReply, mainContent } = this.state;
+    const enabled = asRequestDetailData && asRequestDetailData.content.work_status_name != "requestStatusClose";
     return (
       <Container>
         {/* {asRequestDetailData && console.log("__haha__",JSON.stringify(asRequestDetailData))} */}
@@ -164,27 +169,50 @@ export default class SupportViewComponent extends Component {
           style={{ backgroundColor: "#f4f6f9", height: "2.5%", width: "100%" }}
         />
         <View style={{ height: screenHeight / 4.5, backgroundColor: "white" }}>
+
+          <Image source={Images.bg_ico_msg} style={styles.imgBgMsg} />
+
           <TextInput
-            selectTextOnFocus = {true}
+            editable={enabled}
+            selectTextOnFocus={true}
             placeholder={I18n.t('supportCenterCommentHint')}
-            style={{ fontSize: normalize(13), paddingHorizontal: "7%", marginBottom: 35}}
+            style={{ fontSize: normalize(13), paddingHorizontal: "7%", marginBottom: normalize(35), backgroundColor: 'transparent' }}
             value={this.state.comment}
             onChangeText={comment => this.setState({ comment })}
             multiline={true}
           />
-          <Image source={Images.bg_ico_msg} style={styles.imgBgMsg} />
-          {asRequestDetailData && asRequestDetailData.content.work_status_name != "requestStatusClose" &&
-            <View style={styles.containerBtn}>
-              {/* <TouchableOpacity style={{
+
+          {enabled &&
+            <View style={{ flexDirection: 'row', position: 'absolute', bottom: normalize(8), right: normalize(8) }}>
+              <TouchableOpacity style={{
                 backgroundColor: "#1c162e",
-                paddingHorizontal: normalize(6),
+                paddingHorizontal: normalize(8),
                 paddingVertical: normalize(6),
+                borderRadius: normalize(6),
+                
                 alignItems: 'center',
                 justifyContent: 'center'
-              }}>
+              }}
+                onPress={this.onPressEndTask}
+              >
                 <Text style={{ fontSize: normalize(14), color: '#ffffff' }}>{I18n.t('finishWork')}</Text>
-              </TouchableOpacity> */}
-              <Button
+              </TouchableOpacity>
+
+              <TouchableOpacity style={{
+                backgroundColor: "#ff3b3b",
+                paddingHorizontal: normalize(8),
+                paddingVertical: normalize(6),
+                borderRadius: normalize(6),
+                alignItems: 'center',
+                justifyContent: 'center',
+                marginLeft: normalize(8)
+              }}
+                onPress={this.onPressReply}
+              >
+                <Text style={{ fontSize: normalize(14), color: '#ffffff' }}>{I18n.t('reply')}</Text>
+              </TouchableOpacity>
+
+              {/* <Button
                 title={I18n.t('finishWork')}
                 onPress={this.onPressEndTask}
                 fontSize={normalize(15)}
@@ -194,7 +222,7 @@ export default class SupportViewComponent extends Component {
                 onPress={this.onPressReply}
                 buttonStyle={styles.btnReply}
                 fontSize={normalize(15)}
-              />
+              /> */}
             </View>
           }
         </View>
@@ -216,6 +244,7 @@ export default class SupportViewComponent extends Component {
                     </Text>
                     <Image source={Images.ico_clock_b} style={styles.clock1} />
                   </View>
+                  {/* <Text>{`<p style="font-weight: 400;font-style: normal;font-size: 21px;line-height: 1.58;letter-spacing: -.003em; width: 10px;">${item.content}</p>`}</Text> */}
                   <View style={[styles.bgComment1, { marginBottom: index == listReply.length - 1 ? 20 : 0 }]}>
                     {/* <Text style={{ color: "white" }}>{item.content}</Text> */}
                     <AutoHeightWebView
@@ -227,13 +256,15 @@ export default class SupportViewComponent extends Component {
                         }
                         p {
                           font-size: 16px;
+                          word-break: break-all;
+                          white-space: normal;
                         }
                       `}
                       onSizeUpdated={size => { console.log(size.height) }}
-                      source={{ html: item.content }}
-                      scalesPageToFit={true}
+                      source={{ html: `<p>${item.content}</p>` }}
+                      scalesPageToFit={false}
                       zoomable={false}
-                      textZoom={200}
+                      textZoom={100}
                     />
                   </View>
                 </View>
@@ -259,8 +290,9 @@ export default class SupportViewComponent extends Component {
                           font-family: 'Times New Roman';
                         }
                         p {
-                          font-size: 20px;
-                          width= 30px;
+                          font-size: 16px;
+                          word-break: break-all;
+                          white-space: normal;
                         }
                       `}
                         onSizeUpdated={size => { console.log(size.height) }}
@@ -270,10 +302,11 @@ export default class SupportViewComponent extends Component {
                           rel: 'stylesheet'
                         }]}
                         source={{ html: `<p style="font-weight: 400;font-style: normal;font-size: 21px;line-height: 1.58;letter-spacing: -.003em; width: 10px;">${item.content}</p>` }}
-                        scalesPageToFit={true}
+                        scalesPageToFit={false}
                         zoomable={false}
-                        // textZoom={250}
+                        textZoom={100}
                       />
+
                     </View>
                   </View>
                 )
