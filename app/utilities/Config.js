@@ -5,6 +5,7 @@ const sAccessToken = "";
 const userName = "";
 const tabServerDetail = 2;
 const fcmToken = "";
+const objectToken = {};
 
 const Config = {
   authURL,
@@ -13,7 +14,8 @@ const Config = {
   sAccessToken,
   userName,
   tabServerDetail,
-  fcmToken
+  fcmToken,
+  objectToken
 };
 
 const SuperObjects = {

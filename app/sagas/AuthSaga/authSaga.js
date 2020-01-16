@@ -35,12 +35,13 @@ function* authorize(action) {
         yield put({ type: START_LOADING })
         const receivedDataTemp = yield Api.authorize(action.payload)
         receivedData = JSON.parse(receivedDataTemp)
-        // console.log("__haha__",receivedData);
         if (receivedData && receivedData.ReturnValue) {
+            console.log("__a__", receivedData);
             yield put({ type: STOP_LOADING })
             yield put({ type: AUTHORIZE_SUCCEEDED, payload: receivedData })
             yield put(navigateToStatusInfoScreenAction())
         } else {
+            console.log("__b__", receivedData);
             yield put({ type: STOP_LOADING })
             yield put({ type: AUTHORIZE_FAILED, payload: receivedData})
         }
@@ -57,14 +58,16 @@ function* getToken(action) {
     try {
         yield put({ type: START_LOADING })
         const receivedData = yield Api.getToken(action.payload)
-        // console.log("__token__",receivedData);
+        console.log("__token__",receivedData);
         if (receivedData !== null) {
-            // yield put({ type: STOP_LOADING })
+            yield put({ type: STOP_LOADING })
             yield put({ type: GET_TOKEN_SUCCEEDED, payload: receivedData })
+            // console.log("__setObjectToken__",receivedData.Items[0]);
+            Config.objectToken = receivedData.Items[0];
+            yield setObjectToken(receivedData.Items[0])
             yield put(authorizeRequestAction({
                 Par: `managed_url=${form.managed_url}&user=${form.user}&password=${form.password}&fcm_token=${Config.fcmToken}&os_type=${Platform.OS}`
               }))
-            yield setObjectToken(receivedData.Items[0])
         } else {
             yield put({ type: STOP_LOADING })
             yield put(showErrorAlertAction({ title: I18n.t('failure'), description: I18n.t('connectionErrors') }))
@@ -85,7 +88,7 @@ function* verify(action) {
         receivedData = JSON.parse(receivedDataTemp)
         if (receivedData && receivedData.ReturnValue) {
             yield put({ type: STOP_LOADING })
-            // yield put({ type: VERIFY_SUCCEEDED, payload: receivedData })
+            yield put({ type: VERIFY_SUCCEEDED, payload: receivedData })
             yield put(navigateToStatusInfoScreenAction())
         } else {
             yield put({ type: STOP_LOADING })
@@ -112,7 +115,7 @@ function* dispose(action) {
         }
     } catch (error) {
         console.log(error);
-        // yield put(showErrorAlertAction({ title: I18n.t('failure'), description: I18n.t('connectionErrors') }))
+        yield put(showErrorAlertAction({ title: I18n.t('failure'), description: I18n.t('connectionErrors') }))
         yield put({ type: DISPOSE_FAILED, error })
     }
 }
