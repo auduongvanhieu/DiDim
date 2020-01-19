@@ -25,7 +25,7 @@ import { showErrorAlertAction } from '../../actions/AppActions/actionCreators';
 import { Config } from '../../utilities/Config';
 import { setObjectToken } from '../../utilities/Helper';
 import I18n from '../../I18n';
-import { navigateToStatusInfoScreenAction } from '../../actions/NavigationActions/actionCreators';
+import { navigateToStatusInfoScreenAction, replaceToStatusInfoScreenAction } from '../../actions/NavigationActions/actionCreators';
 import { authorizeRequestAction } from '../../actions/AuthActions/actionCreators';
 import { Platform } from 'react-native';
 
@@ -39,7 +39,8 @@ function* authorize(action) {
         if (receivedData && receivedData.ReturnValue) {
             yield put({ type: STOP_LOADING })
             yield put({ type: AUTHORIZE_SUCCEEDED, payload: receivedData })
-            yield put(navigateToStatusInfoScreenAction())
+            // yield put(navigateToStatusInfoScreenAction())
+            yield put(replaceToStatusInfoScreenAction())
         } else {
             yield put({ type: STOP_LOADING })
             yield put({ type: AUTHORIZE_FAILED, payload: receivedData})

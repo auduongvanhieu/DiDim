@@ -5,10 +5,12 @@ import {
     navigateToLoginScreenAction, 
     navigateToStatusInfoScreenAction,
     navigateToAlarmLogScreenAction,
-    navigateToSupportCenterScreenAction
+    navigateToSupportCenterScreenAction,
+    replaceToLoginScreenAction,
+    replaceToStatusInfoScreenAction
  } from '../../actions/NavigationActions/actionCreators';
 import { disposeRequestAction } from '../../actions/AuthActions/actionCreators';
-import { serverCountingRequestAction } from '../../actions/OthersActions/actionCreators';
+import { serverCountingRequestAction, asRequestListRequestAction } from '../../actions/OthersActions/actionCreators';
 
 const mapStateToProps = state => ({
     verifyData: state.verifyReducer.receivedData,
@@ -18,11 +20,14 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
     closeNavigationDrawer: (params) => dispatch(closeNavigationDrawerAction(params)),
     navigateToLoginScreen: (params) => dispatch(navigateToLoginScreenAction(params)),
+    replaceToLoginScreen: (params) => dispatch(replaceToLoginScreenAction(params)),
     navigateToStatusInfoScreen: (params) => dispatch(navigateToStatusInfoScreenAction(params)),
     navigateToAlarmLogScreen: (params) => dispatch(navigateToAlarmLogScreenAction(params)),
     navigateToSupportCenterScreen: (params) => dispatch(navigateToSupportCenterScreenAction(params)),
     disposeRequest: (params) => dispatch(disposeRequestAction(params)),
     serverCountingRequest: (params) => dispatch(serverCountingRequestAction(params)),
+    asRequestListRequest: (params) => dispatch(asRequestListRequestAction(params)),
+    
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(SidebarComponent)

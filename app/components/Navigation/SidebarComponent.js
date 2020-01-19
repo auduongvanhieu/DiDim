@@ -66,11 +66,14 @@ class SidebarComponent extends Component {
     const {
       closeNavigationDrawer,
       navigateToLoginScreen,
+      replaceToLoginScreen,
       navigateToStatusInfoScreen,
+      replaceToStatusInfoScreen,
       navigateToAlarmLogScreen,
       navigateToSupportCenterScreen,
       disposeRequest, 
-      serverCountingRequest
+      serverCountingRequest,
+      asRequestListRequest
     } = this.props;
     return (
       <Container style={styles.menuContainer}>
@@ -122,6 +125,7 @@ class SidebarComponent extends Component {
             navigateToSupportCenterScreen();
             closeNavigationDrawer();
             serverCountingRequest({Par: "cmd=GET_COUNT_ALERT_AND_AS"});
+            asRequestListRequest({ Par: 'cmd=GET_LIST_AS_REQUEST' });
             }} >
             <View style={styles.listRow}>
               <Image
@@ -149,7 +153,7 @@ class SidebarComponent extends Component {
               clearAuthCache();
             else
               setAutoLogin(false);
-            navigateToLoginScreen();
+            replaceToLoginScreen();
             disposeRequest({
               Par: {}
             });

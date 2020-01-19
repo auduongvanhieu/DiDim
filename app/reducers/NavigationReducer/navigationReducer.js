@@ -9,6 +9,7 @@ import { DrawerActions } from 'react-navigation-drawer';
 import {
   GO_BACK,
   NAVIGATE_TO_LOGIN_SCREEN,
+  REPLACE_TO_LOGIN_SCREEN,
   NAVIGATE_TO_STATUS_INFO_SCREEN,
   NAVIGATE_TO_SERVER_DETAIL_SCREEN,
   OPEN_NAVIGATION_DRAWER,
@@ -18,6 +19,7 @@ import {
   NAVIGATE_TO_SUPPORT_CENTER_SCREEN,
   NAVIGATE_TO_SUPPORT_VIEW_SCREEN,
   NAVIGATE_TO_SUPPORT_WRITE_SCREEN,
+  REPLACE_TO_STATUS_INFO_SCREEN,
 } from "../../actions/NavigationActions/actionTypes";
 //Login is temp navigation
 const thirdAction = RootStack.router.getActionForPathAndParams(Login);
@@ -51,15 +53,28 @@ function navigationReducer(state = initialNavState, action) {
 
     case NAVIGATE_TO_LOGIN_SCREEN:
       nextState = RootStack.router.getStateForAction(
-        NavigationActions.navigate({ routeName: "Login" }),
+        StackActions.replace({ routeName: "Login" }),
         { ...state, data: action.payload }
       );
       break;
 
+    case REPLACE_TO_LOGIN_SCREEN:
+      nextState = RootStack.router.getStateForAction(
+        NavigationActions.navigate({ routeName: "Login" }),
+        { ...state, data: action.payload }
+      );
+      break;
     
     case NAVIGATE_TO_STATUS_INFO_SCREEN:
       nextState = RootStack.router.getStateForAction(
         NavigationActions.navigate({ routeName: "StatusInfo" }),
+        { ...state, data: action.payload }
+      );
+      break;
+    
+    case REPLACE_TO_STATUS_INFO_SCREEN:
+      nextState = RootStack.router.getStateForAction(
+        StackActions.replace({ routeName: "StatusInfo" }),
         { ...state, data: action.payload }
       );
       break;

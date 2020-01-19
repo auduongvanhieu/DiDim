@@ -183,10 +183,10 @@ export default class SupportWriteComponent extends Component {
       }
     });
     // alert(refGuestNo)
-    // if (isDisplayAccountNumber)
-    //   asRequestRegistrationRequest({ Par: `cmd=ADD_AS_REQUEST&cate_idx=${asRequestTypeListData[requestTypeIndex].idx}&title=${title}&content=${contact}&email=${email}&write_htel=${mobile}&refGuestNo=${refGuestNo}` })
-    // else
-    //   asRequestRegistrationRequest({ Par: `cmd=ADD_AS_REQUEST&cate_idx=${asRequestTypeListData[requestTypeIndex].idx}&title=${title}&content=${contact}&email=${email}&write_htel=${mobile}` })
+    if (isDisplayAccountNumber)
+      asRequestRegistrationRequest({ Par: `cmd=ADD_AS_REQUEST&cate_idx=${asRequestTypeListData[requestTypeIndex].idx}&title=${title}&content=${contact}&email=${email}&write_htel=${mobile}&refGuestNo=${refGuestNo}` })
+    else
+      asRequestRegistrationRequest({ Par: `cmd=ADD_AS_REQUEST&cate_idx=${asRequestTypeListData[requestTypeIndex].idx}&title=${title}&content=${contact}&email=${email}&write_htel=${mobile}` })
   }
 
   onPressCancel = () => {

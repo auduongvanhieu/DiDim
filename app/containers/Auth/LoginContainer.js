@@ -17,6 +17,7 @@ const mapDispatchToProps = dispatch => ({
     submitLoginForm: () => dispatch(submit('LoginForm')),
     changeLoginForm: (field, value) => dispatch(change('LoginForm', field, value)),
     navigateToStatusInfoScreen: (params) => dispatch(navigateToStatusInfoScreenAction(params)),
+    replaceToStatusInfoScreen: (params) => dispatch(replaceToStatusInfoScreenAction(params)),
     getTokenRequest: (params) => dispatch(getTokenRequestAction(params)),
     verifyRequest: (params) => dispatch(verifyRequestAction(params)),
     authorizeRequest: (params) => dispatch(authorizeRequestAction(params)),

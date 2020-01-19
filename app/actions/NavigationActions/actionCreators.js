@@ -3,7 +3,9 @@ import {
   OPEN_NAVIGATION_DRAWER,
   CLOSE_NAVIGATION_DRAWER,
   NAVIGATE_TO_LOGIN_SCREEN,
+  REPLACE_TO_LOGIN_SCREEN,
   NAVIGATE_TO_STATUS_INFO_SCREEN,
+  REPLACE_TO_STATUS_INFO_SCREEN,
   NAVIGATE_TO_SERVER_DETAIL_SCREEN,
   NAVIGATE_TO_ALARM_LOG_SCREEN,
   NAVIGATE_TO_ALARM_LOG_DETAIL_SCREEN,
@@ -32,8 +34,18 @@ const navigateToLoginScreenAction = params => ({
   payload: params
 });
 
+const replaceToLoginScreenAction = params => ({
+  type: REPLACE_TO_LOGIN_SCREEN,
+  payload: params
+});
+
 const navigateToStatusInfoScreenAction = params => ({
   type: NAVIGATE_TO_STATUS_INFO_SCREEN,
+  payload: params
+});
+
+const replaceToStatusInfoScreenAction = params => ({
+  type: REPLACE_TO_STATUS_INFO_SCREEN,
   payload: params
 });
 
@@ -72,7 +84,9 @@ export {
   openNavigationDrawerAction,
   closeNavigationDrawerAction,
   navigateToLoginScreenAction,
+  replaceToLoginScreenAction,
   navigateToStatusInfoScreenAction,
+  replaceToStatusInfoScreenAction,
   navigateToServerDetailScreenAction,
   navigateToAlarmLogScreenAction,
   navigateToAlarmLogDetailScreenAction,
