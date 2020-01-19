@@ -259,6 +259,10 @@ export default class SupportViewComponent extends Component {
                           word-break: break-all;
                           white-space: normal;
                         }
+                        img {
+                          max-width: 100%;
+                          height: auto;
+                        }
                       `}
                       onSizeUpdated={size => { console.log(size.height) }}
                       source={{ html: `<p>${item.content}</p>` }}

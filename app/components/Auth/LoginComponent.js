@@ -81,6 +81,7 @@ export default class LoginComponent extends Component {
     const { getTokenRequest, verifyRequest, authorizeRequest, changeLoginForm } = this.props;
 
     const objectToken = await getObjectToken();
+    console.log("__token__", JSON.stringify(objectToken))
     if (objectToken) {
       const isAutoLogin = await getAutoLogin();
       if (isAutoLogin == 'true') {

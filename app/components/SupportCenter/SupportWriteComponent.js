@@ -175,14 +175,14 @@ export default class SupportWriteComponent extends Component {
 
     var refGuestNo = "";
     this.state.listAccountNumberHorizontal.map((element,index) => {
-      if (choosedIndex.includes(index) && element.geust_no) {
+      if (choosedIndex.includes(element.geust_no) && element.geust_no) {
         if (refGuestNo == "")
           refGuestNo = refGuestNo + element.geust_no
         else
           refGuestNo = refGuestNo + "," + element.geust_no
       }
     });
-    alert(refGuestNo)
+    // alert(refGuestNo)
     // if (isDisplayAccountNumber)
     //   asRequestRegistrationRequest({ Par: `cmd=ADD_AS_REQUEST&cate_idx=${asRequestTypeListData[requestTypeIndex].idx}&title=${title}&content=${contact}&email=${email}&write_htel=${mobile}&refGuestNo=${refGuestNo}` })
     // else
@@ -300,7 +300,7 @@ export default class SupportWriteComponent extends Component {
               </View>
               <ScrollView horizontal={true}>
                 {this.state.listAccountNumberHorizontal.map((item, index) => {
-                  return choosedIndex.includes(index) ? (
+                  return choosedIndex.includes(item.geust_no) ? (
                     <View style={styles.containerAccountNumber}>
                       <Text
                         style={{
@@ -498,15 +498,15 @@ export default class SupportWriteComponent extends Component {
                         checkedColor="red"
                         checkedIcon="check-circle"
                         uncheckedIcon="circle-o"
-                        checked={choosedIndex.includes(index)}
+                        checked={choosedIndex.includes(item.geust_no)}
                         onPress={() => {
                           const { choosedIndex } = this.state;
-                          if (!choosedIndex.includes(index)) {
-                            choosedIndex.push(index);
+                          if (!choosedIndex.includes(item.geust_no)) {
+                            choosedIndex.push(item.geust_no);
                           }
                           else {
-                            if(choosedIndex.indexOf(index) >= 0)
-                            choosedIndex.splice(choosedIndex.indexOf(index), 1);
+                            if(choosedIndex.indexOf(item.geust_no) >= 0)
+                            choosedIndex.splice(choosedIndex.indexOf(item.geust_no), 1);
                           }
                           this.setState({
                             choosedIndex

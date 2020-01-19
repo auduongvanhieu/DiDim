@@ -31,8 +31,7 @@ function* verify(params) {
 }
 
 function* authorize(params) {
-  // const objectToken = yield getObjectToken();
-  const objectToken = Config.objectToken
+  const objectToken = yield getObjectToken();
   Config.sAccessToken = objectToken.access_token;
   params.Par = aesEncrypt(params.Par,objectToken.secret_token);
   params.AccessToken = objectToken.access_token;
