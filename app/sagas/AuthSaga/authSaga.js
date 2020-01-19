@@ -39,8 +39,8 @@ function* authorize(action) {
         if (receivedData && receivedData.ReturnValue) {
             yield put({ type: STOP_LOADING })
             yield put({ type: AUTHORIZE_SUCCEEDED, payload: receivedData })
-            // yield put(navigateToStatusInfoScreenAction())
-            yield put(replaceToStatusInfoScreenAction())
+            yield put(navigateToStatusInfoScreenAction())
+            // yield put(replaceToStatusInfoScreenAction())
         } else {
             yield put({ type: STOP_LOADING })
             yield put({ type: AUTHORIZE_FAILED, payload: receivedData})

@@ -53,8 +53,8 @@ export default class LoginComponent extends Component {
   }
 
   componentDidMount() {
-    this.getCache();
     this.props.stopLoading();
+    this.getCache();
   }
 
   componentWillReceiveProps(nextProps) {

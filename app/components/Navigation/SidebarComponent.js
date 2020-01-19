@@ -68,7 +68,6 @@ class SidebarComponent extends Component {
       navigateToLoginScreen,
       replaceToLoginScreen,
       navigateToStatusInfoScreen,
-      replaceToStatusInfoScreen,
       navigateToAlarmLogScreen,
       navigateToSupportCenterScreen,
       disposeRequest, 
@@ -153,11 +152,11 @@ class SidebarComponent extends Component {
               clearAuthCache();
             else
               setAutoLogin(false);
-            replaceToLoginScreen();
+            navigateToLoginScreen();
             disposeRequest({
               Par: {}
             });
-            setObjectToken({access_token: ""});
+            setObjectToken(null);
           }} >
             <View style={styles.listRow}>
               <Image
