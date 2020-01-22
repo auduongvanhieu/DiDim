@@ -7,6 +7,7 @@ import InputField from '../Fields/InputField/InputField';
 import { Images } from '../../../assets';
 import { connect } from 'react-redux'
 import I18n from "../../../I18n";
+import { CheckBox } from 'react-native-elements'
 isNumber = (text) => {
     return !isNaN(text);
 }
@@ -99,6 +100,21 @@ function LoginForm(props) {
                     onRightImgPress={() => {
                     }}
                     returnKeyType={"done"}
+                />
+
+                <Field
+                    name={'isRemember'}
+                    component={({ input, meta, ...inputProps }) => {
+                        return (
+                            <CheckBox
+                                title={I18n.t('loginRemember')}
+                                checkedIcon='dot-circle-o'
+                                uncheckedIcon='circle-o'
+                                containerStyle={{ borderWidth: 0, backgroundColor: 'transparent', marginLeft: 0, marginTop: 0, padding: 0 }}
+                                onPress={() => input.onChange(!Boolean(input.value))}
+                                checked={input.value}
+                                checkedColor='red' />);
+                    }}
                 />
 
                 {props.hideSubmitButton ? null :

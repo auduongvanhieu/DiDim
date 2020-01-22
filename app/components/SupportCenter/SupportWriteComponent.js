@@ -105,27 +105,35 @@ export default class SupportWriteComponent extends Component {
     }
     if (nextProps.asRequestRegistrationData && nextProps.asRequestRegistrationData != this.props.asRequestRegistrationData) {
       const { asRequestListRequest, navigateToSupportCenterScreen } = this.props;
-      Alert.alert(
-        "Notification",
-        "Request is performed",
-        [
-          {
-            text: "Confirm",
-            style: "destructive",
-            onPress: () => {
-              this.setState({
-                email: "",
-                mobile: "",
-                title: "",
-                contact: "",
-              });
-              asRequestListRequest({ Par: 'cmd=GET_LIST_AS_REQUEST' })
-              navigateToSupportCenterScreen();
-            }
-          }
-        ],
-        { cancelable: false }
-      );
+      this.setState({
+        email: "",
+        mobile: "",
+        title: "",
+        contact: "",
+      });
+      asRequestListRequest({ Par: 'cmd=GET_LIST_AS_REQUEST' })
+      navigateToSupportCenterScreen();
+      // Alert.alert(
+      //   "Notification",
+      //   "Request is performed",
+      //   [
+      //     {
+      //       text: "Confirm",
+      //       style: "destructive",
+      //       onPress: () => {
+      //         this.setState({
+      //           email: "",
+      //           mobile: "",
+      //           title: "",
+      //           contact: "",
+      //         });
+      //         asRequestListRequest({ Par: 'cmd=GET_LIST_AS_REQUEST' })
+      //         navigateToSupportCenterScreen();
+      //       }
+      //     }
+      //   ],
+      //   { cancelable: false }
+      // );
     }
     if (nextProps.asRequestRegistrationInit && nextProps.asRequestRegistrationInit != this.props.asRequestRegistrationInit) {
       this.setState({

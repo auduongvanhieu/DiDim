@@ -47,7 +47,6 @@ export default class LoginComponent extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      isRemember: true,
       messageError: ""
     }
   }
@@ -66,9 +65,8 @@ export default class LoginComponent extends Component {
     }
   }
 
-  cacheMyLogin = async form => {
-    const { isRemember } = this.state;
-    if (isRemember) {
+  cacheMyLogin = async (form, isRemember) => {
+    if (Boolean(isRemember)) {
       setAutoLogin(true);
       saveAuthCache({ ...form });
     } else {
@@ -79,64 +77,56 @@ export default class LoginComponent extends Component {
 
   getCache = async () => {
     const { getTokenRequest, verifyRequest, authorizeRequest, changeLoginForm } = this.props;
-
-    const objectToken = await getObjectToken();
-    console.log("__token__", JSON.stringify(objectToken))
-    if (objectToken) {
-      const isAutoLogin = await getAutoLogin();
-      if (isAutoLogin == 'true') {
-        const authCache = await getAuthCache();
-        Config.userName = authCache.user;
-        if (authCache) {
-          changeLoginForm("managed_url", authCache.managed_url);
-          changeLoginForm("user", authCache.user);
-          changeLoginForm("password", "");
-          verifyRequest({
-            Par: qs.stringify(authCache)
-          })
-        }
-      } else {
-        const authCache = await getAuthCache();
+    const isAutoLogin = await getAutoLogin();
+    if (isAutoLogin == 'true') {
+      const authCache = await getAuthCache();
+      Config.userName = authCache.user;
+      if (authCache) {
         changeLoginForm("managed_url", authCache.managed_url);
         changeLoginForm("user", authCache.user);
         changeLoginForm("password", "");
-        this.setState({ isRemember: false });
+        changeLoginForm("isRemember", true);
+        if (await getObjectToken() != null)
+          verifyRequest({
+            Par: qs.stringify(authCache)
+          })
       }
+    } else {
+      const authCache = await getAuthCache();
+      changeLoginForm("managed_url", authCache.managed_url);
+      changeLoginForm("user", authCache.user);
+      changeLoginForm("password", "");
+      changeLoginForm("isRemember", false);
     }
   };
 
-  handleClickRemember = () => {
-    this.setState({ isRemember: !this.state.isRemember })
-  }
-
   onSubmitForm = form => {
     const { authorizeRequest, getTokenRequest, changeLoginForm } = this.props;
-    const { isRemember } = this.state;
     // var text = aesEncrypt("cmd=GET_LIST_AS_REQUEST", "XCKD3C1C2Z6B8VCCUFBSW8UPA9AR8VL7")
     // console.log("__haha__", text)
     // var text2 = aesDecrypt("WpfNQNZqwuD3LPonzqYFXIZ8C4/IQMFeOZGg6zogDH6tA38u+D6BagZtWKsEZGPgmu4MrZGM6b41aiXi/FHfqUovQKsACB8OWK3eAh0UyFmd82Y83qqfsSaNANX1W/m2n2reWCEsRGuQJIhm/6oS5PO28S7vVuth5U8p4WTY3kIBw8dO7xJuqnGost+a1T86hPDEPNlP6dolIOxWzNrsLwMJKLs+xKD0nAGI4Z3AF8dC5Vhh0ueY2STavb04o0pl8NiBkBj4SEbxHimBtJIVJhd+A3TQmfN5wiwAXGD8jb5pw+xGxvU4a/HFupCevPVBLkVKypGnwzvHUVDm7zcY3OyeNqTIfQsONN2s4GquJA5m81s4aAwaUDMxm3/ByDJF9xHG+pLDk2CsX1uBcRjO1YBo9EzDY0Lt/VOpNjDcCloLXYW8N2g0GM/INS6jnJRejyVxvJk+nVnmU6WW9j6x5oxn7DklzUk3vc4G5lVxny4Oy5zhewGjt8c/T8MZ41zFB1NwwAy9A8DA9HkcZjHZrsd/bcRSDwpRlUffKV9AV7Y=", "XCKD3C1C2Z6B8VCCUFBSW8UPA9AR8VL7")
     // console.log("__haha__", text2)
 
-    // alert(JSON.stringify(form))
     var isError = false;
     if (form.managed_url === "" || form.managed_url === undefined) {
       this.setState({ messageError: I18n.t('loginEmptyUrl') })
       isError = true;
     }
     else
-    if (form.user === "" || form.user === undefined) {
-      this.setState({ messageError: I18n.t('loginEmptyUser') })
-      isError = true;
-    }
-    else
-    if (form.password === "" || form.password === undefined) {
-      this.setState({ messageError: I18n.t('loginEmptyPassword') })
-      isError = true;
-    }
-    if(!isError) {
+      if (form.user === "" || form.user === undefined) {
+        this.setState({ messageError: I18n.t('loginEmptyUser') })
+        isError = true;
+      }
+      else
+        if (form.password === "" || form.password === undefined) {
+          this.setState({ messageError: I18n.t('loginEmptyPassword') })
+          isError = true;
+        }
+    if (!isError) {
+      let isRemember = Boolean(form.isRemember);
       Config.userName = { ...form }.user;
-      this.cacheMyLogin({ ...form });
-      this.getCache();
+      this.cacheMyLogin({ ...form }, isRemember);
+      //this.getCache();
       getTokenRequest({ ...form });
       if (!isRemember) {
         changeLoginForm("managed_url", "");
@@ -167,11 +157,11 @@ export default class LoginComponent extends Component {
         <View style={{ backgroundColor: '#f4f6f9', flex: 1 }} />
         <View style={styles.form}>
           <View style={styles.formChild}>
-            <View style={{ height: 190 }}>
+            <View style={{}}>
               <LoginForm
                 hideSubmitButton={true}
                 hideClearButton={true}
-                onSubmit={this.onSubmitForm.bind(this)}
+                onSubmit={(formData) => { this.onSubmitForm(formData) }}
               // initialValues={{
               //   managed_url: "cloud-didim.3-pod.com",
               //   user: "qtsoft",
@@ -179,14 +169,6 @@ export default class LoginComponent extends Component {
               // }}
               />
             </View>
-            <CheckBox
-              title={I18n.t('loginRemember')}
-              checkedIcon='dot-circle-o'
-              uncheckedIcon='circle-o'
-              containerStyle={{ borderWidth: 0, backgroundColor: 'transparent', marginLeft: 0, marginTop: 0, padding: 0 }}
-              onPress={() => this.handleClickRemember()}
-              checked={this.state.isRemember}
-              checkedColor='red' />
             <Button onPress={submitLoginForm} style={{ width: '100%', borderRadius: 5, marginTop: 10, alignSelf: 'center', justifyContent: 'center', backgroundColor: AppColors.primaryColor }}>
               <Text style={{ color: 'white', fontSize: 20 }}>{I18n.t('login')}</Text>
             </Button>

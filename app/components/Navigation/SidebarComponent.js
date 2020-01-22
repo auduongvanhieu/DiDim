@@ -148,10 +148,10 @@ class SidebarComponent extends Component {
             </View>
           </View>
           <TouchableOpacity onPress={ async () => {
-            if(await getAutoLogin() != 'true')
+            if(await getAutoLogin() != 'true') {
               clearAuthCache();
-            else
-              setAutoLogin(false);
+            }
+              
             navigateToLoginScreen();
             disposeRequest({
               Par: {}
